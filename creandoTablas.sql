@@ -209,7 +209,8 @@ create table Retiros (
 	Foreign key (Cod_cheque) references Cheque(Id_cheque)
 );
 	
-	
+Alter table Usuario
+add Estado Varchar(20) not null;	
 Alter table Transferencias
 add Cod_moneda int not null;
 Alter table Transferencias

@@ -156,3 +156,87 @@ for insert, update, delete
 	
 	commit;
 	go
+	Create trigger CuaandoSeIngresanLoginsIncorrectos
+on Intentos_login
+for  insert
+as
+Begin transaction
+Declare @num_login int
+Declare @Correcto bit 
+select Id_login,Es_Correcto into #tablaIncorrectos  from inserted
+where Es_Correcto=0
+
+if ((select count(*) from #tablaIncorrectos
+)>0)
+begin
+Declare cursorDeIncorrectos Cursor
+for select * from #tablaIncorrectos
+open cursorDeIncorrectos
+fetch next from cursorDeIncorrectos into @num_login,@Correcto
+while(@@FETCH_STATUS=0)
+begin
+Insert into Intentos_fallidos (Cod_login)values (@num_login)
+fetch next from cursorDeIncorrectos into @num_login,@Correcto
+end
+end
+close cursorDeIncorrectos
+deallocate cursorDeIncorrectos
+drop table #tablaIncorrectos
+commit;
+go
+
+Create trigger CuaandoSeIngresanLoginsCorrectos
+on Intentos_login
+for  insert
+as
+Begin transaction
+Declare @num_login int
+Declare @Correcto bit 
+Declare @cantidad int
+select Id_login,Es_Correcto into #tablaCorrectos  from inserted
+where Es_Correcto=1
+
+if ((select count(*) from #tablaCorrectos
+)>0)
+begin
+Declare cursorDeIncorrectos Cursor
+for select * from #tablaCorrectos
+open cursorDeIncorrectos
+fetch next from cursorDeIncorrectos into @num_login,@Correcto
+while(@@FETCH_STATUS=0)
+begin
+Delete from Intentos_fallidos where Cod_login=@num_login
+fetch next from cursorDeIncorrectos into @num_login,@Correcto
+end
+end
+drop table #tablaCorrectos
+close cursorDeIncorrectos
+deallocate cursorDeIncorrectos
+commit;
+go
+
+Create trigger CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
+on Intentos_fallidos
+for  insert
+as
+Begin transaction
+Declare @num_fallido int
+Declare @Cod_loguin int
+Declare cursorDeFallidos Cursor
+for select * from inserted
+open cursorDeIncorrectos
+fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
+while(@@FETCH_STATUS=0)
+begin
+if ((select count(*) from Intentos_fallidos,Usuario,Intentos_loguin
+where Intentos_fallidos.Cod_loguin=Intentos_loguin.Id_loguin and Intentos_loguin.Cod_usuario=Usuario.Id_usuario)>2)
+update Usuario
+set Estado="inhabilitado"
+where Id_usuario = (Select Cod_usuario from Intentos_loguin where Id_loguin=@Cod_loguin)
+fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
+
+end
+close cursorDeFallidos
+deallocate cursorDeFallidos
+commit;
+go
