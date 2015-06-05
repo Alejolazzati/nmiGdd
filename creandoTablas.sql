@@ -210,4 +210,7 @@ create table Retiros (
 );
 	
 	
-
+Alter table Transferencias
+add Cod_moneda int not null;
+Alter table Transferencias
+add foreign key (Cod_moneda) references Moneda(Id_moneda);
