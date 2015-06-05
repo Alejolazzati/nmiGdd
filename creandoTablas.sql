@@ -214,3 +214,10 @@ Alter table Transferencias
 add Cod_moneda int not null;
 Alter table Transferencias
 add foreign key (Cod_moneda) references Moneda(Id_moneda);
+ALTER TABLE Cheque
+add Importe float not null;
+Alter table Cheque 
+add Cod_moneda int not null;
+Alter table Cheque 
+add foreign key (Cod_moneda) references Moneda(Id_moneda);
+Alter table Cheque add check(Importe>=1);
