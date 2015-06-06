@@ -161,7 +161,7 @@ create table Transferencias(
 );
 	
 create table Bancos(
-	Id_banco int primary key,
+	Id_banco int identity(1,1) primary key,
 	Nombre_banco varchar(30) not null,
 	Cod_pais int not null,
 	foreign key (Cod_pais) references Pais(Id_pais)
@@ -241,7 +241,7 @@ insert into Tipo_DNI
 select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
 from gd_esquema.Maestra
 
-insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values (1,(select distinct 
+insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct 
 top 1 Banco_Nombre from gd_esquema.Maestra where Banco_Nombre is not null),8)
-insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values (2,(select distinct top 1 Banco_Nombre 
+insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
 from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%Nac%'),8)
