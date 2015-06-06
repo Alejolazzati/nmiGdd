@@ -225,6 +225,7 @@ Alter table Cheque add check(Importe>=1);
 -----------------------------------------
 alter table Pais alter column descripcion varchar(50);
 
+--Pais
 insert into Pais
 select * from (select distinct Cli_Pais_Codigo, Cli_Pais_Desc 
 from gd_esquema.Maestra 
@@ -234,13 +235,22 @@ from gd_esquema.Maestra
 where Cli_Pais_Codigo is not null and Cuenta_Dest_Pais_Codigo is not null
 )A
 
+--Moneda
 insert into Moneda(Descripcion,Conversion) values ('Dolar',1);
 
+--Tipo de dni
 insert into Tipo_DNI
 select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
 from gd_esquema.Maestra
 
+--Bancos
 insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct 
 top 1 Banco_Nombre from gd_esquema.Maestra where Banco_Nombre is not null),8)
 insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
 from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%Nac%'),8)
+
+--Categorias de cuentas
+insert into Categoria (Descripcion,Costo) values ('oro',30)
+insert into Categoria (Descripcion,Costo) values ('plata',20)
+insert into Categoria (Descripcion,Costo) values ('bronce',10)
+insert into Categoria (Descripcion,Costo) values ('gratuita',0)
