@@ -2,7 +2,7 @@ use GD1C2015;
 create table Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) not null,
-Contraseña varchar(30) not null,
+ContraseÃ±a varchar(30) not null,
 Fecha_creacion date default GETDATE(),
 Ultima_modificacion date not null default GETDATE(), 
 Pregunta_secreta varchar(50) not null,
@@ -221,3 +221,27 @@ add Cod_moneda int not null;
 Alter table Cheque 
 add foreign key (Cod_moneda) references Moneda(Id_moneda);
 Alter table Cheque add check(Importe>=1);
+
+-----------------------------------------
+alter table Pais alter column descripcion varchar(50);
+
+insert into Pais
+select * from (select distinct Cli_Pais_Codigo, Cli_Pais_Desc 
+from gd_esquema.Maestra 
+union
+select distinct Cuenta_Dest_Pais_Codigo, Cuenta_Dest_Pais_Desc
+from gd_esquema.Maestra
+where Cli_Pais_Codigo is not null and Cuenta_Dest_Pais_Codigo is not null
+)A
+
+insert into Moneda(Descripcion, Conversion) values ('Pesos',1);
+insert into Moneda(Descripcion,Conversion) values ('Dolar',10);
+
+insert into Tipo_DNI
+select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
+from gd_esquema.Maestra
+
+insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values (1,(select distinct 
+top 1 Banco_Nombre from gd_esquema.Maestra where Banco_Nombre is not null),8)
+insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values (2,(select distinct top 1 Banco_Nombre 
+from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%Nac%'),8)
