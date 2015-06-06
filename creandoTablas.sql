@@ -258,3 +258,7 @@ insert into Categoria (Descripcion,Costo) values ('gratuita',0)
 --Tabla de Estados_Rol
 insert into Estado_rol (Descripcion) values ('Activo')
 insert into Estado_rol (Descripcion) values ('Inactivo')
+
+--Tabla de roles
+insert into Rol (Nombre_rol,Cod_estado) values ('Cliente',1)
+insert into Rol (Nombre_rol,Cod_estado) values ('Administrador',1)
