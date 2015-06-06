@@ -254,3 +254,7 @@ insert into Categoria (Descripcion,Costo) values ('oro',30)
 insert into Categoria (Descripcion,Costo) values ('plata',20)
 insert into Categoria (Descripcion,Costo) values ('bronce',10)
 insert into Categoria (Descripcion,Costo) values ('gratuita',0)
+
+--Tabla de Estados_Rol
+insert into Estado_rol (Descripcion) values ('Activo')
+insert into Estado_rol (Descripcion) values ('Inactivo')
