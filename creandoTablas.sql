@@ -208,6 +208,12 @@ create table Retiros (
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	Foreign key (Cod_cheque) references Cheque(Id_cheque)
 );
+
+
+create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
+	Id_tarjeta int identity(1,1) primary key,
+	Descripcion varchar(40)
+);
 	
 	
 Alter table Transferencias
