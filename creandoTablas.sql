@@ -234,8 +234,7 @@ from gd_esquema.Maestra
 where Cli_Pais_Codigo is not null and Cuenta_Dest_Pais_Codigo is not null
 )A
 
-insert into Moneda(Descripcion, Conversion) values ('Pesos',1);
-insert into Moneda(Descripcion,Conversion) values ('Dolar',10);
+insert into Moneda(Descripcion,Conversion) values ('Dolar',1);
 
 insert into Tipo_DNI
 select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
