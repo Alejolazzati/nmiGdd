@@ -175,7 +175,7 @@ create table Tarjetas_credito(
 	Fecha_vencimiento date not null,
 	Cod_seguridad int,
 	foreign key (Cod_cliente) references Cliente(Id_cliente),
-	foreign key (Cod_emisor) references Bancos(Id_banco)
+	foreign key (Cod_emisor) references Tarjeta_Emisor(Id_Tarjeta_Emisor)
 );
 
 create table Depositos(
@@ -211,7 +211,7 @@ create table Retiros (
 
 
 create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
-	Id_tarjeta int identity(1,1) primary key,
+	Id_tarjeta_Emisor int identity(1,1) primary key,
 	Descripcion varchar(40)
 );
 	
@@ -295,3 +295,9 @@ insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (8,2)
 insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (9,2)
 insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,2)
 insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,1)
+
+--Tabla Tarjeta Emisor
+insert into Tarjeta_Emisor (Descripcion)
+select distinct Tarjeta_Emisor_Descripcion
+from gd_esquema.Maestra
+where Tarjeta_Emisor_Descripcion is not null;
