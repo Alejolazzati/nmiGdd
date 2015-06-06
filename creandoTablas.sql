@@ -77,7 +77,7 @@ Create table Usuario_rol(
 );
 
 Create table Funcionalidad(
-	Id_funcionalidad int primary key,
+	Id_funcionalidad int identity(1,1) primary key, --Agrego identity
 	Descripcion varchar(30) not null
 );
 
@@ -262,3 +262,14 @@ insert into Estado_rol (Descripcion) values ('Inactivo')
 --Tabla de roles
 insert into Rol (Nombre_rol,Cod_estado) values ('Cliente',1)
 insert into Rol (Nombre_rol,Cod_estado) values ('Administrador',1)
+
+--Tabla de funcionalidades
+insert into Funcionalidad (Descripcion) values ('ABM Usuarios')
+insert into Funcionalidad (Descripcion) values ('ABM Clientes')
+insert into Funcionalidad (Descripcion) values ('ABM Cuentas')
+insert into Funcionalidad (Descripcion) values ('ABM Credit Card')
+insert into Funcionalidad (Descripcion) values ('ABM Despositos')
+insert into Funcionalidad (Descripcion) values ('ABM Retiros')
+insert into Funcionalidad (Descripcion) values ('ABM Transferencias')
+insert into Funcionalidad (Descripcion) values ('ABM Facturacion')
+insert into Funcionalidad (Descripcion) values ('ABM Estadisticas')
