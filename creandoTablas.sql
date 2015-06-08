@@ -23,17 +23,16 @@ Id_localidad int identity(1,1) primary key,
 Descripcion varchar(30) not null,
 );
 
-Create Table Cliente(
+Create Table Cliente(  --elimino localidad
 Id_cliente int identity(1,1) primary key,
 Cod_usuario int not null,
-Nombre varchar (30) not null,
-Apellido varchar(30) not null,
+Nombre varchar (50) not null,
+Apellido varchar(50) not null,
 Tipo_documento int not null,
 Numero_documento int not null,
-Mail varchar(30) not null,
+Mail varchar(50) not null,
 Cod_pais int not null,
-Localidad int not null,
-Calle varchar(30) not null,
+Calle varchar(50) not null,
 Numero int not null,
 Piso smallint,
 Depto char,
@@ -42,7 +41,6 @@ unique (Tipo_documento,Numero_Documento),
 unique (mail),
 foreign key (Cod_pais) references Pais(Id_pais),
 foreign key (Cod_usuario) references Usuario(Id_usuario),
-foreign key (Localidad) references Localidad(Id_localidad)
 );
 
 Create table Intentos_login(
@@ -230,6 +228,10 @@ Alter table Cheque add check(Importe>=1);
 
 -----------------------------------------
 alter table Pais alter column descripcion varchar(50);
+
+alter table Usuario 
+add Nro_Doc Numeric(8)
+
 
 --Pais
 insert into Pais
@@ -469,5 +471,19 @@ insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('Am
 insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('TrinidadV','TrinidadV','Carrera','Sociologa')
 insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('MichelleY','MichelleY','Carrera','Psicologa')
 
+update Usuario set Nro_Doc = b.Cli_Nro_Doc
+from Usuario a inner join gd_esquema.Maestra b on a.Useranme = Rtrim (b.Cli_Nombre)+left(Cli_Apellido,1)
+
+
 --Tabla de usuario_rol
 insert into Usuario_rol (Cod_usuario,Cod_rol) (select Id_usuario,1 from Usuario);
+
+--Clientes
+insert into Cliente (Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,
+Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
+select distinct s.Id_usuario,g.Cli_Nombre,g.Cli_Apellido,g.Cli_Tipo_Doc_Cod,g.Cli_Nro_Doc,
+g.Cli_Mail,g.Cli_Pais_Codigo,g.Cli_Dom_Calle,g.Cli_Dom_Nro,g.Cli_Dom_Piso,g.Cli_Dom_Depto,
+g.Cli_Fecha_Nac
+from Usuario s,gd_esquema.Maestra g
+where s.nro_doc = g.Cli_Nro_Doc
+
