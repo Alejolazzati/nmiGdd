@@ -468,3 +468,6 @@ insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('El
 insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('AmbrosioV','AmbrosioV','Carrera','Kinesiolo')
 insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('TrinidadV','TrinidadV','Carrera','Sociologa')
 insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta) values ('MichelleY','MichelleY','Carrera','Psicologa')
+
+--Tabla de usuario_rol
+insert into Usuario_rol (Cod_usuario,Cod_rol) (select Id_usuario,1 from Usuario);
