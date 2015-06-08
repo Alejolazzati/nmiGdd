@@ -104,7 +104,7 @@ create table Estado_cuenta(
 );
 
 create table Cuenta(
-	Num_cuenta numeric(8) primary key, -- modificacion del identity
+	Num_cuenta numeric(18) primary key, -- modificacion del identity NO TIENE Q SER IDENTITY
 	Fecha_apertura date not null default getdate(),
 	Fecha_cierre date default null,
 	Codigo_pais int not null,
