@@ -104,8 +104,9 @@ create table Estado_cuenta(
 );
 
 create table Cuenta(
-	Num_cuenta numeric(8) identity(11111111,1) primary key, -- modificacion del identity
+	Num_cuenta numeric(8) primary key, -- modificacion del identity
 	Fecha_apertura date not null default getdate(),
+	Fecha_cierre date default null,
 	Codigo_pais int not null,
 	Codigo_moneda int not null,
 	Codigo_categoria int not null,
@@ -496,3 +497,16 @@ a.Tarjeta_Fecha_Vencimiento,a.Tarjeta_Codigo_Seg
 from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento),
 gd_esquema.Maestra c inner join Tarjeta_Emisor d on c.Tarjeta_Emisor_Descripcion=d.Descripcion 
 where a.Tarjeta_Numero is not null
+
+--Estado de cuentas
+insert into Estado_cuenta(Descripcion) values ('Habilitada')
+insert into Estado_cuenta(Descripcion) values ('Inahilitada')
+insert into Estado_cuenta(Descripcion) values ('Pendiente')
+insert into Estado_cuenta(Descripcion) values ('Cerrada')
+
+--Cuentas
+
+insert into Cuenta(Num_cuenta,Fecha_apertura,Fecha_cierre,Codigo_pais,Codigo_moneda,
+Codigo_categoria,Codigo_cliente,Codigo_estado,Saldo)
+select distinct a.Cuenta_Numero,a.Cuenta_Fecha_Creacion,a.Cuenta_Fecha_Cierre,a.Cuenta_Pais_Codigo,1,4,b.Id_cliente,1,0
+from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento) 
