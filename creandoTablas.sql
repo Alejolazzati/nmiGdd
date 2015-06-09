@@ -227,7 +227,6 @@ Alter table Cheque
 add Cod_moneda int not null;
 Alter table Cheque 
 add foreign key (Cod_moneda) references Moneda(Id_moneda);
-Alter table Cheque add check(Importe>=1);
 
 -----------------------------------------
 alter table Pais alter column descripcion varchar(50);
