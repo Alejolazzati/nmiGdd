@@ -179,11 +179,12 @@ create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero c
 );
 
 create table Depositos(
-	Id_deposito int primary key,
-	Cod_cuenta int not null,
+	Id_deposito numeric(18) primary key,
+	Cod_cuenta numeric(18) not null,
 	Cod_moneda int not null,
 	Importe float not null,
 	Cod_TC int not null,
+	Fecha date,
 	check(Importe>1),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_moneda) references Moneda(Id_moneda),
@@ -510,3 +511,17 @@ insert into Cuenta(Num_cuenta,Fecha_apertura,Fecha_cierre,Codigo_pais,Codigo_mon
 Codigo_categoria,Codigo_cliente,Codigo_estado,Saldo)
 select distinct a.Cuenta_Numero,a.Cuenta_Fecha_Creacion,a.Cuenta_Fecha_Cierre,a.Cuenta_Pais_Codigo,1,4,b.Id_cliente,1,0
 from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento) 
+
+
+--Depositos
+insert Depositos(Id_deposito,Cod_cuenta,Cod_moneda,Importe,Cod_TC,Fecha)
+select distinct a.Deposito_Codigo,c.Num_cuenta,1,a.Deposito_Importe,
+d.Id_tarjeta,a.Deposito_Fecha
+from gd_esquema.Maestra a inner join Cliente b 
+on a.Cli_Nro_Doc=b.Numero_documento
+inner join Cuenta c 
+on b.Id_cliente=c.Codigo_cliente and c.Num_cuenta=a.Cuenta_Numero
+inner join Tarjetas_credito2 d on
+b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
+where Deposito_Codigo is not null
+and a.Deposito_Fecha between '19000101' and GETDATE()
