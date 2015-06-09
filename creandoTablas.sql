@@ -496,7 +496,7 @@ select distinct a.Tarjeta_Numero,b.Id_cliente,c.Id_tarjeta_emisor,a.Tarjeta_Fech
 a.Tarjeta_Fecha_Vencimiento,a.Tarjeta_Codigo_Seg
 from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento 
 inner join Tarjeta_Emisor c on a.Tarjeta_Emisor_Descripcion=c.Descripcion) 
-where a.Tarjeta_Numero is not null
+
 
 --Estado de cuentas
 insert into Estado_cuenta(Descripcion) values ('Habilitada')
