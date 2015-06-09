@@ -524,3 +524,11 @@ inner join Tarjetas_credito2 d on
 b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
 where Deposito_Codigo is not null
 and a.Deposito_Fecha between '19000101' and GETDATE()
+
+--Cheques
+
+insert into Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
+select distinct Cheque_Numero, Cheque_Importe, Cheque_Fecha,1,b.Id_cliente,c.Id_banco
+from gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento
+inner join Bancos c on a.Banco_Nombre=c.Nombre_banco 
+where Cheque_Fecha between '19000101' and GETDATE()
