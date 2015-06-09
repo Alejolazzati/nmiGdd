@@ -492,10 +492,10 @@ where s.nro_doc = g.Cli_Nro_Doc
 --Tarjetas de credito
 insert into Tarjetas_credito4(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento
 ,Cod_seguridad)
-select distinct a.Tarjeta_Numero,b.Id_cliente,d.Id_tarjeta_emisor,a.Tarjeta_Fecha_Emision,
+select distinct a.Tarjeta_Numero,b.Id_cliente,c.Id_tarjeta_emisor,a.Tarjeta_Fecha_Emision,
 a.Tarjeta_Fecha_Vencimiento,a.Tarjeta_Codigo_Seg
-from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento),
-gd_esquema.Maestra c inner join Tarjeta_Emisor d on c.Tarjeta_Emisor_Descripcion=d.Descripcion 
+from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento 
+inner join Tarjeta_Emisor c on a.Tarjeta_Emisor_Descripcion=c.Descripcion) 
 where a.Tarjeta_Numero is not null
 
 --Estado de cuentas
