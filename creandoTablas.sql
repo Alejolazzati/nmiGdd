@@ -141,7 +141,7 @@ create table Tipo_modificacion(
 create table Modificacion_cuenta(
 	Id_modificacion int identity(1,1) primary key,
 	Cod_tipo int not null,
-	Cod_cuenta int not null,
+	Cod_cuenta numeric(18) not null,
 	Cod_transaccion int not null,
 	foreign key (Cod_tipo) references Tipo_modificacion(Id_tipo),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
@@ -151,8 +151,8 @@ create table Modificacion_cuenta(
 create table Transferencias(
 	Id_transferencia int identity(1,1) primary key,
 	Importe float not null,
-	Cod_cuenta_origen int not null,
-	Cod_cuenta_destino int not null,
+	Cod_cuenta_origen numeric(18) not null,
+	Cod_cuenta_destino numeric(18) not null,
 	Cod_transaccion int not null,
 	foreign key (Cod_cuenta_origen) references Cuenta(Num_cuenta),
 	foreign key (Cod_cuenta_destino) references Cuenta(Num_cuenta),
@@ -187,7 +187,7 @@ create table Depositos(
 	check(Importe>1),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_moneda) references Moneda(Id_moneda),
-	foreign key (Cod_TC) references Tarjetas_credito(Num_tarjeta)
+	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta)
 );
 
 create table Cheque(
@@ -203,7 +203,7 @@ create table Cheque(
 
 create table Retiros (
 	Id_retiro int primary key,
-	Cod_cuenta int not null,
+	Cod_cuenta numeric(18) not null,
 	Cod_cheque int not null,
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	Foreign key (Cod_cheque) references Cheque(Id_cheque)
@@ -254,9 +254,9 @@ select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
 from gd_esquema.Maestra
 
 --Bancos
-insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct 
+insert into Bancos(Nombre_banco,Cod_pais) values ((select distinct 
 top 1 Banco_Nombre from gd_esquema.Maestra where Banco_Nombre is not null),8)
-insert into Bancos(Id_banco,Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
+insert into Bancos(Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
 from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%Nac%'),8)
 
 --Categorias de cuentas
