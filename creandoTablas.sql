@@ -203,7 +203,7 @@ create table Cheque(
 );
 
 create table Retiros (
-	Id_retiro int primary key,
+	Id_retiro numeric(18) primary key,
 	Cod_cuenta numeric(18) not null,
 	Cod_cheque int not null,
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
@@ -532,3 +532,13 @@ select distinct Cheque_Numero, Cheque_Importe, Cheque_Fecha,1,b.Id_cliente,c.Id_
 from gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento
 inner join Bancos c on a.Banco_Nombre=c.Nombre_banco 
 where Cheque_Fecha between '19000101' and GETDATE()
+
+--Retiros
+insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque)
+select distinct a.Retiro_Codigo,a.Cuenta_Numero,c.Id_cheque
+from gd_esquema.Maestra a inner join Cliente b on
+a.Cli_Nro_Doc=b.Numero_documento inner join Cheque c
+on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and 
+b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
+inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
+where Cheque_Fecha between '19000101' and getdate()
