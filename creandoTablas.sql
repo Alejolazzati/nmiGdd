@@ -168,7 +168,7 @@ create table Bancos(
 
 create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
 	Id_tarjeta int identity(1,1) primary key,
-	Num_tarjeta int,
+	Num_tarjeta numeric(18) not null,
 	Cod_cliente int not null,
 	Cod_emisor int not null,
 	Fecha_emision date not null,
@@ -490,7 +490,7 @@ from Usuario s,gd_esquema.Maestra g
 where s.nro_doc = g.Cli_Nro_Doc
 
 --Tarjetas de credito
-insert into Tarjetas_credito4(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento
+insert into Tarjetas_credito(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento
 ,Cod_seguridad)
 select distinct a.Tarjeta_Numero,b.Id_cliente,c.Id_tarjeta_emisor,a.Tarjeta_Fecha_Emision,
 a.Tarjeta_Fecha_Vencimiento,a.Tarjeta_Codigo_Seg
