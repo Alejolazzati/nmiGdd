@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Windows.Forms;
+using System.Configuration;
+using System.Security.Cryptography;
+
+namespace PagoElectronico
+{
+    class BaseDeDatos
+    {
+
+        public static string conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
+
+        public static SqlConnection conectar()
+        {
+            string connectionString = conexion;
+            return new SqlConnection(connectionString);
+        }
+
+        public static string agregarApostrofes(string palabra)
+        {
+            return "'" + palabra + "'";
+        }
+
+        public static string agregarPorcentajes(string palabra)
+        {
+            return "%" + palabra + "%";
+        }
+
+        public static string cifrar256(string texto)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(texto);
+            SHA256Managed provider = new SHA256Managed();
+            byte[] hash = provider.ComputeHash(bytes);
+            string textoHash = string.Empty;
+            foreach (byte x in hash)
+            {
+                textoHash += String.Format("{0:X2}", x);
+            }
+            return textoHash;
+        }
+        public static int converTrimToInt(int numero)
+        {
+            return numero * 3;
+        }
+    }
+
+}
+
+     
