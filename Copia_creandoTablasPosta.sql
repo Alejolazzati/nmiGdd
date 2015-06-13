@@ -243,8 +243,8 @@ Create trigger actualizarSaldosPorTransferencia
 	for (select Cod_cuenta_origen,Cod_cuenta_destino,sum(Importe),Moneda.Conversion From inserted,Moneda
 	where inserted.Cod_moneda=Moneda.Id_moneda
 	group by Cod_cuenta_origen,Cod_cuenta_destino,Moneda.Conversion)
-	Declare @cuentaOrigen int
-	Declare @cuentaDestino int
+	Declare @cuentaOrigen numeric(18)
+	Declare @cuentaDestino numeric(18)
 	Declare @sumaDeImporte int	
 	Declare @conversion int
 	Declare @ConversionFinal int
@@ -301,7 +301,7 @@ for insert, update, delete
 	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From inserted,Moneda
 	where inserted.Cod_moneda=Moneda.Id_moneda
 	group by Cod_cuenta,Moneda.Conversion)
-	Declare @cuenta int
+	Declare @cuenta numeric(18)
 	Declare @sumaDeImporte int	
 	Declare @conversion int
 	Declare @ConversionFinal int
@@ -340,7 +340,7 @@ for insert, update, delete
 	
 	commit;
 	go
-		create trigger ActualizarSaldosPorRetiro
+create trigger ActualizarSaldosPorRetiro
 on Retiros 
 for insert, update, delete
 	as
@@ -351,7 +351,7 @@ for insert, update, delete
 	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From Cheque,inserted,Moneda
 	where Cheque.Cod_moneda=Moneda.Id_moneda and Cheque.Id_cheque=inserted.Cod_cheque
 	group by Cod_cuenta,Moneda.Conversion)
-	Declare @cuenta int
+	Declare @cuenta numeric(18)
 	Declare @sumaDeImporte int	
 	Declare @conversion int
 	Declare @ConversionFinal int
@@ -583,6 +583,8 @@ Insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 end
+close cursorCliente
+deallocate cursorCliente
 commit
 
 
@@ -625,7 +627,7 @@ on b.Id_cliente=c.Codigo_cliente and c.Num_cuenta=a.Cuenta_Numero
 inner join Tarjetas_credito d on
 b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
 where Deposito_Codigo is not null
-and a.Deposito_Fecha between '19000101' and GETDATE()
+
 
 --Cheques
 
@@ -633,7 +635,7 @@ insert into Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
 select distinct Cheque_Numero, Cheque_Importe, Cheque_Fecha,1,b.Id_cliente,c.Id_banco
 from gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento
 inner join Bancos c on a.Banco_Nombre=c.Nombre_banco 
-where Cheque_Fecha between '19000101' and GETDATE()
+
 
 --Retiros
 insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque)
@@ -643,7 +645,6 @@ a.Cli_Nro_Doc=b.Numero_documento inner join Cheque c
 on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and 
 b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
 inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
-where Cheque_Fecha between '19000101' and getdate()
 
 
 
@@ -668,5 +669,26 @@ Insert into Transacciones values (1,@Costo1,@Fecha1)
 select @IDTrans1=(Select MAX(Id_transaccion) from Transacciones)
 Insert into Transferencias values(@Importe1,@CuentaOrigen1,@CuentaDestino1,@IDTrans1,1)
 fetch next from cursorTransferencias into @CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
-end;
+end;close cursorTransferencias Deallocate cursorTransferencias 
 commit
+
+
+Create Table Facturas(
+	Num_factura numeric(18) primary key,
+	Fecha_factura Date not null,
+);
+
+alter table Transacciones
+add  cod_factura numeric(18);
+
+alter table Transacciones
+add foreign key (cod_factura) references Facturas(Num_factura);
+
+insert into Facturas
+select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
+where Factura_Numero is not null;
+
+--update Transacciones
+--set cod_factura = (select m.Factura_Numero from gd_esquema.Maestra m join Transferencias t
+--on (t.Cod_transaccion=Id_transaccion and t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Transf_Fecha=Fecha and m.Factura_Numero is not null))
+
