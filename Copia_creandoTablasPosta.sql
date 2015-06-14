@@ -646,6 +646,11 @@ on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and
 b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
 inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
 
+alter table Transacciones
+add  cod_factura numeric(18);
+
+alter table Transacciones
+add foreign key (cod_factura) references Facturas(Num_factura);
 
 
 Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
@@ -653,7 +658,7 @@ Insert into Estado_transaccion(Descripcion) values ('Facturado');
 begin transaction
 Declare cursorTransferencias Cursor 
 for(
-select Cuenta_Numero,Cuenta_Dest_Numero,Trans_Importe,Item_Factura_Importe,Transf_Fecha from gd_esquema.Maestra
+select Factura_Numero,Cuenta_Numero,Cuenta_Dest_Numero,Trans_Importe,Item_Factura_Importe,Transf_Fecha from gd_esquema.Maestra
 where (Transf_Fecha is not null) and Item_Factura_Importe is not null)
 Declare @CuentaOrigen1 numeric(18)
 Declare @CuentaDestino1 numeric(18)
@@ -661,14 +666,15 @@ Declare @Importe1 float
 Declare @Costo1 float
 Declare @Fecha1 Date
 Declare @IDTrans1 int
+Declare @Factura numeric(18)
 open cursorTransferencias
-fetch next from cursorTransferencias into @CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
+fetch next from cursorTransferencias into @Factura,@CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
 while @@FETCH_STATUS =0
 begin
-Insert into Transacciones values (1,@Costo1,@Fecha1)
+Insert into Transacciones values (1,@Costo1,@Fecha1,@Factura)
 select @IDTrans1=(Select MAX(Id_transaccion) from Transacciones)
 Insert into Transferencias values(@Importe1,@CuentaOrigen1,@CuentaDestino1,@IDTrans1,1)
-fetch next from cursorTransferencias into @CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
+fetch next from cursorTransferencias into @Factura,@CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
 end;close cursorTransferencias Deallocate cursorTransferencias 
 commit
 
@@ -678,11 +684,6 @@ Create Table Facturas(
 	Fecha_factura Date not null,
 );
 
-alter table Transacciones
-add  cod_factura numeric(18);
-
-alter table Transacciones
-add foreign key (cod_factura) references Facturas(Num_factura);
 
 insert into Facturas
 select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
@@ -692,3 +693,7 @@ where Factura_Numero is not null;
 --set cod_factura = (select m.Factura_Numero from gd_esquema.Maestra m join Transferencias t
 --on (t.Cod_transaccion=Id_transaccion and t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Transf_Fecha=Fecha and m.Factura_Numero is not null))
 
+
+select m.Factura_Numero from  gd_esquema.Maestra m join Transferencias t
+on (t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Factura_Numero is not null) join Transacciones traaa
+on (t.Cod_transaccion=traaa.Id_transaccion and m.Transf_Fecha=traaa.Fecha)
