@@ -204,6 +204,11 @@ create table Cheque(
 	foreign key (Cod_banco) references Bancos(Id_banco),
 	foreign key (Cod_cliente) references Cliente(Id_cliente)
 );
+Create Table Facturas(
+	Num_factura numeric(18) primary key,
+	Fecha_factura Date not null,
+);
+
 
 create table Retiros (
 	Id_retiro numeric(18) primary key,
@@ -228,6 +233,11 @@ Alter table Cheque
 add Cod_moneda int not null;
 Alter table Cheque 
 add foreign key (Cod_moneda) references Moneda(Id_moneda);
+alter table Transacciones
+add  cod_factura numeric(18);
+
+alter table Transacciones
+add foreign key (cod_factura) references Facturas(Num_factura);
 
 
 
@@ -646,12 +656,9 @@ on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and
 b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
 inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
 
-alter table Transacciones
-add  cod_factura numeric(18);
-
-alter table Transacciones
-add foreign key (cod_factura) references Facturas(Num_factura);
-
+insert into Facturas
+select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
+where Factura_Numero is not null;
 
 Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
 Insert into Estado_transaccion(Descripcion) values ('Facturado');
@@ -669,7 +676,7 @@ Declare @IDTrans1 int
 Declare @Factura numeric(18)
 open cursorTransferencias
 fetch next from cursorTransferencias into @Factura,@CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
-while @@FETCH_STATUS =0
+while @@FETCH_STATUS =0 
 begin
 Insert into Transacciones values (1,@Costo1,@Fecha1,@Factura)
 select @IDTrans1=(Select MAX(Id_transaccion) from Transacciones)
@@ -679,21 +686,11 @@ end;close cursorTransferencias Deallocate cursorTransferencias
 commit
 
 
-Create Table Facturas(
-	Num_factura numeric(18) primary key,
-	Fecha_factura Date not null,
-);
 
 
-insert into Facturas
-select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
-where Factura_Numero is not null;
+
 
 --update Transacciones
 --set cod_factura = (select m.Factura_Numero from gd_esquema.Maestra m join Transferencias t
 --on (t.Cod_transaccion=Id_transaccion and t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Transf_Fecha=Fecha and m.Factura_Numero is not null))
 
-
-select m.Factura_Numero from  gd_esquema.Maestra m join Transferencias t
-on (t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Factura_Numero is not null) join Transacciones traaa
-on (t.Cod_transaccion=traaa.Id_transaccion and m.Transf_Fecha=traaa.Fecha)
