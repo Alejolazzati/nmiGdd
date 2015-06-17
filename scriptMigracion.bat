@@ -1,0 +1,1 @@
+sqlcmd -S localhost\SQLSERVER2008 -U gd -P gd2015 -i  CreacionDeTablas.sql,triggers.sql,Ingreso1.sql,Ingreso2.sql  -a 32767 -o resultado.txt

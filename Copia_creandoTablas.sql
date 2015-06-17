@@ -165,10 +165,7 @@ create table Bancos(
 	Cod_pais int not null,
 	foreign key (Cod_pais) references Pais(Id_pais)
 );
-create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
-	Id_tarjeta_emisor int identity(1,1) primary key,
-	Descripcion varchar(40)
-);
+
 create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
 	Id_tarjeta int identity(1,1) primary key,
 	Num_tarjeta numeric(18) not null,
@@ -204,11 +201,6 @@ create table Cheque(
 	foreign key (Cod_banco) references Bancos(Id_banco),
 	foreign key (Cod_cliente) references Cliente(Id_cliente)
 );
-Create Table Facturas(
-	Num_factura numeric(18) primary key,
-	Fecha_factura Date not null,
-);
-
 
 create table Retiros (
 	Id_retiro numeric(18) primary key,
@@ -219,7 +211,10 @@ create table Retiros (
 );
 
 
-
+create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
+	Id_tarjeta_emisor int identity(1,1) primary key,
+	Descripcion varchar(40)
+);
 	
 Alter table Usuario
 add Estado Varchar(20) not null;	
@@ -233,257 +228,6 @@ Alter table Cheque
 add Cod_moneda int not null;
 Alter table Cheque 
 add foreign key (Cod_moneda) references Moneda(Id_moneda);
-alter table Transacciones
-add  cod_factura numeric(18);
-
-alter table Transacciones
-add foreign key (cod_factura) references Facturas(Num_factura);
-
-
-
-
-Create trigger actualizarSaldosPorTransferencia 
-	on Transferencias
-	for insert, update, delete
-	as
-	Begin transaction 
-	if ((select count (*) from inserted)>0)
-	begin
-	Declare cursor_deInsertados Cursor
-	for (select Cod_cuenta_origen,Cod_cuenta_destino,sum(Importe),Moneda.Conversion From inserted,Moneda
-	where inserted.Cod_moneda=Moneda.Id_moneda
-	group by Cod_cuenta_origen,Cod_cuenta_destino,Moneda.Conversion)
-	Declare @cuentaOrigen numeric(18)
-	Declare @cuentaDestino numeric(18)
-	Declare @sumaDeImporte int	
-	Declare @conversion int
-	Declare @ConversionFinal int
-	open cursor_deInsertados
-	fetch next from cursor_deInsertados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
-	fetch next from cursor_deInsertados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
-	end
-	close cursor_deInsertados
-	deallocate cursor_deInsertados
-	end
-	
-	if ((select count (*) from deleted)>0)
-	begin
-	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta_origen,Cod_cuenta_destino,sum(Importe),Moneda.Conversion From deleted,Moneda
-	group by Cod_cuenta_origen,Cod_cuenta_destino,Moneda.Conversion)
-		
-	
-	open cursor_deBorrados
-	fetch next from cursor_deBorrados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaOrigen)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
-	fetch next from cursor_deBorrados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
-	end
-	close cursor_deBorrados
-	deallocate cursor_deBorrados
-	end
-	
-	commit;
-	go
-	
-	create trigger ActualizarSaldosPorDeposito
-on Depositos 
-for insert, update, delete
-	as
-	Begin transaction 
-	if ((select count (*) from inserted)>0)
-	begin
-	Declare cursor_deInsertados Cursor
-	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From inserted,Moneda
-	where inserted.Cod_moneda=Moneda.Id_moneda
-	group by Cod_cuenta,Moneda.Conversion)
-	Declare @cuenta numeric(18)
-	Declare @sumaDeImporte int	
-	Declare @conversion int
-	Declare @ConversionFinal int
-	open cursor_deInsertados
-	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
-	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
-	end
-	close cursor_deInsertados
-	deallocate cursor_deInsertados
-	end
-	
-	if ((select count (*) from deleted)>0)
-	begin
-	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From deleted,Moneda
-	group by Cod_cuenta,Moneda.Conversion)
-		
-	
-	open cursor_deBorrados
-	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
-	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
-	end
-	close cursor_deBorrados
-	deallocate cursor_deBorrados
-	end
-	
-	commit;
-	go
-create trigger ActualizarSaldosPorRetiro
-on Retiros 
-for insert, update, delete
-	as
-	Begin transaction 
-	if ((select count (*) from inserted)>0)
-	begin
-	Declare cursor_deInsertados Cursor
-	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From Cheque,inserted,Moneda
-	where Cheque.Cod_moneda=Moneda.Id_moneda and Cheque.Id_cheque=inserted.Cod_cheque
-	group by Cod_cuenta,Moneda.Conversion)
-	Declare @cuenta numeric(18)
-	Declare @sumaDeImporte int	
-	Declare @conversion int
-	Declare @ConversionFinal int
-	open cursor_deInsertados
-	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
-	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
-	end
-	close cursor_deInsertados
-	deallocate cursor_deInsertados
-	end
-	
-	if ((select count (*) from deleted)>0)
-	begin
-	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From Cheque,deleted,Moneda
-	where Cheque.Cod_moneda=Moneda.Id_moneda and Cheque.Id_cheque=deleted.Cod_cheque
-	group by Cod_cuenta,Moneda.Conversion)
-	
-	open cursor_deBorrados
-	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
-	while(@@FETCH_STATUS=0)
-	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
-	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
-	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
-	end
-	close cursor_deBorrados
-	deallocate cursor_deBorrados
-	end
-	
-	commit;
-	go
-	Create trigger CuaandoSeIngresanLoginsIncorrectos
-on Intentos_login
-for  insert
-as
-Begin transaction
-Declare @num_login int
-Declare @Correcto bit 
-select Id_login,Es_Correcto into #tablaIncorrectos  from inserted
-where Es_Correcto=0
-
-if ((select count(*) from #tablaIncorrectos
-)>0)
-begin
-Declare cursorDeIncorrectos Cursor
-for select * from #tablaIncorrectos
-open cursorDeIncorrectos
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
-while(@@FETCH_STATUS=0)
-begin
-Insert into Intentos_fallidos (Cod_login)values (@num_login)
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
-end
-end
-close cursorDeIncorrectos
-deallocate cursorDeIncorrectos
-drop table #tablaIncorrectos
-commit;
-go
-
-Create trigger CuaandoSeIngresanLoginsCorrectos
-on Intentos_login
-for  insert
-as
-Begin transaction
-Declare @num_login int
-Declare @Correcto bit 
-Declare @cantidad int
-select Id_login,Es_Correcto into #tablaCorrectos  from inserted
-where Es_Correcto=1
-
-if ((select count(*) from #tablaCorrectos
-)>0)
-begin
-Declare cursorDeIncorrectos Cursor
-for select * from #tablaCorrectos
-open cursorDeIncorrectos
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
-while(@@FETCH_STATUS=0)
-begin
-Delete from Intentos_fallidos where Cod_login=@num_login
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
-end
-end
-drop table #tablaCorrectos
-close cursorDeIncorrectos
-deallocate cursorDeIncorrectos
-commit;
-go
-
-Create trigger CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
-on Intentos_fallidos
-for  insert
-as
-Begin transaction
-Declare @num_fallido int
-Declare @Cod_loguin int
-Declare cursorDeFallidos Cursor
-for select * from inserted
-open cursorDeIncorrectos
-fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
-while(@@FETCH_STATUS=0)
-begin
-if ((select count(*) from Intentos_fallidos,Usuario,Intentos_loguin
-where Intentos_fallidos.Cod_loguin=Intentos_loguin.Id_loguin and Intentos_loguin.Cod_usuario=Usuario.Id_usuario)>2)
-update Usuario
-set Estado="inhabilitado"
-where Id_usuario = (Select Cod_usuario from Intentos_loguin where Id_loguin=@Cod_loguin)
-fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
-
-end
-close cursorDeFallidos
-deallocate cursorDeFallidos
-commit;
-go
 
 -----------------------------------------
 alter table Pais alter column descripcion varchar(50);
@@ -563,41 +307,30 @@ select distinct Tarjeta_Emisor_Descripcion
 from gd_esquema.Maestra
 where Tarjeta_Emisor_Descripcion is not null;
 --clientes
+Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
+Insert into Estado_transaccion(Descripcion) values ('Facturado');
 begin transaction
-Declare cursorCliente Cursor for
-select distinct Cli_Nombre,Cli_Apellido,Cli_Tipo_Doc_Cod,Cli_Nro_Doc,
-Cli_Mail,Cli_Pais_Codigo,Cli_Dom_Calle,
-Cli_Dom_Nro,Cli_Dom_Piso,Cli_Dom_Depto,
-Cli_Fecha_Nac
-from gd_esquema.Maestra
-Declare @nombre varchar(30)
-Declare @apellido varchar(30)
-Declare @cod_tipoDoc int
-Declare @numDoc int
-Declare @piso int
-Declare @dpto char
-Declare @fnac date 
-Declare @mail varchar(30)
-Declare @cod_pais int
-Declare @calle varchar(30)
-Declare @numero int
-open cursorCliente
-fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
-@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
-while @@FETCH_STATUS=0
+Declare cursorTransferencias Cursor 
+for(
+select Cuenta_Numero,Cuenta_Dest_Numero,Trans_Importe,Item_Factura_Importe,Transf_Fecha from gd_esquema.Maestra
+where (Transf_Fecha is not null))
+Declare @CuentaOrigen int
+Declare @CuentaDestino int
+Declare @Importe float
+Declare @Costo float
+Declare @Fecha Date
+Declare @IDTrans int
+open cursorTransferencia
+fetch next from cursorTransferencia into @CuentaOrigen,@CuentaDestino,@Importe,@Costo,@Fecha
+while @@FETCH_STATUS =0
 begin
-Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
+Insert into Transacciones values (1,@Costo,@Fecha)
+select @IDTrans=(Select MAX(Id_transaccion) from Transacciones)
+Insert into Transferencias values(@Importe,@CuentaOrigen,@CuentaDestino,@IDTrans,1)
+fetch next from cursorTransferencia into @CuentaOrigen,@CuentaDestino,@Importe,@Costo,@Fecha
+end;
 
-Insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
-
-fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
-@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
-end
-close cursorCliente
-deallocate cursorCliente
 commit
-
-
 
 --Tabla de usuario_rol
 insert into Usuario_rol (Cod_usuario,Cod_rol) (select Id_usuario,1 from Usuario);
@@ -634,10 +367,10 @@ from gd_esquema.Maestra a inner join Cliente b
 on a.Cli_Nro_Doc=b.Numero_documento
 inner join Cuenta c 
 on b.Id_cliente=c.Codigo_cliente and c.Num_cuenta=a.Cuenta_Numero
-inner join Tarjetas_credito d on
+inner join Tarjetas_credito2 d on
 b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
 where Deposito_Codigo is not null
-
+and a.Deposito_Fecha between '19000101' and GETDATE()
 
 --Cheques
 
@@ -645,7 +378,7 @@ insert into Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
 select distinct Cheque_Numero, Cheque_Importe, Cheque_Fecha,1,b.Id_cliente,c.Id_banco
 from gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento
 inner join Bancos c on a.Banco_Nombre=c.Nombre_banco 
-
+where Cheque_Fecha between '19000101' and GETDATE()
 
 --Retiros
 insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque)
@@ -655,42 +388,31 @@ a.Cli_Nro_Doc=b.Numero_documento inner join Cheque c
 on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and 
 b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
 inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
+where Cheque_Fecha between '19000101' and getdate()
 
-insert into Facturas
-select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
-where Factura_Numero is not null;
+
 
 Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
 Insert into Estado_transaccion(Descripcion) values ('Facturado');
 begin transaction
 Declare cursorTransferencias Cursor 
 for(
-select Factura_Numero,Cuenta_Numero,Cuenta_Dest_Numero,Trans_Importe,Item_Factura_Importe,Transf_Fecha from gd_esquema.Maestra
-where (Transf_Fecha is not null) and Item_Factura_Importe is not null)
-Declare @CuentaOrigen1 numeric(18)
-Declare @CuentaDestino1 numeric(18)
+select Cuenta_Numero,Cuenta_Dest_Numero,Trans_Importe,Item_Factura_Importe,Transf_Fecha from gd_esquema.Maestra
+where (Transf_Fecha is not null))
+Declare @CuentaOrigen1 int
+Declare @CuentaDestino1 int
 Declare @Importe1 float
 Declare @Costo1 float
 Declare @Fecha1 Date
 Declare @IDTrans1 int
-Declare @Factura numeric(18)
-open cursorTransferencias
-fetch next from cursorTransferencias into @Factura,@CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
-while @@FETCH_STATUS =0 
+open cursorTransferencia
+fetch next from cursorTransferencia into @CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
+while @@FETCH_STATUS =0
 begin
-Insert into Transacciones values (1,@Costo1,@Fecha1,@Factura)
+Insert into Transacciones values (1,@Costo1,@Fecha1)
 select @IDTrans1=(Select MAX(Id_transaccion) from Transacciones)
 Insert into Transferencias values(@Importe1,@CuentaOrigen1,@CuentaDestino1,@IDTrans1,1)
-fetch next from cursorTransferencias into @Factura,@CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
-end;close cursorTransferencias Deallocate cursorTransferencias 
+fetch next from cursorTransferencia into @CuentaOrigen1,@CuentaDestino1,@Importe1,@Costo1,@Fecha1
+end;
+
 commit
-
-
-
-
-
-
---update Transacciones
---set cod_factura = (select m.Factura_Numero from gd_esquema.Maestra m join Transferencias t
---on (t.Cod_transaccion=Id_transaccion and t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Transf_Fecha=Fecha and m.Factura_Numero is not null))
-
