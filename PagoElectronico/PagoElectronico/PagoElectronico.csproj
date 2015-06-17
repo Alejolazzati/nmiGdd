@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A425235-25E0-4A09-B3C4-84F19D9A2184}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PagoElectronico</RootNamespace>
+    <AssemblyName>PagoElectronico</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ABM Cliente\altaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\altaCliente.Designer.cs">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\altaTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\altaTarjeta.Designer.cs">
+      <DependentUpon>altaTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\buscarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\buscarCliente.Designer.cs">
+      <DependentUpon>buscarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\administrarTarjetas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\administrarTarjetas.Designer.cs">
+      <DependentUpon>administrarTarjetas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarCliente.Designer.cs">
+      <DependentUpon>modificarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarTarjeta.Designer.cs">
+      <DependentUpon>modificarTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuentaPorAdm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuentaPorAdm.Designer.cs">
+      <DependentUpon>altaCuentaPorAdm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuentaPorCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuentaPorCliente.Designer.cs">
+      <DependentUpon>altaCuentaPorCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaAdm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaAdm.Designer.cs">
+      <DependentUpon>buscarCuentaAdm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaCliente.Designer.cs">
+      <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCategorias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCategorias.Designer.cs">
+      <DependentUpon>modificarCategorias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuentaAdm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuentaAdm.Designer.cs">
+      <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuentaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuentaCliente.Designer.cs">
+      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\altaUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\altaUsuario.Designer.cs">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\buscarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\buscarUsuario.Designer.cs">
+      <DependentUpon>buscarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\modificarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\modificarUsuario.Designer.cs">
+      <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\altaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\altaRol.Designer.cs">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\buscarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\buscarRol.Designer.cs">
+      <DependentUpon>buscarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\modificarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\modificarRol.Designer.cs">
+      <DependentUpon>modificarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administrador\seleccionABM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Administrador\seleccionABM.Designer.cs">
+      <DependentUpon>seleccionABM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cliente\seleccionABM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cliente\seleccionABM.Designer.cs">
+      <DependentUpon>seleccionABM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldos.Designer.cs">
+      <DependentUpon>consultaSaldos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldosCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldosCliente.Designer.cs">
+      <DependentUpon>consultaSaldosCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Depositos\altaDeposito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Depositos\altaDeposito.Designer.cs">
+      <DependentUpon>altaDeposito.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\altaFacturacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\altaFacturacion.Designer.cs">
+      <DependentUpon>altaFacturacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\pagarSuscripciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\pagarSuscripciones.Designer.cs">
+      <DependentUpon>pagarSuscripciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\altaConsulta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\altaConsulta.Designer.cs">
+      <DependentUpon>altaConsulta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\elegirRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\elegirRol.Designer.cs">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\login.Designer.cs">
+      <DependentUpon>login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ABM Cliente\altaCliente.resx">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\altaTarjeta.resx">
+      <DependentUpon>altaTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\buscarCliente.resx">
+      <DependentUpon>buscarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\administrarTarjetas.resx">
+      <DependentUpon>administrarTarjetas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\modificarCliente.resx">
+      <DependentUpon>modificarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\modificarTarjeta.resx">
+      <DependentUpon>modificarTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\altaCuentaPorAdm.resx">
+      <DependentUpon>altaCuentaPorAdm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\altaCuentaPorCliente.resx">
+      <DependentUpon>altaCuentaPorCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\buscarCuentaAdm.resx">
+      <DependentUpon>buscarCuentaAdm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\buscarCuentaCliente.resx">
+      <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\modificarCategorias.resx">
+      <DependentUpon>modificarCategorias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\modificarCuentaAdm.resx">
+      <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\modificarCuentaCliente.resx">
+      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\altaUsuario.resx">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\buscarUsuario.resx">
+      <DependentUpon>buscarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\modificarUsuario.resx">
+      <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\altaRol.resx">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\buscarRol.resx">
+      <DependentUpon>buscarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\modificarRol.resx">
+      <DependentUpon>modificarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administrador\seleccionABM.resx">
+      <DependentUpon>seleccionABM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cliente\seleccionABM.resx">
+      <DependentUpon>seleccionABM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Saldos\consultaSaldos.resx">
+      <DependentUpon>consultaSaldos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Saldos\consultaSaldosCliente.resx">
+      <DependentUpon>consultaSaldosCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Depositos\altaDeposito.resx">
+      <DependentUpon>altaDeposito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\altaFacturacion.resx">
+      <DependentUpon>altaFacturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\pagarSuscripciones.resx">
+      <DependentUpon>pagarSuscripciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\altaConsulta.resx">
+      <DependentUpon>altaConsulta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\elegirRol.resx">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\login.resx">
+      <DependentUpon>login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Retiros\altaRetiro.resx">
+      <DependentUpon>altaRetiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Retiros\validarIdentidad.resx">
+      <DependentUpon>validarIdentidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transferencias\altaTransferencia.resx">
+      <DependentUpon>altaTransferencia.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Retiros\altaRetiro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Retiros\altaRetiro.Designer.cs">
+      <DependentUpon>altaRetiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Retiros\validarIdentidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Retiros\validarIdentidad.Designer.cs">
+      <DependentUpon>validarIdentidad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Transferencias\altaTransferencia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transferencias\altaTransferencia.Designer.cs">
+      <DependentUpon>altaTransferencia.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
