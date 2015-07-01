@@ -174,6 +174,7 @@
     <Compile Include="Cliente\seleccionABM.Designer.cs">
       <DependentUpon>seleccionABM.cs</DependentUpon>
     </Compile>
+    <Compile Include="Coneccion.cs" />
     <Compile Include="Consulta Saldos\consultaSaldos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +204,11 @@
     </Compile>
     <Compile Include="Facturacion\pagarSuscripciones.Designer.cs">
       <DependentUpon>pagarSuscripciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GD1C2015DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Listados\altaConsulta.cs">
       <SubType>Form</SubType>
@@ -329,6 +335,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.config" />
+    <None Include="GD1C2015DataSet.xsc">
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GD1C2015DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GD1C2015DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GD1C2015DataSet.xss">
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -37,3 +37,4 @@ C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Des
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.pdb
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.exe
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.pdb
+C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.exe.config
