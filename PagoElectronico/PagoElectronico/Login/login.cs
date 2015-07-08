@@ -13,6 +13,9 @@ namespace PagoElectronico.Login
     {
         String nombre;
         String pass;
+        String nombreNuevo;
+        String passNueva;
+
         public login()
         {
             InitializeComponent();
@@ -38,7 +41,6 @@ namespace PagoElectronico.Login
             PagoElectronico.Login.elegirRol elegirRol = new PagoElectronico.Login.elegirRol();
             elegirRol.llamar(nombre,pass);
             
-        }
-       
+        }      
     }
 }

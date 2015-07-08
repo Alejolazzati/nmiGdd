@@ -20,5 +20,10 @@ namespace PagoElectronico.ABM_Rol
         {
 
         }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
