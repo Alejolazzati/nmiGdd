@@ -51,6 +51,25 @@ namespace PagoElectronico.Login
 
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedText=="Cliente"){
+                PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(1);
+                formFuncion.Show();
+                this.Close();
+            }
+            else {
+                PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(2);
+                formFuncion.Show();
+                this.Close();
+            }
+        }
+
 
     }
 }
