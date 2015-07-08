@@ -23,19 +23,27 @@ namespace PagoElectronico.Login
 
         public void llamar(string unNombre, string unaPass)
         {
+            
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from rolesUsuario("+unNombre+","+unaPass+")";
+            comando.CommandText = "Select * from rolesUsuario('" +unNombre + "','" + unaPass + "')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
-            if (!reader.Read()){
+            if (!reader.Read())
+            {
                 MessageBox.Show("No coinciden user y pass");
             }
-
-            while(reader.Read()){
+            else
+            {
                 comboBox1.Items.Add(reader.GetSqlString(0));
-               
-            }
 
+                while (reader.Read())
+                {
+                    comboBox1.Items.Add(reader.GetSqlString(0));
+
+                }
+                this.Show();   
+            }
+            reader.Dispose();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
