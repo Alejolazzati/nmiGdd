@@ -22,5 +22,22 @@ namespace PagoElectronico.Login
         {
 
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "Select * from funcionalidadesRol("+rolUsuario+")";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+                {
+                    comboBox1.Items.Add(reader.GetSqlString(0));
+
+                }
+                this.Show();
+            
+            reader.Dispose();
+        
+        }
     }
 }
