@@ -38,3 +38,43 @@ C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Des
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.exe
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.pdb
 C:\Users\John\Downloads\GDD\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.exe.config
+E:\nmiGdd\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.exe.config
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.exe
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.pdb
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\ResolveAssemblyReference.cache
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.altaCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.altaTarjeta.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.buscarCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.administrarTarjetas.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.modificarCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cliente.modificarTarjeta.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.altaCuentaPorAdm.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.altaCuentaPorCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.buscarCuentaAdm.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.buscarCuentaCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.modificarCategorias.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.modificarCuentaAdm.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Cuenta.modificarCuentaCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_de_Usuario.altaUsuario.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_de_Usuario.buscarUsuario.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_de_Usuario.modificarUsuario.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Rol.formRol.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Rol.Rol.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.ABM_Rol.modificarRol.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Administrador.seleccionABM.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Cliente.seleccionABM.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Consulta_Saldos.consultaSaldos.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Consulta_Saldos.consultaSaldosCliente.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Depositos.altaDeposito.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Facturacion.altaFacturacion.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Facturacion.pagarSuscripciones.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Listados.altaConsulta.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Login.elegirRol.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Login.login.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Properties.Resources.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Retiros.altaRetiro.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Retiros.validarIdentidad.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Transferencias.Form1.resources
+E:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.csproj.GenerateResource.Cache
+E:\nmiGdd\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.exe
+E:\nmiGdd\PagoElectronico\PagoElectronico\bin\Debug\PagoElectronico.pdb

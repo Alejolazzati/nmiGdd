@@ -15,5 +15,34 @@ namespace PagoElectronico.Login
         {
             InitializeComponent();
         }
+
+        private void elegirRol_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public void llamar(string unNombre, string unaPass)
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "Select * from rolesUsuario("+unNombre+","+unaPass+")";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+
+            if (!reader.Read()){
+                MessageBox.Show("No coinciden user y pass");
+            }
+
+            while(reader.Read()){
+                comboBox1.Items.Add(reader.GetSqlString(0));
+               
+            }
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
