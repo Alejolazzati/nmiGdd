@@ -146,6 +146,7 @@
             this.button3.TabIndex = 11;
             this.button3.Text = "Seleccionar usuario";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -155,6 +156,7 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Buscar";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox3
             // 
@@ -162,6 +164,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(565, 20);
             this.textBox3.TabIndex = 8;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // listBox1
             // 
@@ -170,6 +173,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button9
             // 
