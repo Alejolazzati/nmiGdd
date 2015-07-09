@@ -48,6 +48,16 @@ namespace PagoElectronico.Listados
 
         private void button4_Click(object sender, EventArgs e)
         {
+            trimestre = comboBox1.SelectedIndex + 1;
+            comboBox2.Items.Add("Clientes con cuentas inhabilitadas por morosos");
+            comboBox2.Items.Add("Clientes con mayor cantidad de comisiones facturadas en sus cuentas");
+            comboBox2.Items.Add("Clientes con mayor cantidad de transacciones realizadas entre cuentras propias");
+            comboBox2.Items.Add("Paises con mayor cantidad de movimientos");
+            comboBox2.Items.Add("Total facturado para los distintos tipos de cuenta");
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }
