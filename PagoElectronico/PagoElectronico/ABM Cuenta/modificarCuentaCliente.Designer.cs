@@ -36,16 +36,16 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(97, 52);
+            this.comboBox2.Location = new System.Drawing.Point(60, 52);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(181, 21);
             this.comboBox2.TabIndex = 51;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(161, 93);
+            this.button2.Location = new System.Drawing.Point(93, 90);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(117, 39);
+            this.button2.Size = new System.Drawing.Size(111, 39);
             this.button2.TabIndex = 50;
             this.button2.Text = "Guardar cambios";
             this.button2.UseVisualStyleBackColor = true;
@@ -53,11 +53,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 52);
+            this.label5.Location = new System.Drawing.Point(90, 36);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(79, 13);
+            this.label5.Size = new System.Drawing.Size(114, 13);
             this.label5.TabIndex = 48;
-            this.label5.Text = "Tipo de cuenta";
+            this.label5.Text = "Nuevo Tipo de cuenta";
             // 
             // modificarCuentaCliente
             // 
@@ -69,6 +69,7 @@
             this.Controls.Add(this.label5);
             this.Name = "modificarCuentaCliente";
             this.Text = "modificarCuentaCliente";
+            this.Load += new System.EventHandler(this.modificarCuentaCliente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -54,5 +54,16 @@ namespace PagoElectronico.ABM_Cuenta
             funci.Show();
             this.Close();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            String cuenta = listBox2.SelectedItem.ToString();
+            new PagoElectronico.ABM_Cuenta.modificarCuentaCliente(cuenta).Show();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.ABM_Cuenta.altaCuentaPorCliente().Show();
+        }
     }
 }
