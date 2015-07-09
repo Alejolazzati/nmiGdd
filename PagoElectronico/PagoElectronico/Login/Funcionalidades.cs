@@ -105,8 +105,8 @@ namespace PagoElectronico.Login
                     new PagoElectronico.Listados.altaConsulta().Show();
                     break;
 
-                case "sara":
-
+                case "Transferencias":
+                    new SeleccionarCuenta().Show();
                     break;
 
                 case "asara":

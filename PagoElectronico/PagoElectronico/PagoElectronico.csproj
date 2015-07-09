@@ -234,6 +234,18 @@
     <Compile Include="Login\login.Designer.cs">
       <DependentUpon>login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\SeleccionarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionarCliente.Designer.cs">
+      <DependentUpon>SeleccionarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\SeleccionarCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionarCuenta.Designer.cs">
+      <DependentUpon>SeleccionarCuenta.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ABM Cliente\altaCliente.resx">
@@ -325,6 +337,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login\login.resx">
       <DependentUpon>login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionarCliente.resx">
+      <DependentUpon>SeleccionarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionarCuenta.resx">
+      <DependentUpon>SeleccionarCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

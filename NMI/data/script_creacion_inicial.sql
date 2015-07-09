@@ -96,7 +96,9 @@ go
 create table Categoria(
 	Id_categoria int identity(1,1) primary key,
 	Descripcion varchar(30) not null,
-	Costo float not null
+	Costo float not null,
+	precioSuscripcion float,
+	Duracion int
 )
 go
 create table Moneda(
@@ -114,6 +116,7 @@ create table Cuenta(
 	Num_cuenta numeric(18) primary key, -- modificacion del identity NO TIENE Q SER IDENTITY
 	Fecha_apertura date not null default getdate(),
 	Fecha_cierre date default null,
+	Fecha_vencimiento date,
 	Codigo_pais int not null,
 	Codigo_moneda int not null,
 	Codigo_categoria int not null,
@@ -162,7 +165,12 @@ create table Transferencias(
 	Cod_transaccion int not null,
 	foreign key (Cod_cuenta_origen) references Cuenta(Num_cuenta),
 	foreign key (Cod_cuenta_destino) references Cuenta(Num_cuenta),
-	foreign key (Cod_transaccion) references Transacciones(Id_transaccion)
+	foreign key (Cod_transaccion) references Transacciones(Id_transaccion),
+	check (Importe>0),
+	check(Importe>=(Select Saldo from Cuenta where Num_cuenta=Cod_cuenta_origen)),
+	check ((Select Codigo_estado from Cuenta where Num_cuenta=Cod_cuenta_destino ) not in (3,4))
+
+
 )
 go
 create table Bancos(
@@ -201,7 +209,8 @@ create table Depositos(
 	check(Importe>1),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_moneda) references Moneda(Id_moneda),
-	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta)
+	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta),
+	check(Importe > (select Saldo from Cuenta where Num_cuenta=Cod_cuenta))
 )
 go
 create table Cheque(
@@ -574,10 +583,10 @@ from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%N
 go
 
 --Categorias de cuentas
-insert into Categoria (Descripcion,Costo) values ('oro',30)
-insert into Categoria (Descripcion,Costo) values ('plata',20)
-insert into Categoria (Descripcion,Costo) values ('bronce',10)
-insert into Categoria (Descripcion,Costo) values ('gratuita',0)
+insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('oro',30,0.03,365)
+insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('plata',20,0.05,90)
+insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('bronce',10,0.07,30)
+insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('gratuita',0,0.1,10)
 
 go
 --Tabla de Estados_Rol
@@ -1175,3 +1184,23 @@ Begin
 	order by Fecha
 	return 
 	end
+	go
+	/*
+	create function transferenciasAFacturar(@cliente int)
+	returns @tabla table(
+	
+	
+	)*/
+	
+	create procedure transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float,@fecha date
+	as
+	begin
+	begin transaction set transaction isolation level serializable
+	insert into Transacciones(Cod_estado,Costo,Fecha) values(1,(select @importe*Costo from Cuenta,Categoria
+		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen),@fecha) 
+	insert into Transferencias select
+	@importe,@cta_origen,@cta_destino,MAX(Id_transaccion),1 from Transacciones
+	commit 	
+	end
+	go
+	

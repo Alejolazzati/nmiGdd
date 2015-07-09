@@ -9,11 +9,30 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.Transferencias
 {
-    public partial class Form1 : Form
+    public partial class nuevaTransferencia
+        : Form
     {
-        public Form1()
+        String cuenta;
+        public nuevaTransferencia(String cuent)
         {
+            cuenta = cuent;
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+         
+            comando.CommandText = "execute dbo.transferir " + cuenta +","+textBox3.Text+","+textBox2.Text+",'"+Program.fecha+"'";
+            comando.ExecuteNonQuery();
+            this.Close();
+        }
+
+       
     }
 }

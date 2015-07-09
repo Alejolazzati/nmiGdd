@@ -41,13 +41,13 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button9 = new System.Windows.Forms.Button();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button9);
+            this.groupBox2.Controls.Add(this.listBox3);
             this.groupBox2.Controls.Add(this.button8);
             this.groupBox2.Controls.Add(this.button7);
             this.groupBox2.Controls.Add(this.button6);
@@ -62,14 +62,14 @@
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Location = new System.Drawing.Point(7, 14);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(617, 485);
+            this.groupBox2.Size = new System.Drawing.Size(583, 485);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Buscar cuenta";
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(211, 439);
+            this.button8.Location = new System.Drawing.Point(171, 439);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(94, 40);
             this.button8.TabIndex = 20;
@@ -78,7 +78,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(311, 439);
+            this.button7.Location = new System.Drawing.Point(271, 439);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(99, 40);
             this.button7.TabIndex = 19;
@@ -87,7 +87,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(5, 439);
+            this.button6.Location = new System.Drawing.Point(9, 439);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(85, 40);
             this.button6.TabIndex = 18;
@@ -96,7 +96,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(416, 439);
+            this.button2.Location = new System.Drawing.Point(376, 439);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 40);
             this.button2.TabIndex = 17;
@@ -105,7 +105,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(516, 439);
+            this.button5.Location = new System.Drawing.Point(476, 439);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(95, 40);
             this.button5.TabIndex = 16;
@@ -146,7 +146,6 @@
             this.button3.TabIndex = 11;
             this.button3.Text = "Seleccionar usuario";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -156,7 +155,6 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Buscar";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox3
             // 
@@ -164,7 +162,6 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(565, 20);
             this.textBox3.TabIndex = 8;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // listBox1
             // 
@@ -173,23 +170,20 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // button9
+            // listBox3
             // 
-            this.button9.Location = new System.Drawing.Point(110, 439);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(95, 40);
-            this.button9.TabIndex = 21;
-            this.button9.Text = "Nueva cuenta";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(209, 75);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(8, 4);
+            this.listBox3.TabIndex = 21;
             // 
             // buscarCuentaAdm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(636, 512);
+            this.ClientSize = new System.Drawing.Size(596, 512);
             this.Controls.Add(this.groupBox2);
             this.Name = "buscarCuentaAdm";
             this.Text = "buscarCuenta";
@@ -214,6 +208,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.ListBox listBox3;
     }
 }

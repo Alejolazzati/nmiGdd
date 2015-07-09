@@ -38,3 +38,5 @@ Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Transferen
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.csproj.GenerateResource.Cache
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.exe
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.pdb
+Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.Funcionalidades.resources
+Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.SeleccionarCliente.resources

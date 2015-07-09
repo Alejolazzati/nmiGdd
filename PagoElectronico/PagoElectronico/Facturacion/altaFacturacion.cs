@@ -8,15 +8,21 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace PagoElectronico.Facturacion
-{
+{  
     public partial class altaFacturacion : Form
     {
-        public altaFacturacion()
-        {
+        int Rol;
+        public altaFacturacion(int Roli)
+        {   Rol=Roli;
             InitializeComponent();
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void altaFacturacion_Load(object sender, EventArgs e)
         {
 
         }

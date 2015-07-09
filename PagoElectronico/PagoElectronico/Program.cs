@@ -8,7 +8,7 @@ namespace PagoElectronico
 {
     static class Program
     {
-
+        public static String fecha;
         public static Int32 cliente;
         /// <summary>
         /// The main entry point for the application.
@@ -16,6 +16,7 @@ namespace PagoElectronico
         [STAThread]
         static void Main()
         {
+            fecha = "20151025";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
