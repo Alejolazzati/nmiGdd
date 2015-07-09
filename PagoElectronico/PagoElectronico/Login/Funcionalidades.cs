@@ -72,7 +72,7 @@ namespace PagoElectronico.Login
                     break;
 
                 case "ABM usuario":
-
+                    new PagoElectronico.ABM_de_Usuario.buscarUsuario().Show();
                     break;
 
                 case "ABM cliente":
@@ -100,7 +100,7 @@ namespace PagoElectronico.Login
                     break;
 
                 case "Listado estadistico":
-
+                    new PagoElectronico.Listados.altaConsulta().Show();
                     break;
 
                 case "sara":
