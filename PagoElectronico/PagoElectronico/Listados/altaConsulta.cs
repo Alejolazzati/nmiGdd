@@ -60,5 +60,33 @@ namespace PagoElectronico.Listados
         {
 
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {  
+            int opcion=comboBox2.SelectedIndex;
+            switch (opcion){
+                case 0:
+                    break;
+
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Listados.altaConsulta().Show();
+            this.Close();
+            this.Hide();
+        }
     }
 }
