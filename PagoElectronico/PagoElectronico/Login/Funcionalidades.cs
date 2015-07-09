@@ -91,7 +91,9 @@ namespace PagoElectronico.Login
                     break;
 
                 case "Facturacion":
-
+                    if (roli == 2)
+                        new SeleccionarCliente().Show();
+                    new PagoElectronico.Facturacion.altaFacturacion(roli).Show();
                     break;
 
                 case "Consultar saldo":
