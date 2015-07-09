@@ -48,6 +48,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -188,7 +189,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(459, 349);
+            this.button3.Location = new System.Drawing.Point(396, 349);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(113, 34);
             this.button3.TabIndex = 15;
@@ -197,7 +198,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(341, 349);
+            this.button4.Location = new System.Drawing.Point(287, 349);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(103, 34);
             this.button4.TabIndex = 16;
@@ -206,7 +207,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(228, 349);
+            this.button5.Location = new System.Drawing.Point(192, 349);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(89, 34);
             this.button5.TabIndex = 17;
@@ -215,7 +216,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(119, 349);
+            this.button6.Location = new System.Drawing.Point(98, 349);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(87, 34);
             this.button6.TabIndex = 18;
@@ -224,18 +225,28 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(21, 349);
+            this.button7.Location = new System.Drawing.Point(12, 349);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(80, 34);
             this.button7.TabIndex = 19;
             this.button7.Text = "Realizar transferencia";
             this.button7.UseVisualStyleBackColor = true;
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(515, 349);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(113, 34);
+            this.button8.TabIndex = 20;
+            this.button8.Text = "Nuevo cliente";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
             // buscarCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 431);
+            this.ClientSize = new System.Drawing.Size(641, 431);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -275,6 +286,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
 
 
     }

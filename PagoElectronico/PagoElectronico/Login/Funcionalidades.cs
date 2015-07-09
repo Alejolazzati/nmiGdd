@@ -76,7 +76,7 @@ namespace PagoElectronico.Login
                     break;
 
                 case "ABM cliente":
-
+                    new PagoElectronico.ABM_Cliente.buscarCliente().Show();
                     break;
 
                 case "ABM cuenta":
@@ -103,26 +103,7 @@ namespace PagoElectronico.Login
                     new PagoElectronico.Listados.altaConsulta().Show();
                     break;
 
-                case "sara":
-
-                    break;
-
-                case "asara":
-
-                    break;
-
-                case "adasd":
-
-                    break;
-
-                case "adads":
-
-                    break;
-
-                case "becGay":
-
-                    break;
-
+                
                 default:
                     MessageBox.Show("Opcion invalida");
                     Program.end();
