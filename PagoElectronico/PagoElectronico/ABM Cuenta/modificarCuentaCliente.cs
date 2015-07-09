@@ -11,9 +11,16 @@ namespace PagoElectronico.ABM_Cuenta
 {
     public partial class modificarCuentaCliente : Form
     {
-        public modificarCuentaCliente()
+        String cuenta;
+        public modificarCuentaCliente(String unaCuenta)
         {
+            cuenta = unaCuenta; //Lo necesitas para saber cual vas a actualizar
             InitializeComponent();
+        }
+
+        private void modificarCuentaCliente_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

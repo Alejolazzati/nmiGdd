@@ -15,5 +15,10 @@ namespace PagoElectronico.ABM_Cuenta
         {
             InitializeComponent();
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.ABM_Cuenta.altaCuentaPorAdm().Show();
+        }
     }
 }

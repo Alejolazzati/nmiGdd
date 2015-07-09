@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -39,13 +41,13 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button9);
             this.groupBox2.Controls.Add(this.button8);
             this.groupBox2.Controls.Add(this.button7);
             this.groupBox2.Controls.Add(this.button6);
@@ -60,14 +62,32 @@
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Location = new System.Drawing.Point(7, 14);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(583, 485);
+            this.groupBox2.Size = new System.Drawing.Size(617, 485);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Buscar cuenta";
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(211, 439);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(94, 40);
+            this.button8.TabIndex = 20;
+            this.button8.Text = "Realizar facturación";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(311, 439);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(99, 40);
+            this.button7.TabIndex = 19;
+            this.button7.Text = "Consultar saldo ";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(9, 439);
+            this.button6.Location = new System.Drawing.Point(5, 439);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(85, 40);
             this.button6.TabIndex = 18;
@@ -76,7 +96,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(376, 439);
+            this.button2.Location = new System.Drawing.Point(416, 439);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 40);
             this.button2.TabIndex = 17;
@@ -85,7 +105,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(476, 439);
+            this.button5.Location = new System.Drawing.Point(516, 439);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(95, 40);
             this.button5.TabIndex = 16;
@@ -151,31 +171,23 @@
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
             // 
-            // button7
+            // button9
             // 
-            this.button7.Location = new System.Drawing.Point(271, 439);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(99, 40);
-            this.button7.TabIndex = 19;
-            this.button7.Text = "Consultar saldo ";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button9.Location = new System.Drawing.Point(110, 439);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(95, 40);
+            this.button9.TabIndex = 21;
+            this.button9.Text = "Nueva cuenta";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(171, 439);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(94, 40);
-            this.button8.TabIndex = 20;
-            this.button8.Text = "Realizar facturación";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // buscarCuenta
+            // buscarCuentaAdm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 512);
+            this.ClientSize = new System.Drawing.Size(636, 512);
             this.Controls.Add(this.groupBox2);
-            this.Name = "buscarCuenta";
+            this.Name = "buscarCuentaAdm";
             this.Text = "buscarCuenta";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -198,5 +210,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
     }
 }
