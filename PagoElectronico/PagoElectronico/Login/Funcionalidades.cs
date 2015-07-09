@@ -76,7 +76,7 @@ namespace PagoElectronico.Login
                     break;
 
                 case "ABM cliente":
-
+                    new PagoElectronico.ABM_Cliente.buscarCliente().Show();
                     break;
 
                 case "ABM cuenta":
@@ -105,8 +105,9 @@ namespace PagoElectronico.Login
                     new PagoElectronico.Listados.altaConsulta().Show();
                     break;
 
+
                 case "Transferencias":
-                    new SeleccionarCuenta().Show();
+                    new SeleccionarCuenta();
                     break;
 
                 case "asara":

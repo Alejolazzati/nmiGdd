@@ -21,17 +21,18 @@ namespace PagoElectronico.Login
             while (reader.Read())
             {
                 comboBox1.Items.Add(reader.GetSqlValue(0));
-                this.Show();
-                this.Close();
+             
 
 
             }
+            this.Show();
             reader.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             new PagoElectronico.Transferencias.nuevaTransferencia(comboBox1.SelectedItem.ToString()).Show();
+            this.Close();
         }
     }
 }
