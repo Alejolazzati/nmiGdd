@@ -8,6 +8,8 @@ namespace PagoElectronico
 {
     static class Program
     {
+
+        public static Int32 cliente;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -23,6 +25,10 @@ namespace PagoElectronico
             Application.Run();
             
 
+        }
+
+        public static void end(){
+            Application.Exit();
         }
     }
 }

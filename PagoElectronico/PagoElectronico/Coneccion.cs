@@ -27,6 +27,13 @@ namespace PagoElectronico
         comand.Connection = con;
             return comand;
         }
+       /* public static SqlDataAdapter getAdapter()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter(con);
+        
+        }*/
+
+
 
     }
 }

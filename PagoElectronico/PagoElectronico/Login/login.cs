@@ -11,10 +11,8 @@ namespace PagoElectronico.Login
 {
     public partial class login : Form
     {
-        String nombre;
+        public static String nombre;
         String pass;
-        String nombreNuevo;
-        String passNueva;
 
         public login()
         {
@@ -40,6 +38,8 @@ namespace PagoElectronico.Login
         {
             PagoElectronico.Login.elegirRol elegirRol = new PagoElectronico.Login.elegirRol();
             elegirRol.llamar(nombre,pass);
+            this.Close();
+            this.Hide();
             
         }      
     }

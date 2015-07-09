@@ -30,13 +30,16 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.listBox2 = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.listBox3 = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -55,14 +58,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 1;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(30, 85);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(251, 69);
-            this.listBox1.TabIndex = 2;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label2
             // 
@@ -82,14 +78,6 @@
             this.label6.TabIndex = 8;
             this.label6.Text = "Últimos 5 retiros";
             // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(30, 190);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(251, 69);
-            this.listBox2.TabIndex = 7;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -99,39 +87,61 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Últimas 10 transferencias";
             // 
-            // listBox3
-            // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.Location = new System.Drawing.Point(30, 294);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(251, 69);
-            this.listBox3.TabIndex = 9;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(194, 395);
+            this.button1.Location = new System.Drawing.Point(255, 401);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 25);
             this.button1.TabIndex = 11;
             this.button1.Text = "Volver atras";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(30, 80);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(533, 86);
+            this.dataGridView1.TabIndex = 12;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(30, 183);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(533, 86);
+            this.dataGridView2.TabIndex = 13;
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(30, 287);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.Size = new System.Drawing.Size(533, 86);
+            this.dataGridView3.TabIndex = 14;
             // 
             // consultaSaldos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(308, 438);
+            this.ClientSize = new System.Drawing.Size(607, 438);
+            this.Controls.Add(this.dataGridView3);
+            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.listBox3);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.listBox2);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Name = "consultaSaldos";
-            this.Text = "Form1";
+            this.Text = "consultaSaldos";
+            this.Load += new System.EventHandler(this.consultaSaldos_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,12 +151,12 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView dataGridView3;
     }
 }

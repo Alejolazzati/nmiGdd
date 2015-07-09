@@ -827,7 +827,7 @@ cuenta numeric(18))
 as
 begin
 insert into @tabla 
-select  Cuenta.Num_cuenta from Cuenta,Cliente
+select  Cuenta.Num_cuenta from Cuenta
 where Cuenta.Codigo_cliente=@cliente
 return
 end
@@ -993,7 +993,7 @@ Begin
 end
 go 
 
-create procedure modificarProcedure (@cuenta numeric (18), @nuevaCategoria int, @duracion int)
+create procedure modificarCuenta (@cuenta numeric (18), @nuevaCategoria int, @duracion int)
 as
 begin
 	begin transaction
@@ -1035,9 +1035,9 @@ go
 insert into Funcionalidad values(
 'ABM Rol');
 
-insert into Funcionalidad values(
+/*insert into Funcionalidad values(
 'Login');
-
+*/
 insert into Funcionalidad values(
 'ABM usuario');
 
@@ -1070,7 +1070,7 @@ insert into Funcionalidad values(
 
 go
 
-insert into Rol_funcionalidad values(1,2);
+--insert into Rol_funcionalidad values(1,2);
 
 insert into Rol_funcionalidad values(1,5);
 
@@ -1088,7 +1088,7 @@ insert into Rol_funcionalidad values(1,12);
 
 
 insert into Rol_funcionalidad values(2,1);
-insert into Rol_funcionalidad values(2,2);
+--insert into Rol_funcionalidad values(2,2);
 insert into Rol_funcionalidad values(2,3);
 insert into Rol_funcionalidad values(2,4);
 insert into Rol_funcionalidad values(2,5);
@@ -1111,3 +1111,67 @@ select Descripcion from Rol_funcionalidad,Funcionalidad
 return end
 go
 
+
+create function ultimos5Depositos(@cuenta numeric(18))
+returns @tabla table(Importe float,
+	Moneda varchar(30),
+	Fecha date,
+	NumTarjeta Numeric(18)
+)
+
+as
+Begin
+	insert into @tabla
+	select top 5 d.Importe, m.Descripcion , d.Fecha, t.Num_tarjeta
+	from Depositos d join Tarjetas_credito t on (d.Cod_TC=t.Id_tarjeta)
+						join Moneda m on (d.Cod_moneda=m.Id_moneda)
+	where d.Cod_cuenta=@cuenta
+	order by d.fecha
+	return
+end
+	
+	
+go
+
+create function ultimos5Retiros(@cuenta numeric(18))
+returns @tabla table(
+	Num_cheque numeric(18),
+	Banco varchar(30),
+	Importe float,
+	Moneda varchar(30),
+	Fecha date
+	
+)
+
+as
+Begin
+	insert into @tabla
+	select top 5 Num_cheque,Bancos.Nombre_banco,Importe,Descripcion,Fecha from Retiros,Cheque,Bancos,Moneda
+	where
+	Cod_banco=Id_banco and
+	Cod_cheque=Id_cheque
+	and
+	Cod_moneda=Id_moneda
+	order by Fecha
+	
+	return
+	end
+	go
+	
+	create function ultimas10Transf(@cuenta numeric(18))
+	returns @tablita table(
+	Cuenta_destino	numeric(18),
+	Importe float,
+	moneda varchar(30),
+	fecha date
+	)
+	as
+	begin
+	insert into @tablita 
+	select top 10 Cod_cuenta_destino,Importe,Descripcion,Fecha from Transferencias,Moneda,Transacciones
+	where Id_transaccion=Cod_transaccion
+	and Cod_moneda=Id_moneda
+	and Cod_cuenta_origen=@cuenta
+	order by Fecha
+	return 
+	end

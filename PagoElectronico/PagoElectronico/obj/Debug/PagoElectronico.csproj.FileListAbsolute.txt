@@ -118,3 +118,4 @@ Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Retiros.alta
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Retiros.validarIdentidad.resources
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Transferencias.Form1.resources
 Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.csproj.GenerateResource.Cache
+Y:\nmiGdd\PagoElectronico\PagoElectronico\obj\Debug\PagoElectronico.Login.Funcionalidades.resources

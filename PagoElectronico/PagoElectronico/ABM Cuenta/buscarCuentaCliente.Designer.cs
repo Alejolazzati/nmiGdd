@@ -52,15 +52,16 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(12, 78);
+            this.listBox2.Location = new System.Drawing.Point(12, 39);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(565, 95);
+            this.listBox2.Size = new System.Drawing.Size(565, 134);
             this.listBox2.TabIndex = 21;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 49);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 24;
@@ -127,6 +128,7 @@
             this.button5.TabIndex = 46;
             this.button5.Text = "Volver atras";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // buscarCuentaCliente
             // 
@@ -145,6 +147,7 @@
             this.Controls.Add(this.listBox2);
             this.Name = "buscarCuentaCliente";
             this.Text = "buscarCuentaCliente";
+            this.Load += new System.EventHandler(this.buscarCuentaCliente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

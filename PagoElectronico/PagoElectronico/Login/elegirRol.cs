@@ -30,7 +30,9 @@ namespace PagoElectronico.Login
 
             if (!reader.Read())
             {
-                MessageBox.Show("No coinciden user y pass");
+                MessageBox.Show("El usuario o la contraseña es incorrecta");
+                PagoElectronico.Login.login nuevoLogin = new PagoElectronico.Login.login();
+                nuevoLogin.Show();
             }
             else
             {
@@ -58,18 +60,11 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedText=="Cliente"){
-                PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(1);
+            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(comboBox1.SelectedIndex+1);
                 formFuncion.Show();
                 this.Close();
+                this.Hide();
             }
-            else {
-                PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(2);
-                formFuncion.Show();
-                this.Close();
-            }
-        }
-
-
-    }
+       
+      }
 }
