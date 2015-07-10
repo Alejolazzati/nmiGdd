@@ -1,51 +1,19 @@
 
 (1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
-
-(1 filas afectadas)
+Mensaje 1046, Nivel 15, Estado 1, Servidor GD\SQLSERVER2008, Línea 17
+No se permiten subconsultas en este contexto. Sólo se admiten expresiones escalares.
+Mensaje 156, Nivel 15, Estado 1, Servidor GD\SQLSERVER2008, Línea 18
+Sintaxis incorrecta cerca de la palabra clave 'not'.
+Mensaje 1046, Nivel 15, Estado 1, Servidor GD\SQLSERVER2008, Línea 13
+No se permiten subconsultas en este contexto. Sólo se admiten expresiones escalares.
+Mensaje 4902, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Línea 1
+No se encuentra el objeto "Transferencias" porque no existe o no tiene permisos.
+Mensaje 4902, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Línea 1
+No se encuentra el objeto "Transferencias" porque no existe o no tiene permisos.
+Mensaje 8197, Nivel 16, Estado 4, Servidor GD\SQLSERVER2008, Procedimiento actualizarSaldosPorTransferencia, Línea 2
+El objeto 'Transferencias' no existe o no es válido para esta operación.
+Mensaje 8197, Nivel 16, Estado 4, Servidor GD\SQLSERVER2008, Procedimiento ActualizarSaldosPorDeposito, Línea 2
+El objeto 'Depositos' no existe o no es válido para esta operación.
 
 (1 filas afectadas)
 
@@ -72,13 +40,50 @@
 (1 filas afectadas)
 
 (1 filas afectadas)
+Mensaje 208, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Línea 2
+El nombre de objeto 'Depositos' no es válido.
 
 (1 filas afectadas)
 
 (1 filas afectadas)
 
 (1 filas afectadas)
+Mensaje 208, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento miTrigger, Línea 15
+El nombre de objeto 'Transferencias' no es válido.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento cuentasPorUsuario, Línea 19
+Ya hay un objeto con el nombre 'cuentasPorUsuario' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento cuentasPorCliente, Línea 10
+Ya hay un objeto con el nombre 'cuentasPorCliente' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento saldoCuenta, Línea 12
+Ya hay un objeto con el nombre 'saldoCuenta' en la base de datos.
+Mensaje 8197, Nivel 16, Estado 4, Servidor GD\SQLSERVER2008, Procedimiento noPermitirTransferenciasEnInhabilitadas, Línea 2
+El objeto 'transferencias' no existe o no es válido para esta operación.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento facturar, Línea 20
+Ya hay un objeto con el nombre 'facturar' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento usernamesParecidos, Línea 10
+Ya hay un objeto con el nombre 'usernamesParecidos' en la base de datos.
+Mensaje 213, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento categoriasDisponibles, Línea 10
+El nombre de columna o los valores especificados no corresponden a la definición de la tabla.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento getUltimaCuenta, Línea 10
+Ya hay un objeto con el nombre 'getUltimaCuenta' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento rolesUsuario, Línea 12
+Ya hay un objeto con el nombre 'rolesUsuario' en la base de datos.
 
 (1 filas afectadas)
+
+(1 filas afectadas)
+Mensaje 547, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Línea 16
+Instrucción INSERT en conflicto con la restricción FOREIGN KEY "FK__Rol_funci__Cod_f__5190CC5F". El conflicto ha aparecido en la base de datos "GD1C2015", tabla "dbo.Funcionalidad", column 'Id_funcionalidad'.
+Se terminó la instrucción.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento funcionalidadesRol, Línea 12
+Ya hay un objeto con el nombre 'funcionalidadesRol' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento ultimos5Depositos, Línea 18
+Ya hay un objeto con el nombre 'ultimos5Depositos' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento ultimos5Retiros, Línea 23
+Ya hay un objeto con el nombre 'ultimos5Retiros' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento ultimas10Transf, Línea 17
+Ya hay un objeto con el nombre 'ultimas10Transf' en la base de datos.
+Mensaje 2714, Nivel 16, Estado 3, Servidor GD\SQLSERVER2008, Procedimiento transferir, Línea 16
+Ya hay un objeto con el nombre 'transferir' en la base de datos.
 
 (1 filas afectadas)

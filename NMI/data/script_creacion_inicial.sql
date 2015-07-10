@@ -1,3 +1,10 @@
+create function fechaSistema()
+returns datetime 
+as
+begin
+	return getdate()
+end
+go
 
 
 Create table ultimaCuenta (
@@ -10,8 +17,8 @@ create table Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) not null,
 Contraseña varchar(30) not null,
-Fecha_creacion date default GETDATE(),
-Ultima_modificacion date not null default GETDATE(), 
+Fecha_creacion date default dbo.fechaSistema(),
+Ultima_modificacion date not null default dbo.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
 Respuesta varchar(50) not null
 )
@@ -114,7 +121,7 @@ create table Estado_cuenta(
 go
 create table Cuenta(
 	Num_cuenta numeric(18) primary key, -- modificacion del identity NO TIENE Q SER IDENTITY
-	Fecha_apertura date not null default getdate(),
+	Fecha_apertura date not null default dbo.fechaSistema(),
 	Fecha_cierre date default null,
 	Fecha_vencimiento date,
 	Codigo_pais int not null,
@@ -138,7 +145,7 @@ Create table Transacciones(
 	Id_transaccion int identity(1,1) primary key,
 	Cod_estado int not null,
 	Costo float not null,
-	Fecha date not null default getdate(),
+	Fecha date not null default dbo.fechaSistema(),
 	foreign key (Cod_estado) references Estado_transaccion(Id_estado)
 )
 go
@@ -155,8 +162,15 @@ create table Modificacion_cuenta(
 	foreign key (Cod_tipo) references Tipo_modificacion(Id_tipo),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_transaccion) references Transacciones(Id_transaccion)
-)
+);
+
 go
+/*
+create table Suscripcion(
+Cod_cuenta numeric(18),
+
+)*/
+
 create table Transferencias(
 	Id_transferencia int identity(1,1) primary key,
 	Importe float not null,
@@ -166,13 +180,14 @@ create table Transferencias(
 	foreign key (Cod_cuenta_origen) references Cuenta(Num_cuenta),
 	foreign key (Cod_cuenta_destino) references Cuenta(Num_cuenta),
 	foreign key (Cod_transaccion) references Transacciones(Id_transaccion),
-	check (Importe>0),
-	check(Importe>=(Select Saldo from Cuenta where Num_cuenta=Cod_cuenta_origen)),
-	check ((Select Codigo_estado from Cuenta where Num_cuenta=Cod_cuenta_destino ) not in (3,4))
-
+	check (Importe>=0)
+	
 
 )
 go
+
+
+
 create table Bancos(
 	Id_banco int identity(1,1) primary key,
 	Nombre_banco varchar(30) not null,
@@ -209,8 +224,7 @@ create table Depositos(
 	check(Importe>1),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_moneda) references Moneda(Id_moneda),
-	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta),
-	check(Importe > (select Saldo from Cuenta where Num_cuenta=Cod_cuenta))
+	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta)
 )
 go
 create table Cheque(
@@ -218,7 +232,7 @@ create table Cheque(
 	Num_cheque int not null,
 	Cod_banco int not null,
 	Cod_cliente int not null,
-	Fecha date not null default getdate(),
+	Fecha date not null default dbo.fechaSistema(),
 	
 	foreign key (Cod_banco) references Bancos(Id_banco),
 	foreign key (Cod_cliente) references Cliente(Id_cliente)
@@ -276,7 +290,7 @@ create table tablaTemporal (
 	Id_transaccion int ,
 	Cod_estado int not null,
 	Costo float not null,
-	Fecha date not null default getdate(),
+	Fecha date not null default dbo.fechaSistema(),
 	cod_moneda int,
 	cod_factura int
 
@@ -897,7 +911,7 @@ go
 
 create trigger noPermitirTransferenciasEnInhabilitadas
 on transferencias
-instead of insert
+after insert
 
 as
 	begin transaction
@@ -907,13 +921,13 @@ as
 			rollback
 			end
 		else 
-		insert into transferencias(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda) select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda from inserted
+		--insert into transferencias(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda) select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda from inserted
 		commit	
 go
 
 create trigger noPermitirModificacionesEnInhabilitadas
 on Modificacion_cuenta
-instead of insert
+after insert
 
 as
 	begin transaction
@@ -923,7 +937,7 @@ as
 			rollback
 			end
 		else 
-		insert into Modificacion_cuenta(Cod_tipo,Cod_cuenta,Cod_transaccion) select Cod_tipo,Cod_cuenta,Cod_transaccion from inserted
+	--	insert into Modificacion_cuenta(Cod_tipo,Cod_cuenta,Cod_transaccion) select Cod_tipo,Cod_cuenta,Cod_transaccion from inserted
 		commit
 go	
 
@@ -959,7 +973,7 @@ Begin
 	Begin transaction set transaction isolation level serializable
 	Declare @fact numeric(18)
 	select @fact=MAX(Facturas.Num_factura)+1 from Facturas
-	insert into Facturas values (@fact,GETDATE())	
+	insert into Facturas values (@fact,dbo.fechaSistema())	
 	update Transacciones
 	set cod_factura=@fact
 	where ((Select Cod_cuenta_origen from Transferencias
@@ -989,7 +1003,9 @@ go
 create function categoriasDisponibles()
 returns @tablita table(id int,
 Descr varchar(30),
-costo float
+costo float,
+precioSuscr float,
+Duracion int
 )
 
 As
@@ -1008,7 +1024,7 @@ begin
 	begin transaction
 	update Cuenta
 	set cuenta.Codigo_categoria=@nuevaCategoria,
-		cuenta.Fecha_cierre=GETDATE()+@duracion
+		cuenta.Fecha_cierre=dbo.fechaSistema()+@duracion
 	where Cuenta.Num_cuenta=@cuenta
 	commit
 end
@@ -1081,6 +1097,8 @@ go
 
 --insert into Rol_funcionalidad values(1,2);
 
+insert into Rol_funcionalidad values(1,4);
+
 insert into Rol_funcionalidad values(1,5);
 
 insert into Rol_funcionalidad values(1,6);
@@ -1091,19 +1109,17 @@ insert into Rol_funcionalidad values(1,8);
 
 insert into Rol_funcionalidad values(1,9);
 
-insert into Rol_funcionalidad values(1,10);
-
-insert into Rol_funcionalidad values(1,12);
+insert into Rol_funcionalidad values(1,11);
 
 
 insert into Rol_funcionalidad values(2,1);
 --insert into Rol_funcionalidad values(2,2);
+insert into Rol_funcionalidad values(2,2);
 insert into Rol_funcionalidad values(2,3);
 insert into Rol_funcionalidad values(2,4);
-insert into Rol_funcionalidad values(2,5);
+insert into Rol_funcionalidad values(2,8);
 insert into Rol_funcionalidad values(2,9);
 insert into Rol_funcionalidad values(2,10);
-insert into Rol_funcionalidad values(2,11);
 
 go
 
@@ -1204,3 +1220,142 @@ Begin
 	end
 	go
 	
+	Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
+	go
+	insert into Usuario_rol select MAX (Usuario.Id_usuario),2 from Usuario 
+	go
+	
+	
+create trigger insertarTransferencia on Transferencias
+instead of insert
+as
+begin transaction
+
+update cuenta
+set Codigo_estado=2
+where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
+set identity_insert Transferencias on
+insert into Transferencias
+select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda
+from inserted 
+set identity_insert Transferencias off
+
+commit
+go
+
+create trigger validarSaldoMayorQueTransferencia
+on Transferencias
+for insert
+as
+begin transaction
+if(0<( 
+	select count(*) from inserted
+	where 
+	Importe>(Select Saldo from Cuenta where Num_cuenta=Cod_cuenta_origen)))
+begin
+raiserror ('Cuenta sin saldo',16,150)	
+rollback
+end	
+	else 
+	commit
+	
+go	
+
+create trigger validarDestinoValidoTransferencia
+on Transferencias
+for insert
+as
+begin transaction
+if(0<(
+	select count(*) from inserted
+	where 
+	(Select Codigo_estado from Cuenta where Num_cuenta=Cod_cuenta_destino )  in (3,4)))
+begin
+raiserror ('Cuenta no puede recibir',16,150)
+rollback
+end
+else 
+
+commit
+	
+go
+
+create trigger insertarDeposito on Depositos
+instead of insert
+as
+begin transaction
+
+update cuenta
+set Codigo_estado=2
+where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
+insert into Depositos
+select *
+from inserted 
+commit
+go
+
+create trigger insertarRetiro on Retiros
+instead of insert
+as
+begin transaction
+
+update cuenta
+set Codigo_estado=2
+where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
+insert into Retiros
+select *
+from inserted 
+commit
+go
+
+create trigger haySAldoParaRetiro on Retiros
+for insert
+as 
+begin transaction 
+if(0<(
+select count(*) from inserted,Cheque
+ where Cod_cheque=Id_Cheque and Importe > (select Saldo from Cuenta where Num_cuenta=Cod_cuenta)))
+begin
+raiserror ('Cuenta sin saldo',16,150)
+rollback
+end
+else 
+commit
+
+go
+create procedure limpiar
+as 
+begin
+
+drop table Depositos
+drop table Retiros
+drop Table modificacion_cuenta
+drop table transferencias
+drop table tipo_modificacion
+drop table intentos_fallidos
+drop table intentos_login
+drop table tarjetas_credito
+drop table tarjeta_emisor
+drop table rol_funcionalidad
+drop table transacciones
+drop table facturas
+drop table usuario_rol
+drop table ultimaCuenta
+drop table cuenta
+drop table cheque
+drop table funcionalidad
+drop table cliente
+drop table bancos
+drop table categoria
+drop table estado_cuenta
+drop table rol
+drop table estado_rol
+drop table estado_transaccion
+drop table moneda
+drop table pais
+drop table tipo_dni
+drop table usuario
+
+end
+go
+
