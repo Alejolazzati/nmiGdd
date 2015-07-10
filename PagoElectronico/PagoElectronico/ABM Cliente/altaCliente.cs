@@ -14,12 +14,14 @@ namespace PagoElectronico.ABM_Cliente
 
         string nombre;
         string apellido;
-        DateTime fechaElegida;
+        Date fechaElegida;
         string numeroDoc;
         String mail;
         string domicilio;
         string piso;
         string depto;
+        String tipoDocumento;
+        String Nacionalidad;
         System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             
         public altaCliente()
@@ -53,25 +55,6 @@ namespace PagoElectronico.ABM_Cliente
 
         }
 
-        private void altaCliente_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox11_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -87,11 +70,12 @@ namespace PagoElectronico.ABM_Cliente
             domicilio = textBox3.Text;
             piso = textBox7.Text;
             depto = textBox4.Text;
-            //TIPO DOC
-            //NACIONALIDAD
+            tipoDocumento = comboBox2.SelectedItem.ToString();
+            Nacionalidad = comboBox1.SelectedItem.ToString();
+            
 
 
-            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+          //  System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
          //   comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text + ",'" + Program.fecha + "'";
            
             comando.ExecuteNonQuery();
@@ -104,59 +88,5 @@ namespace PagoElectronico.ABM_Cliente
             textBox13.Text = unaFecha.ToShortDateString();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox10_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox8_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox7_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox13_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
