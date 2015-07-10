@@ -13,6 +13,9 @@ namespace PagoElectronico.ABM_Cliente
     {
         public altaCliente()
         {
+            string nombre;
+            string apellido;
+
             InitializeComponent();
         }
 
@@ -24,6 +27,30 @@ namespace PagoElectronico.ABM_Cliente
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+         //   comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text + ",'" + Program.fecha + "'";
+           
+            comando.ExecuteNonQuery();
+               
         }
     }
 }

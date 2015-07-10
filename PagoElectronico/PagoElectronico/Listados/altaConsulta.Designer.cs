@@ -104,6 +104,7 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "Volver atras";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -152,6 +153,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(382, 133);
             this.dataGridView1.TabIndex = 12;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // altaConsulta
             // 

@@ -196,6 +196,36 @@ create table Bancos(
 )
 go
 
+create table inhabilitacionesDeCuenta(
+	num_cuenta numeric(18) foreign key references Cuenta(num_cuenta),
+	fecha datetime
+)
+go
+create trigger asentarCuentaInhabiltada on inhabilitacionesDeCuenta
+for insert
+as begin transaction
+Declare cursorPasados cursor for
+(
+select num_cuenta from inserted
+)
+	open cursorPasados 
+	declare @cuentaOrigen numeric(18)
+	fetch next from cursorPasados into @cuentaOrigen
+	
+	while (@@Fetch_status=0)
+	Begin
+		  update cuenta
+		  set codigo_estado= 2
+		  where num_cuenta=@cuentaOrigen
+			
+			fetch next from cursorPasados into @cuentaOrigen
+	end				
+	
+	close cursorPasados
+	deallocate cursorPasados
+	commit
+go
+
 create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
 	Id_tarjeta_emisor int identity(1,1) primary key,
 	Descripcion varchar(40)
@@ -871,41 +901,26 @@ return @saldo
 
 end
 go
-create trigger inhabilitarCuentasConMas5
+
+create  trigger inhabilitarCuentasConMas5
 on Transacciones
 after insert
 as
-	Begin transaction
-	Declare cursorPasados Cursor for
-	
-	Select * from (select cuenta=t1.cod_cuenta_origen 
+begin transaction
+insert into 	inhabilitacionesDeCuenta
+	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),dbo.fechaSistema(),101) 
 	From transferencias t1 join transacciones t2
 	on (t2.Id_transaccion=t1.cod_transaccion)
 	where COD_factura is null
-	UNION
-	select cuenta=m.Cod_cuenta
+	/*UNION
+	select cuenta=m.Cod_cuenta,fecha=convert(varchar(30),dbo.fechaSistema(),101)
 	from Modificacion_Cuenta m join transacciones t
 	on (m.cod_transaccion=t.Id_transaccion)
-	where cod_factura is null) tabla
-	group by cuenta
+	where cod_factura is null*/
+	) tabla
+	group by cuenta,fecha
 	having count (*) > 5
 	
-	
-	open cursorPasados 
-	declare @cuentaOrigen numeric(18,2)
-	fetch next from cursorPasados into @cuentaOrigen
-	
-	while (@@Fetch_status=0)
-	Begin
-		  update cuenta
-		  set codigo_estado= 2
-		  where num_cuenta=@cuentaOrigen
-			
-			fetch next from cursorPasados into @cuentaOrigen
-	end				
-	
-	close cursorPasados
-	deallocate cursorPasados
 	commit 
 go
 
@@ -1226,19 +1241,18 @@ Begin
 	go
 	
 	
-create trigger insertarTransferencia on Transferencias
+create  trigger insertarTransferencia on Transferencias
 instead of insert
 as
 begin transaction
 
 update cuenta
-set Codigo_estado=2
+set Codigo_estado=3
 where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
-set identity_insert Transferencias on
+
 insert into Transferencias
 select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda
 from inserted 
-set identity_insert Transferencias off
 
 commit
 go
@@ -1342,6 +1356,7 @@ drop table facturas
 drop table usuario_rol
 drop table ultimaCuenta
 drop table cuenta
+drop table inhabilitacionesDeCuenta
 drop table cheque
 drop table funcionalidad
 drop table cliente
@@ -1357,5 +1372,23 @@ drop table tipo_dni
 drop table usuario
 
 end
+go
+
+create function clientesInhabilitados(@año int,@trimestre int)
+returns @tabla table(
+num_cliente int,
+nom_cliente varchar(32)
+)
+as
+begin
+insert into @tabla
+select top 5 id_cliente,nombre from Cliente,Cuenta as c,inhabilitacionesDeCuenta as i
+where i.num_cuenta=c.num_cuenta and c.codigo_cliente=id_cliente 
+and (year(i.fecha)=@año) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
+order by i.fecha
+return
+end
+
+
 go
 

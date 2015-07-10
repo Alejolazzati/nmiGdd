@@ -60,7 +60,11 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(comboBox1.SelectedIndex+1);
+            int rol;
+            if (comboBox1.SelectedItem.ToString() == "Cliente")
+            { rol = 1; }
+            else { rol = 2; }
+            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(rol);
                 formFuncion.Show();
                 this.Close();
                 this.Hide();

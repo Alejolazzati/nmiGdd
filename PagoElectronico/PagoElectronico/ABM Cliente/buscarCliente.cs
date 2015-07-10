@@ -15,5 +15,11 @@ namespace PagoElectronico.ABM_Cliente
         {
             InitializeComponent();
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.ABM_Cliente.altaCliente().Show();
+            this.Close();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace PagoElectronico.Listados
     public partial class altaConsulta : Form
     {
         int trimestre; // 1 = primer 2= 2do 3= 3ro
+        string año;
         public altaConsulta()
         {
             InitializeComponent();
@@ -28,6 +29,7 @@ namespace PagoElectronico.Listados
                 MessageBox.Show("Ingrese un año valido");
             }
             else {
+                año = textBox1.Text;
                 comboBox1.Items.Add("Primer trimestre");
                 comboBox1.Items.Add("Segundo trimestre");
                 comboBox1.Items.Add("Tercer trimestre");
@@ -62,24 +64,40 @@ namespace PagoElectronico.Listados
         }
 
         private void button5_Click(object sender, EventArgs e)
-        {  
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+           
+
+
             int opcion=comboBox2.SelectedIndex;
             switch (opcion){
                 case 0:
+                    comando.CommandText = "Select * from clientesInhabilitados(" + año+"," + trimestre + ")";
                     break;
 
                 case 1:
+                    comando.CommandText = "Select * from clientesClienteConMayorCantidadComisiones(" + año + "," + trimestre + ")";
                     break;
 
                 case 2:
+                    comando.CommandText = "Select * from clientesClienteConMayorCantidadDeTransEntreCuentasPropias(" + año + "," + trimestre + ")";
                     break;
 
                 case 3:
+                    comando.CommandText = "Select * from paisesConMayorCantidadDeMovimientos(" + año + "," + trimestre + ")";
                     break;
 
                 case 4:
+                    comando.CommandText = "Select * from totalFacturadoParaTiposCuenta(" + año + "," + trimestre + ")";
                     break;
+
             }
+            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(comando);
+            DataSet set = new DataSet();
+            adapter.Fill(set);
+            dataGridView1.DataSource = set.Tables[0].DefaultView;
+            adapter.Dispose();
+            set.Dispose();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -87,6 +105,17 @@ namespace PagoElectronico.Listados
             new PagoElectronico.Listados.altaConsulta().Show();
             this.Close();
             this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Login.Funcionalidades(2).Show();
+            this.Close();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -41,7 +41,8 @@ namespace PagoElectronico.Consulta_Saldos
             comando.CommandText = "Select * from ultimas10Transf(" + cuenta + ")";
             adapter.Fill(set);
             dataGridView3.DataSource = set.Tables[0].DefaultView;
-        
+            adapter.Dispose();
+            set.Dispose();
         }
 
         private void consultaSaldos_Load(object sender, EventArgs e)

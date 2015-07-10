@@ -110,21 +110,14 @@ namespace PagoElectronico.Login
                     new SeleccionarCuenta();
                     break;
 
-                case "asara":
-
+                case "Depositos":
+                    MessageBox.Show("HACERME");
                     break;
 
-                case "adasd":
-
+                case "":
+                    MessageBox.Show("Seleccione una opcion");
                     break;
-
-                case "adads":
-
-                    break;
-
-                case "becGay":
-
-                    break;
+                
 
                 default:
                     MessageBox.Show("Opcion invalida");
