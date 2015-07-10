@@ -11,12 +11,21 @@ namespace PagoElectronico.ABM_Cliente
 {
     public partial class altaCliente : Form
     {
+
+        string nombre;
+        string apellido;
+        DateTime fechaElegida;
+        string numeroDoc;
+        String mail;
+        string domicilio;
         public altaCliente()
         {
-            string nombre;
-            string apellido;
 
             InitializeComponent();
+            //hay que pedirle a la base los tipos de documentos
+            //CARGAR NACIONALIDADES
+
+
         }
 
         private void altaCliente_Load(object sender, EventArgs e)
@@ -41,16 +50,83 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button6_Click(object sender, EventArgs e)
         {
-
+            new Calendario(this).Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            nombre = textBox11.Text;
+            apellido = textBox1.Text;
+            numeroDoc = textBox10.Text;
+            mail = textBox9.Text;
+            domicilio = textBox3.Text;
+            piso = textBox7.Text;
+            depto = textBox4.Text;
+            //TIPO DOC
+            //NACIONALIDAD
+
+
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
          //   comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text + ",'" + Program.fecha + "'";
            
             comando.ExecuteNonQuery();
                
+        }
+
+        public void recibirFecha(System.DateTime unaFecha)
+        {
+            fechaElegida = unaFecha;
+            textBox13.Text = unaFecha.ToShortDateString();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox10_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox13_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
