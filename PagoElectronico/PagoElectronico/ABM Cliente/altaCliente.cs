@@ -20,12 +20,35 @@ namespace PagoElectronico.ABM_Cliente
         string domicilio;
         string piso;
         string depto;
+        System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            
         public altaCliente()
-        {
-
+           {
             InitializeComponent();
-            //hay que pedirle a la base los tipos de documentos
+            comando.CommandText = "Select * from documentosDisponibles()";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                comboBox2.Items.Add(reader.GetSqlString(0));
+            }
+            this.Show();
+
+            reader.Dispose();
+           
+            
             //CARGAR NACIONALIDADES
+
+            comando.CommandText = "Select * from getNacionalidades()";
+            
+            while (reader.Read())
+            {
+                comboBox1.Items.Add(reader.GetSqlString(0));
+            }
+            this.Show();
+
+            reader.Dispose();
+           
 
 
         }
@@ -127,6 +150,11 @@ namespace PagoElectronico.ABM_Cliente
         }
 
         private void textBox13_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
