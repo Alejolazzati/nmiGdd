@@ -18,6 +18,8 @@ namespace PagoElectronico.ABM_Cliente
         string numeroDoc;
         String mail;
         string domicilio;
+        string piso;
+        string depto;
         public altaCliente()
         {
 
