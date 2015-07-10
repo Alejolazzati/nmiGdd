@@ -27,7 +27,7 @@ namespace PagoElectronico.Transferencias
         private void button4_Click(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "execute dbo.transferir " + cuenta +","+textBox3.Text+","+textBox2.Text+",'"+Program.fecha+"'";
+            comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text/*+",'"+Program.fecha+"'"*/;
             try { comando.ExecuteNonQuery();
             MessageBox.Show("Transferencia exitosa");
             }

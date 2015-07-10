@@ -902,7 +902,7 @@ return @saldo
 end
 go
 
-create  trigger inhabilitarCuentasConMas5
+/*create  trigger inhabilitarCuentasConMas5
 on Transacciones
 after insert
 as
@@ -911,7 +911,9 @@ insert into 	inhabilitacionesDeCuenta
 	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),dbo.fechaSistema(),101) 
 	From transferencias t1 join transacciones t2
 	on (t2.Id_transaccion=t1.cod_transaccion)
-	where COD_factura is null
+	where COD_factura is null -- and t2.id_transaccion in (select id_transaccion from inserted)
+	 and t1.cod_cuenta_origen in (select t4.cod_cuenta_origen from  inserted,Transferencias t4
+	where t4.cod_transaccion=inserted.id_transaccion ) 
 	/*UNION
 	select cuenta=m.Cod_cuenta,fecha=convert(varchar(30),dbo.fechaSistema(),101)
 	from Modificacion_Cuenta m join transacciones t
@@ -919,9 +921,31 @@ insert into 	inhabilitacionesDeCuenta
 	where cod_factura is null*/
 	) tabla
 	group by cuenta,fecha
-	having count (*) > 5
+	having count (*) > 5 
 	
 	commit 
+go*/
+
+create Trigger inhabilitarCuentasConMasDe5
+on Transferencias
+for insert
+as
+begin transaction
+insert into 	inhabilitacionesDeCuenta
+Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),dbo.fechaSistema(),101) 
+	From transferencias t1 join transacciones t2
+	on (t2.Id_transaccion=t1.cod_transaccion),Cuenta
+	where COD_factura is null -- and t2.id_transaccion in (select id_transaccion from inserted)
+	 --and t1.cod_cuenta_origen in (select cod_cuenta_origen from  inserted
+	and Cuenta.num_cuenta=t1.cod_cuenta_origen and Codigo_estado=1
+	
+	 ) --)
+	tabla
+	group by cuenta,fecha
+	having count (*) > 5 
+	
+	commit 
+	
 go
 
 create trigger noPermitirTransferenciasEnInhabilitadas
@@ -933,7 +957,8 @@ as
 		if ((select count(*) from inserted,cuenta where inserted.cod_cuenta_origen=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
 			begin
 			raiserror ('Cuenta inhabilitada',16,150)
-			rollback
+			delete from Tansferencias
+			where id_tranferencia in (select id_transferencia from inserted) 
 			end
 		else 
 		--insert into transferencias(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda) select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda from inserted
@@ -949,7 +974,9 @@ as
 		if ((select count(*) from inserted,cuenta where inserted.cod_cuenta=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
 			begin
 			raiserror ('Cuenta inhabilitada',16,150)
-			rollback
+			delete from Transferencias
+			where id_transferencia in (select id_transferencia from inserted
+			)
 			end
 		else 
 	--	insert into Modificacion_cuenta(Cod_tipo,Cod_cuenta,Cod_transaccion) select Cod_tipo,Cod_cuenta,Cod_transaccion from inserted
@@ -1041,6 +1068,12 @@ begin
 	set cuenta.Codigo_categoria=@nuevaCategoria,
 		cuenta.Fecha_cierre=dbo.fechaSistema()+@duracion
 	where Cuenta.Num_cuenta=@cuenta
+	
+	
+	update Cuenta
+	set Fecha_vencimiento=(Select dbo.fechaSistema()+ from Categoria
+	where Cuenta.Num_cuenta=@cuenta 
+	
 	commit
 end
 go	
@@ -1223,12 +1256,12 @@ Begin
 	
 	)*/
 	
-	create procedure transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float,@fecha date
+	create  procedure transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
 	as
 	begin
 	begin transaction set transaction isolation level serializable
-	insert into Transacciones(Cod_estado,Costo,Fecha) values(1,(select @importe*Costo from Cuenta,Categoria
-		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen),@fecha) 
+	insert into Transacciones(Cod_estado,Costo) values(1,(select @importe*Costo from Cuenta,Categoria
+		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen)) 
 	insert into Transferencias select
 	@importe,@cta_origen,@cta_destino,MAX(Id_transaccion),1 from Transacciones
 	commit 	
@@ -1247,7 +1280,7 @@ as
 begin transaction
 
 update cuenta
-set Codigo_estado=3
+set Codigo_estado=2
 where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
 
 insert into Transferencias
@@ -1337,7 +1370,7 @@ else
 commit
 
 go
-create procedure limpiar
+create  procedure limpiar
 as 
 begin
 
@@ -1355,8 +1388,8 @@ drop table transacciones
 drop table facturas
 drop table usuario_rol
 drop table ultimaCuenta
-drop table cuenta
 drop table inhabilitacionesDeCuenta
+drop table cuenta
 drop table cheque
 drop table funcionalidad
 drop table cliente
@@ -1392,3 +1425,20 @@ end
 
 go
 
+sp_settriggerorder 'inhabilitarCuentasConMasDe5','last','insert',null
+go
+
+
+create function documentosDisponibles()
+returns @tabla table(
+	descripcion varchar(30)
+)
+
+as
+begin
+	insert into @tabla
+	select descripcion
+	from tipo_dni
+	return
+end
+go

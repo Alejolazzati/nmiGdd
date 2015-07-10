@@ -11,9 +11,16 @@ namespace PagoElectronico.ABM_Cliente
 {
     public partial class modificarCliente : Form
     {
-        public modificarCliente()
+        String cliente;
+        public modificarCliente(String clie)
         {
+            cliente = clie;
             InitializeComponent();
+        }
+
+        private void modificarCliente_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

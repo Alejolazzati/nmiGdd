@@ -21,8 +21,22 @@ namespace PagoElectronico.ABM_Cliente
         public buscarCliente()
         {
             InitializeComponent();
-            comando.CommandText = "Select nombre, apellido, mail, documento, tipoDocumento into #tablaTemporal from clientes";
+            comando.CommandText = "Select ID_cliente, Nombre, Apellido, mail, numero_documento, tipoDeDocumento=(Select Descripcion from tipo_Dni where id_DNI=tipo_documento) into #tablaTemporal from Cliente";
             comando.ExecuteNonQuery();
+
+            comboBox1.Items.Add("no especifica");
+            comando.CommandText = "Select * from documentosDisponibles()";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                comboBox1.Items.Add(reader.GetSqlString(0));
+            }
+            this.Show();
+
+            reader.Dispose();
+            
+
             
             
         }
@@ -38,14 +52,14 @@ namespace PagoElectronico.ABM_Cliente
               
        private void buscarCliente_Load(object sender, EventArgs e)
         {
-            maskedTextBox1.Mask = "##############################";
+            maskedTextBox1.Mask = "0999999999999999999999999999";
        }
 
        private void button2_Click(object sender, EventArgs e)
         //BUSCAR
        {
            if (textBox1.TextLength > 0)
-           {
+           {    
                nombre = textBox1.Text;
                comando.CommandText = "Delete from #tablaTemporal where nombre not like" + "'%" + nombre + "%'";
                comando.ExecuteNonQuery();
@@ -59,10 +73,10 @@ namespace PagoElectronico.ABM_Cliente
                comando.ExecuteNonQuery();
            }
 
-           if (maskedTextBox1.TextLength > 0)
+           if (maskedTextBox1.MaskCompleted)
            {
                numeroDoc = maskedTextBox1.Text;
-               comando.CommandText = "Delete from #tablaTemporal where numeroDoc not like" + "'%" + numeroDoc + "%'";
+               comando.CommandText = "Delete from #tablaTemporal where numero_Documento <> '"+numeroDoc+"'";
                comando.ExecuteNonQuery();
            }
 
@@ -74,6 +88,12 @@ namespace PagoElectronico.ABM_Cliente
 
            }
 
+           if (comboBox1.SelectedIndex>0)
+           {
+               comando.CommandText = "Delete from #tablaTemporal where tipoDeDocumento<>" + "'" + comboBox1.SelectedItem.ToString() + "'";
+               comando.ExecuteNonQuery();
+
+           }
 
 
 
@@ -90,35 +110,32 @@ namespace PagoElectronico.ABM_Cliente
        private void button1_Click(object sender, EventArgs e)
            //limpiar
        {
-           new buscarCliente().Show();
-           comando.CommandText = "drop #tablaTemporal";
+           
+           comando.CommandText = "drop table #tablaTemporal";
            try
            {
                comando.ExecuteNonQuery();
            }
            catch { }
+           new buscarCliente().Show();
            this.Close();
        }
 
-       private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-       {
+       private void button3_Click(object sender, EventArgs e)
+       { //booton modificar 
+          // System.Data.DataSet.Enumerator enum = 
+         // System.Collections.IEnumerator enum =dataGridView1.SelectedRows.GetEnumerator();
+           if (dataGridView1.SelectedRows.Count == 1)
+           {
+               DataGridViewRow row = this.dataGridView1.SelectedRows[0];
+              new modificarCliente(row.Cells["id_cliente"].Value.ToString()).Show();
+           }
+           else MessageBox.Show("seleccione una fila");
+           
+
 
        }
 
-       private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-       {/*
-           if (comboBox1.SelectedItem.ToString
-           tipoDoc = comboBox1.SelectedItem.ToString();*/
-       }
-
-       private void textBox3_TextChanged(object sender, EventArgs e)
-       {
-
-       }
-
-
-
-
-       
+         
     }
 }
