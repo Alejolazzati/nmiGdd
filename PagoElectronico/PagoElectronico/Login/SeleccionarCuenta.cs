@@ -34,5 +34,10 @@ namespace PagoElectronico.Login
             new PagoElectronico.Transferencias.nuevaTransferencia(comboBox1.SelectedItem.ToString()).Show();
             this.Close();
         }
+
+        private void SeleccionarCuenta_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

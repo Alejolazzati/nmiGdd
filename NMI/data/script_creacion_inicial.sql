@@ -41,7 +41,22 @@ Pregunta_secreta varchar(50) not null,
 Respuesta varchar(50) not null
 )
 go
+/*
+create trigger encriptarDatosUsuario on Usuario
+for  insert
+as
+begin transaction
+update Usuario 
+set contraseña=dbo.ensriptarSha256(contraseña)
+where useranme in (select useranme from inserted)
 
+update Usuario 
+set Respuesta=dbo.ensriptarSha256(Respuesta)
+where useranme in (select useranme from inserted)
+commit
+go
+
+*/
 create table Pais
 (Id_Pais int primary key,
 Descripcion varchar(50) not null
@@ -153,7 +168,8 @@ create table Cuenta(
 	foreign key (Codigo_categoria) references Categoria(Id_categoria),
 	foreign key (Codigo_cliente) references Cliente(Id_cliente),
 	foreign key (Codigo_estado) references Estado_cuenta(Id_estado)
-);	
+)
+go	
 Create table Estado_transaccion(
 	Id_estado int identity(1,1) primary key,
 	Descripcion varchar(30) not null,
@@ -180,7 +196,7 @@ create table Modificacion_cuenta(
 	foreign key (Cod_tipo) references Tipo_modificacion(Id_tipo),
 	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
 	foreign key (Cod_transaccion) references Transacciones(Id_transaccion)
-);
+)
 
 go
 /*
@@ -252,7 +268,7 @@ go
 create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
 	Id_tarjeta int identity(1,1) primary key,
 	Num_tarjeta numeric(18) not null,
-	Cod_cliente int not null,
+	Cod_cliente int,
 	Cod_emisor int not null,
 	Fecha_emision date not null,
 	Fecha_vencimiento date not null,
@@ -528,7 +544,7 @@ for insert, update, delete
 	commit;
 go
 	
-	Create trigger CuaandoSeIngresanLoginsIncorrectos
+	Create  trigger CuaandoSeIngresanLoginsIncorrectos
 on Intentos_login
 for  insert
 as
@@ -550,15 +566,16 @@ begin
 Insert into Intentos_fallidos (Cod_login)values (@num_login)
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 end
-end
+
 close cursorDeIncorrectos
 deallocate cursorDeIncorrectos
+end
 drop table #tablaIncorrectos
 commit;
 go
 
 
-Create trigger CuaandoSeIngresanLoginsCorrectos
+Create  trigger CuaandoSeIngresanLoginsCorrectos
 on Intentos_login
 for  insert
 as
@@ -581,15 +598,16 @@ begin
 Delete from Intentos_fallidos where Cod_login=@num_login
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 end
-end
-drop table #tablaCorrectos
 close cursorDeIncorrectos
 deallocate cursorDeIncorrectos
+end
+drop table #tablaCorrectos
+
 commit;
 go
 
 
-Create trigger CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
+Create  trigger CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
 on Intentos_fallidos
 for  insert
 as
@@ -598,22 +616,22 @@ Declare @num_fallido int
 Declare @Cod_loguin int
 Declare cursorDeFallidos Cursor
 for select * from inserted
-open cursorDeIncorrectos
+open cursorDeFallidos
 fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
 while(@@FETCH_STATUS=0)
 begin
-if ((select count(*) from Intentos_fallidos,Usuario,Intentos_loguin
-where Intentos_fallidos.Cod_loguin=Intentos_loguin.Id_loguin and Intentos_loguin.Cod_usuario=Usuario.Id_usuario)>2)
+if ((select count(*) from Intentos_fallidos,Usuario,Intentos_login
+where Intentos_fallidos.Cod_login=Intentos_login.Id_login and Intentos_login.Codigo_usuario=Usuario.Id_usuario)>2)
 update Usuario
 set Estado="inhabilitado"
-where Id_usuario = (Select Cod_usuario from Intentos_loguin where Id_loguin=@Cod_loguin)
+where Id_usuario = (Select Codigo_usuario from Intentos_loguin where Id_loguin=@Cod_loguin)
 fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
 
 end
 close cursorDeFallidos
 deallocate cursorDeFallidos
 commit;
-go
+go	
 
 --Pais
 insert into Pais
@@ -828,7 +846,7 @@ go
 
 insert into Facturas
 select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
-where Factura_Numero is not null;
+where Factura_Numero is not null
 go
 
 Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
@@ -1077,7 +1095,7 @@ Begin
 	return
 end
 go 
-
+/*
 create procedure modificarCuenta (@cuenta numeric (18), @nuevaCategoria int, @duracion int)
 as
 begin
@@ -1095,7 +1113,7 @@ begin
 	commit
 end
 go	
-
+*/
 create Procedure getUltimaCuenta @retorno numeric(18)
 
 as
@@ -1403,6 +1421,7 @@ drop table tarjetas_credito
 drop table tarjeta_emisor
 drop table rol_funcionalidad
 drop table transacciones
+drop table suscripciones
 drop table facturas
 drop table usuario_rol
 drop table ultimaCuenta
@@ -1475,19 +1494,8 @@ return end
 go
 
 
-create trigger encriptarDatosUsuario on Usuario
-for  insert
-as
-begin transaction
-update Usuario 
-set contraseña=dbo.ensriptarSha256(contraseña)
-where Id_usuario in (select id_usuario from inserted)
 
-update Usuario 
-set Respuesta=dbo.ensriptarSha256(Respuesta)
-where Id_usuario in (select id_usuario from inserted)
-commit
-go
+
 create procedure Loguear @username varchar(30),@contra varchar(30)
 as
 begin transaction set transaction isolation level serializable
@@ -1496,6 +1504,7 @@ Useranme=@username
 ))begin
 raiserror ('no existe usuario',16,150)
 rollback
+return
 end
 if (exists (select ID_usuario from Usuario where
 Useranme=@username and Estado='inhabilitado'
@@ -1503,9 +1512,11 @@ Useranme=@username and Estado='inhabilitado'
 begin
 raiserror ('usuario inhabilitado',16,150)
 rollback
+return
 end 
 if (exists (select ID_usuario from Usuario where
-Useranme=@username and Contraseña=dbo.encriptarSha256(@contra)
+Useranme=@username and Contraseña=@contra
+--dbo.encriptarSha256(@contra)
 ))
 begin
 insert into Intentos_login	 select ID_usuario,1 from Usuario where
@@ -1515,7 +1526,135 @@ else
 begin
 insert into Intentos_login	 select ID_usuario,0 from Usuario where
 Useranme=@username
-insert into Intentos_fallidos select MAX(Id_login) from Intentos_login
-raiserror ('usuario inhabilitado',16,150)
+raiserror ('mal contra',16,150)
 end
 commit
+go
+create procedure ingresarCliente
+@username varchar(50),@pw varchar(50),
+@pregunta varchar(50),@respuesta varchar(50),
+@nombre varchar(50),@apellido varchar(50),
+@tipodoc varchar(50),@numerodedoc varchar(30),
+@mail varchar(50),@rol int,
+@pais varchar(50),@calle varchar(50),
+@numero int,@piso int,
+@depto char(1),@fecha date
+as
+Begin
+Begin transaction set transaction isolation level serializable
+	declare @coduser int
+	declare @numeropais varchar(50)
+	declare @tipoDeDocumentoNumero numeric(10)
+	insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values 
+						(@username,@pw,@pregunta,@respuesta,'habilitado')
+	set @coduser = (select Id_usuario from Usuario where Useranme=@username)
+	set @tipoDeDocumentoNumero=(select Id_DNI from Tipo_DNI where Descripcion=@tipodoc)
+	insert into Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
+	set @numeropais = (select Id_Pais from Pais where Descripcion=@pais) 
+	insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
+				values (@coduser,@nombre,@apellido,@tipoDeDocumentoNumero,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
+	
+	commit 
+	end 
+go
+
+
+
+create function clientesConMasTransferenciasEntreCuentas()
+returns @tabla table(
+nombre varchar(30),
+apellido varchar(30)
+)
+as begin
+insert into @tabla
+select top 5 c1.Nombre,c1.Apellido from cliente c1,cuenta c2,Transferencias t,cuenta c3,cliente c4
+where
+c1.Id_cliente=c2.Codigo_cliente and c2.Num_cuenta=t.Cod_cuenta_origen and c3.Num_cuenta=t.Cod_cuenta_destino
+and c3.Codigo_cliente=c4.Id_cliente and c1.Id_cliente=c4.Id_cliente
+group by c1.Nombre,c1.Apellido
+order by COUNT(*) desc
+return
+end
+go
+
+
+
+create function datosDelCliente(@idDelCliente numeric(18))
+returns @tabla table (id_cliente int, Cod_usuario int, Nombre varchar(50),
+Apellido  varchar(50),Tipo_documento numeric(18),Numero_documento numeric(18),
+Mail varchar(50),Cod_pais numeric(10),Calle varchar(50),
+Numero numeric(18),Piso int, Depto Char(1),Fecha date)
+as
+Begin
+insert into @tabla
+select * from Cliente where Id_cliente=@idDelCliente
+return 
+end
+
+go
+create procedure updeteaDatosDelCliente @id_cliente int, @Cod_usuario int, @Nombre varchar(50),
+@Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento numeric(18),
+@Mail varchar(50),@Cod_pais numeric(10),@Calle varchar(50),
+@Numero numeric(18),@Piso int, @Depto Char(1),@Fecha date
+as
+begin
+update Cliente set Nombre=@Nombre,Apellido=@Apellido,
+					Tipo_documento=@Tipo_documento,Numero_documento=@Numero_documento,
+					Mail=@Mail,Cod_pais=@Cod_Pais,Calle=@Calle,Numero=@Numero,
+					Piso=@Piso,Depto=@Depto,Fecha_nacimiento=@Fecha 
+
+					
+					where Id_cliente=@id_cliente
+end
+
+go
+
+
+create table suscripciones
+(id int identity(1,1) primary key,
+cuenta numeric(18),
+cantidad int,
+factura numeric(18) foreign key references Facturas(Num_factura),
+costo float)
+
+go
+create procedure pagarSuscripciones @cuenta numeric(18),@cantidad int, @numeroFactura numeric(18)
+as
+begin
+insert into suscripciones (cuenta,cantidad,factura) values
+			(@cuenta,@cantidad,@numeroFactura)
+end
+go
+
+
+
+
+
+
+
+create trigger actualizarCosto 
+on Suscripciones
+for insert
+as
+begin transaction
+	declare @costo float
+	update suscripciones set costo = 
+	cantidad*(select precioSuscripcion from Cuenta,Categoria where Cuenta.Codigo_categoria=Categoria.Id_categoria
+	and Cuenta.Num_cuenta=cuenta) where id in (select id from inserted)  
+	 
+	commit 
+	go
+
+create trigger actualizarVencimiento
+on Suscripciones 
+for insert
+as
+begin transaction
+	update Cuenta set Fecha_vencimiento = dateadd (day,(select inserted.cantidad from inserted
+	where inserted.cuenta=Num_cuenta)*(select Duracion from Categoria where Codigo_categoria=Categoria.Id_categoria),Fecha_vencimiento)
+	where Num_cuenta in (select Cuenta from inserted)
+commit
+go
+
+
+

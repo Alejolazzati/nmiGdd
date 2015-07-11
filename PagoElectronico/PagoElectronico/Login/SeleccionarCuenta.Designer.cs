@@ -70,6 +70,7 @@
             this.Controls.Add(this.comboBox1);
             this.Name = "SeleccionarCuenta";
             this.Text = "SeleccionarCuenta";
+            this.Load += new System.EventHandler(this.SeleccionarCuenta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
