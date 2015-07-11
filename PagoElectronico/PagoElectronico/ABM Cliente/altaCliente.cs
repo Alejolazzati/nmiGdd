@@ -101,7 +101,7 @@ namespace PagoElectronico.ABM_Cliente
             else Rol=2;
 
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "execute dbo.execute ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , '"+ numero+ "' , '"+ piso +"','"+ depto+"', '"+ fechaElegida ;
+            comando.CommandText = "execute dbo.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , '"+ numero+ "' , '"+ piso +"','"+ depto+"', '"+ fechaElegida ;
             try { comando.ExecuteNonQuery(); }
             catch { MessageBox.Show("Ingrese correctamente los valores"); }
                

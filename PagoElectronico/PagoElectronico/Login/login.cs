@@ -36,8 +36,19 @@ namespace PagoElectronico.Login
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PagoElectronico.Login.elegirRol elegirRol = new PagoElectronico.Login.elegirRol();
-            elegirRol.llamar(nombre,pass);
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "execute dbo.loguear '"+nombre+"','"+pass  ;
+            try
+            {
+                comando.ExecuteNonQuery();
+                PagoElectronico.Login.elegirRol elegirRol = new PagoElectronico.Login.elegirRol();
+                elegirRol.llamar(nombre);
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                MessageBox.Show(er.Message);
+            }
+            
             this.Close();
             this.Hide();
             
