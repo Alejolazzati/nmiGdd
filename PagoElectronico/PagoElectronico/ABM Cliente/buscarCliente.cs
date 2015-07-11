@@ -15,7 +15,7 @@ namespace PagoElectronico.ABM_Cliente
         string apellido;
         string numeroDoc;
         string mail;
-        
+        int tipoDoc;
         System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             
         public buscarCliente()

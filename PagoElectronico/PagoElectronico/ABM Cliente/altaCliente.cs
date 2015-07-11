@@ -14,7 +14,7 @@ namespace PagoElectronico.ABM_Cliente
 
         string nombre;
         string apellido;
-        DateTime fechaElegida;
+        Date fechaElegida;
         string numeroDoc;
         String mail;
         string domicilio;
@@ -42,15 +42,14 @@ namespace PagoElectronico.ABM_Cliente
             //CARGAR NACIONALIDADES
 
             comando.CommandText = "Select * from getNacionalidades()";
-            System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
-
-            while (reader2.Read())
+            
+            while (reader.Read())
             {
-                comboBox1.Items.Add(reader2.GetSqlString(0));
+                comboBox1.Items.Add(reader.GetSqlString(0));
             }
             this.Show();
 
-            reader2.Dispose();
+            reader.Dispose();
            
 
 
@@ -64,23 +63,22 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //ver las validaciones vs defaults y not nulls en la base
             nombre = textBox11.Text;
             apellido = textBox1.Text;
-            numeroDoc = maskedTextBox1.Text;
+            numeroDoc = textBox10.Text;
             mail = textBox9.Text;
             domicilio = textBox3.Text;
-            if (textBox7.TextLength > 0) { piso = textBox7.Text; }
-            if (textBox4.TextLength > 0) { depto = textBox4.Text; }
+            piso = textBox7.Text;
+            depto = textBox4.Text;
             tipoDocumento = comboBox2.SelectedItem.ToString();
             Nacionalidad = comboBox1.SelectedItem.ToString();
+            
 
-            MessageBox.Show(fechaElegida+nombre + apellido + numeroDoc + mail + domicilio + piso + depto + tipoDocumento + Nacionalidad);
 
           //  System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
          //   comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text + ",'" + Program.fecha + "'";
            
-           // comando.ExecuteNonQuery();
+            comando.ExecuteNonQuery();
                
         }
 
@@ -89,16 +87,6 @@ namespace PagoElectronico.ABM_Cliente
             fechaElegida = unaFecha;
             textBox13.Text = unaFecha.ToShortDateString();
         }
-
-        private void altaCliente_Load(object sender, EventArgs e)
-        {
-            maskedTextBox1.Mask = "0999999999999999999999";
-        }
-
-        
-
-
-       
 
     }
 }
