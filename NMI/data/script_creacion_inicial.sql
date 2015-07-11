@@ -1526,7 +1526,7 @@ create procedure ingresarCliente
 @username varchar(50),@pw varchar(50),
 @pregunta varchar(50),@respuesta varchar(50),
 @nombre varchar(50),@apellido varchar(50),
-@tipodoc int,@numerodedoc numeric(18),
+@tipodoc varchar(50),@numerodedoc numeric(18),
 @mail varchar(50),@rol int,
 @pais varchar(50),@calle varchar(50),
 @numero int,@piso int,
@@ -1536,13 +1536,15 @@ Begin
 Begin transaction set transaction isolation level serializable
 	declare @coduser int
 	declare @numeropais varchar(50)
+	declare @numeroDelDoc numeric(18)
 	insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values 
 						(@username,@pw,@pregunta,@respuesta,'habilitado')
 	set @coduser = (select Id_usuario from Usuario where Useranme=@username)
 	insert into Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
 	set @numeropais = (select Id_Pais from Pais where Descripcion=@pais) 
+	set @numeroDelDoc = (select Id_DNI from Tipo_DNI where @tipodoc = Descripcion)
 	insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
-				values (@coduser,@nombre,@apellido,@tipodoc,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
+				values (@coduser,@nombre,@apellido,@tipodoc,@numeroDelDoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
 	
 	commit 
 	end 
