@@ -31,11 +31,13 @@ namespace PagoElectronico.Login
             if (!reader.Read())
             {
                 MessageBox.Show("El usuario o la contraseña es incorrecta");
+                //asentar login fallido
                 PagoElectronico.Login.login nuevoLogin = new PagoElectronico.Login.login();
                 nuevoLogin.Show();
             }
             else
             {
+                //asentar login exitoso
                 comboBox1.Items.Add(reader.GetSqlString(0));
 
                 while (reader.Read())
