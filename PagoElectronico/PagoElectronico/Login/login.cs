@@ -52,6 +52,20 @@ namespace PagoElectronico.Login
             this.Close();
             this.Hide();
             
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (textBox1.Text.Length > 0)
+            {
+                nombre = textBox1.Text;
+                new PagoElectronico
+                .Login
+                .Recuperar_contraseña(nombre).Show();
+            }
+            else { MessageBox.Show("Ingrese UserName"); }
+
+
         }      
     }
 }
