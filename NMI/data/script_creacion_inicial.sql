@@ -1581,25 +1581,28 @@ go
 
 create function datosDelCliente(@idDelCliente numeric(18))
 returns @tabla table (id_cliente int, Cod_usuario int, Nombre varchar(50),
-Apellido  varchar(50),Tipo_documento numeric(18),Numero_documento numeric(18),
+Apellido  varchar(50),Tipo_documento varchar(30),Numero_documento int, 
 Mail varchar(50),Cod_pais numeric(10),Calle varchar(50),
 Numero numeric(18),Piso int, Depto Char(1),Fecha date)
 as
 Begin
 insert into @tabla
-select * from Cliente where Id_cliente=@idDelCliente
+select Id_cliente,Cod_usuario,Nombre,Apellido,Descripcion,Numero_documento,mail,cod_pais,calle,numero,piso,depto,fecha_nacimiento from Cliente,Tipo_Dni where Tipo_Documento=Id_DNI and Id_cliente=@idDelCliente
 return 
 end
 
 go
+
 create procedure updeteaDatosDelCliente @id_cliente int, @Cod_usuario int, @Nombre varchar(50),
-@Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento numeric(18),
+@Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento int,
 @Mail varchar(50),@Cod_pais numeric(10),@Calle varchar(50),
 @Numero numeric(18),@Piso int, @Depto Char(1),@Fecha date
 as
 begin
+
+
 update Cliente set Nombre=@Nombre,Apellido=@Apellido,
-					Tipo_documento=@Tipo_documento,Numero_documento=@Numero_documento,
+					Tipo_documento=(select Id_Dni from Tipo_DNI where Descripcion=@Tipo_documento),Numero_documento=@Numero_documento,
 					Mail=@Mail,Cod_pais=@Cod_Pais,Calle=@Calle,Numero=@Numero,
 					Piso=@Piso,Depto=@Depto,Fecha_nacimiento=@Fecha 
 

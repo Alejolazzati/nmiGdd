@@ -30,6 +30,8 @@ namespace PagoElectronico.ABM_Cliente
         int Rol;
         String numero;
         
+        System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            
 
         public modificarCliente(String clie)
         {
@@ -37,7 +39,6 @@ namespace PagoElectronico.ABM_Cliente
             InitializeComponent();
             
             
-            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "Select * from dbo.datosDelCliente(" + cliente  + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             reader.Read();
@@ -63,7 +64,29 @@ namespace PagoElectronico.ABM_Cliente
         
         }
 
-       
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            nombre = textBox11.Text;
+            apellido = textBox1.Text;
+            numeroDoc = textBox10.Text;
+            mail = textBox9.Text;
+            domicilio = textBox3.Text;
+            numero = textBox7.Text;
+            depto = textBox4.Text;
+            piso = Convert.ToInt32(textBox2.Text);    
+            comando.CommandText = "execute dbo.updeteaDatosDelCliente " + cliente + ", '" + nombre + "','" + apellido + "','" + tipoDocumento + "'," + numeroDoc + ",'"+mail+"','"+domicilio+"'," + numero + "," + piso + ",'" + depto + "','" + fechaElegida + "'";
+            try
+            {
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Actualizacion correcta");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                MessageBox.Show(er.Message);
+            }
+
+        }
 
        
     }
