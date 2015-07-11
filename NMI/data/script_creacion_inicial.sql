@@ -5,6 +5,15 @@ begin
 	return getdate()
 end
 go
+create function agregarDias(@fecha date , @dias int)
+returns date
+as
+begin
+Declare @temp date
+select @temp=dateadd(day,@dias,@fecha)
+return @temp
+end
+
 
 
 Create table ultimaCuenta (
@@ -1071,7 +1080,7 @@ begin
 	
 	
 	update Cuenta
-	set Fecha_vencimiento=(Select dbo.fechaSistema()+ from Categoria
+	set Fecha_vencimiento=(Select dbo.agregarDias(dbo.fechaSistema(),Duracion) from Categoria
 	where Cuenta.Num_cuenta=@cuenta 
 	
 	commit
@@ -1442,3 +1451,18 @@ begin
 	return
 end
 go
+
+insert into Tipo_DNI values (1001,'DNI')
+
+go
+
+create function getNacionalidades()
+returns @tabla table(pais varchar(100))
+as
+begin
+insert into @tabla
+select Descripcion from Pais
+return end
+go
+
+
