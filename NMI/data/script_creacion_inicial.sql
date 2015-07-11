@@ -5,6 +5,15 @@ begin
 	return getdate()
 end
 go
+create function encriptarSha256(@texto varchar(30))
+returns varchar(50)
+as
+begin
+Declare @temp varchar(30)
+select @temp=Hashbytes('sha2_256',@texto)
+return @temp
+end
+go
 create function agregarDias(@fecha date , @dias int)
 returns date
 as
@@ -15,7 +24,7 @@ return @temp
 end
 
 
-
+go
 Create table ultimaCuenta (
 numero numeric(18)
 )
@@ -24,8 +33,8 @@ insert into ultimaCuenta values (0)
 go
 create table Usuario
 (Id_usuario int  identity(1,1) primary key ,
-Useranme Varchar(30) not null,
-Contraseña varchar(30) not null,
+Useranme Varchar(30) unique not null,
+Contraseña varchar(50) not null,
 Fecha_creacion date default dbo.fechaSistema(),
 Ultima_modificacion date not null default dbo.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
@@ -137,7 +146,7 @@ create table Cuenta(
 	Codigo_moneda int not null,
 	Codigo_categoria int not null,
 	Codigo_cliente int not null,
-	Codigo_estado int not null,
+	Codigo_estado int not null default 3,
 	Saldo float not null default 0,
 	foreign key (Codigo_pais) references Pais(Id_pais),
 	foreign key (Codigo_moneda) references Moneda(Id_moneda),
@@ -1099,7 +1108,7 @@ return @retorno
 end
 go
 
-create function rolesUsuario(@username varchar(30),@pass varchar(30))
+create function rolesUsuario(@username varchar(30))
 returns @tablaRetorno table
 (rol varchar(30)
 )
@@ -1107,7 +1116,7 @@ as
 begin
 insert into @tablaRetorno
 select Nombre_rol from Usuario,Usuario_rol,Rol
-where Id_rol=Cod_rol and Useranme=@username and Contraseña=@pass
+where Id_rol=Cod_rol and Useranme=@username 
 and Id_usuario=Cod_usuario
 return
 end
@@ -1466,3 +1475,47 @@ return end
 go
 
 
+create trigger encriptarDatosUsuario on Usuario
+for  insert
+as
+begin transaction
+update Usuario 
+set contraseña=dbo.ensriptarSha256(contraseña)
+where Id_usuario in (select id_usuario from inserted)
+
+update Usuario 
+set Respuesta=dbo.ensriptarSha256(Respuesta)
+where Id_usuario in (select id_usuario from inserted)
+commit
+go
+create procedure Loguear @username varchar(30),@contra varchar(30)
+as
+begin transaction set transaction isolation level serializable
+if(not Exists (select ID_usuario from Usuario where
+Useranme=@username
+))begin
+raiserror ('no existe usuario',16,150)
+rollback
+end
+if (exists (select ID_usuario from Usuario where
+Useranme=@username and Estado='inhabilitado'
+))
+begin
+raiserror ('usuario inhabilitado',16,150)
+rollback
+end 
+if (exists (select ID_usuario from Usuario where
+Useranme=@username and Contraseña=dbo.encriptarSha256(@contra)
+))
+begin
+insert into Intentos_login	 select ID_usuario,1 from Usuario where
+Useranme=@username
+end
+else
+begin
+insert into Intentos_login	 select ID_usuario,0 from Usuario where
+Useranme=@username
+insert into Intentos_fallidos select MAX(Id_login) from Intentos_login
+raiserror ('usuario inhabilitado',16,150)
+end
+commit
