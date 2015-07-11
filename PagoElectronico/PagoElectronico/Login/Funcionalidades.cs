@@ -67,8 +67,7 @@ namespace PagoElectronico.Login
             switch(caseSwitch)
             {
                 case "ABM Rol":
-                    PagoElectronico.ABM_Rol.formRol abmRol = new PagoElectronico.ABM_Rol.formRol();
-                    abmRol.Show();
+                    new PagoElectronico.ABM_Rol.Rol().Show();
                     break;
 
                 case "ABM usuario":

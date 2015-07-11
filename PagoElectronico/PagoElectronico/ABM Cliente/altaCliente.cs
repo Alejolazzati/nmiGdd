@@ -22,6 +22,12 @@ namespace PagoElectronico.ABM_Cliente
         string depto;
         String tipoDocumento;
         String Nacionalidad;
+        String userName;
+        String contraseña;
+        String preguntaSecreta;
+        String respuestaSecreta;
+        int Rol;
+        string numero;
         System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             
         public altaCliente()
@@ -51,6 +57,18 @@ namespace PagoElectronico.ABM_Cliente
 
             reader.Dispose();
            
+            //Cargar roles
+
+            comando.CommandText = "Select * from rolesDisponibles()";
+
+            while (reader.Read())
+            {
+                comboBox3.Items.Add(reader.GetSqlString(0));
+            }
+            this.Show();
+
+            reader.Dispose();
+           
 
 
         }
@@ -72,13 +90,20 @@ namespace PagoElectronico.ABM_Cliente
             depto = textBox4.Text;
             tipoDocumento = comboBox2.SelectedItem.ToString();
             Nacionalidad = comboBox1.SelectedItem.ToString();
-            
+            userName=textBox6.Text;
+            contraseña = textBox7.Text;
+            preguntaSecreta = textBox8.Text;
+            respuestaSecreta = textBox9.Text;
+            numero = textBox12.Text;
+            if (comboBox3.SelectedItem.ToString()=="Cliente") {
+                        Rol = 1; 
+            }
+            else Rol=2;
 
-
-          //  System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-         //   comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text + ",'" + Program.fecha + "'";
-           
-            comando.ExecuteNonQuery();
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "execute dbo.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , '"+ numero+ "' , '"+ piso +"','"+ depto+"', '"+ fechaElegida ;
+            try { comando.ExecuteNonQuery(); }
+            catch { MessageBox.Show("Ingrese correctamente los valores"); }
                
         }
 
@@ -87,6 +112,10 @@ namespace PagoElectronico.ABM_Cliente
             fechaElegida = unaFecha;
             textBox13.Text = unaFecha.ToShortDateString();
         }
+
+        
+
+        
 
     }
 }

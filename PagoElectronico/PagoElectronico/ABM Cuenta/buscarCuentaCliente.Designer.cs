@@ -28,27 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button8 = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(163, 245);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(94, 40);
-            this.button8.TabIndex = 23;
-            this.button8.Text = "Realizar facturación";
-            this.button8.UseVisualStyleBackColor = true;
             // 
             // listBox2
             // 
@@ -68,15 +55,6 @@
             this.label1.TabIndex = 24;
             this.label1.Text = "Cuentas disponibles:";
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(263, 245);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 40);
-            this.button2.TabIndex = 25;
-            this.button2.Text = "Realizar transferencia";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(102, 192);
@@ -94,29 +72,11 @@
             this.label2.TabIndex = 41;
             this.label2.Text = "Saldo disponible";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(363, 245);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 40);
-            this.button1.TabIndex = 43;
-            this.button1.Text = "Realizar retiro";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(463, 245);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 40);
-            this.button3.TabIndex = 44;
-            this.button3.Text = "Realizar depósito";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(63, 245);
+            this.button4.Location = new System.Drawing.Point(352, 333);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(94, 40);
+            this.button4.Size = new System.Drawing.Size(94, 49);
             this.button4.TabIndex = 45;
             this.button4.Text = "Modificar cuenta";
             this.button4.UseVisualStyleBackColor = true;
@@ -150,13 +110,9 @@
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button8);
             this.Controls.Add(this.listBox2);
             this.Name = "buscarCuentaCliente";
             this.Text = "buscarCuentaCliente";
@@ -168,14 +124,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;

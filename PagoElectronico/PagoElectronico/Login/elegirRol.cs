@@ -21,37 +21,22 @@ namespace PagoElectronico.Login
 
         }
 
-        public void llamar(string unNombre, string unaPass)
+        public void llamar(string unNombre)
         {
             
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from rolesUsuario('" +unNombre + "','" + unaPass + "')";
+            comando.CommandText = "Select * from rolesUsuario('" +unNombre + "')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
-
-            if (!reader.Read())
-            {
-                MessageBox.Show("El usuario o la contraseña es incorrecta");
-                PagoElectronico.Login.login nuevoLogin = new PagoElectronico.Login.login();
-                nuevoLogin.Show();
-            }
-            else
-            {
-                comboBox1.Items.Add(reader.GetSqlString(0));
-
-                while (reader.Read())
+            while (reader.Read())
                 {
                     comboBox1.Items.Add(reader.GetSqlString(0));
 
                 }
                 this.Show();   
-            }
             reader.Dispose();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {

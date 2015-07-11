@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             this.button6 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -41,15 +40,12 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox3 = new System.Windows.Forms.ListBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.listBox3);
-            this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Controls.Add(this.button7);
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.button5);
@@ -67,23 +63,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Buscar cuenta";
             // 
-            // button8
+            // listBox3
             // 
-            this.button8.Location = new System.Drawing.Point(171, 439);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(94, 40);
-            this.button8.TabIndex = 20;
-            this.button8.Text = "Realizar facturación";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(271, 439);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(99, 40);
-            this.button7.TabIndex = 19;
-            this.button7.Text = "Consultar saldo ";
-            this.button7.UseVisualStyleBackColor = true;
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(209, 75);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(8, 4);
+            this.listBox3.TabIndex = 21;
             // 
             // button6
             // 
@@ -171,14 +157,6 @@
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
             // 
-            // listBox3
-            // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.Location = new System.Drawing.Point(209, 75);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(8, 4);
-            this.listBox3.TabIndex = 21;
-            // 
             // buscarCuentaAdm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -206,8 +184,6 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.ListBox listBox3;
     }
 }
