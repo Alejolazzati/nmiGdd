@@ -1549,3 +1549,99 @@ Begin transaction set transaction isolation level serializable
 	commit 
 	end 
 go
+
+
+create function clientesConMasTransferenciasEntreCuentas()
+returns @tabla table(
+nombre varchar(30),
+apellido varchar(30)
+)
+as begin
+insert into @tabla
+select top 5 c1.Nombre,c1.Apellido from cliente c1,cuenta c2,Transferencias t,cuenta c3,cliente c4
+where
+c1.Id_cliente=c2.Codigo_cliente and c2.Num_cuenta=t.Cod_cuenta_origen and c3.Num_cuenta=t.Cod_cuenta_destino
+and c3.Codigo_cliente=c4.Id_cliente and c1.Id_cliente=c4.Id_cliente
+group by c1.Nombre,c1.Apellido
+order by COUNT(*) desc
+return
+end
+go
+
+
+create function datosDelCliente(@idDelCliente numeric(18))
+returns @tabla table (id_cliente int, Cod_usuario int, Nombre varchar(50),
+Apellido  varchar(50),Tipo_documento varchar(50),Numero_documento numeric(18),
+Mail varchar(50),Cod_pais numeric(10),Calle varchar(50),
+Numero numeric(18),Piso int, Depto Char(1),Fecha date)
+as
+Begin
+insert into @tabla
+select * from Cliente where Id_cliente=@idDelCliente
+return 
+end
+
+
+create procedure updeteaDatosDelCliente @id_cliente int, @Cod_usuario int, @Nombre varchar(50),
+@Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento numeric(18),
+@Mail varchar(50),@Cod_pais numeric(10),@Calle varchar(50),
+@Numero numeric(18),@Piso int, @Depto Char(1),@Fecha date
+as
+begin
+update Cliente set Nombre=@Nombre,Apellido=@Apellido,
+					Tipo_documento=@Tipo_documento,Numero_documento=@Numero_documento,
+					Mail=@Mail,Cod_pais=@Cod_Pais,Calle=@Calle,Numero=@Numero,
+					Piso=@Piso,Depto=@Depto,Fecha_nacimiento=@Fecha 
+
+					
+					where Id_cliente=@id_cliente
+end
+go
+go
+
+
+create table suscripciones
+(id int identity(1,1) primary key,
+cuenta numeric(18),
+cantidad int,
+factura numeric(18) foreign key references Facturas(Num_factura),
+costo float)
+
+
+create procedure pagarSuscripciones @cuenta numeric(18),@cantidad int, @numeroFactura numeric(18)
+as
+begin
+insert into suscripciones (cuenta,cantidad,factura) values
+			(@cuenta,@cantidad,@numeroFactura)
+end
+go
+
+
+
+
+
+
+
+create trigger actualizarCosto 
+on Suscripciones
+for insert
+as
+begin transaction
+	declare @costo float
+	update suscripciones set costo = 
+	cantidad*(select precioSuscripcion from Cuenta,Categoria where Cuenta.Codigo_categoria=Categoria.Id_categoria
+	and Cuenta.Num_cuenta=cuenta) where id in (select id from inserted)  
+	 
+	commit 
+	go
+
+create trigger actualizarVencimiento
+on Suscripciones 
+for insert
+as
+begin transaction
+	update Cuenta set Fecha_vencimiento = dateadd (day,(select inserted.cantidad from inserted
+	where inserted.cuenta=Num_cuenta)*(select Duracion from Categoria where Codigo_categoria=Categoria.Id_categoria),Fecha_vencimiento)
+	where Num_cuenta in (select Cuenta from inserted)
+commit
+go
