@@ -34,7 +34,7 @@ go
 create table Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) unique not null,
-Contrase�a varchar(50) not null,
+Contraseña varchar(50) not null,
 Fecha_creacion date default dbo.fechaSistema(),
 Ultima_modificacion date not null default dbo.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
@@ -742,7 +742,7 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 while @@FETCH_STATUS=0
 begin
-Insert into Usuario(Useranme,Contrase�a,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
+Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
 Insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
@@ -1286,7 +1286,7 @@ Begin
 	end
 	go
 	
-	Insert into Usuario(Useranme,Contrase�a,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
+	Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
 	go
 	insert into Usuario_rol select MAX (Usuario.Id_usuario),2 from Usuario 
 	go
@@ -1425,7 +1425,7 @@ drop table usuario
 end
 go
 
-create function clientesInhabilitados(@a�o int,@trimestre int)
+create function clientesInhabilitados(@año int,@trimestre int)
 returns @tabla table(
 num_cliente int,
 nom_cliente varchar(32)
@@ -1435,7 +1435,7 @@ begin
 insert into @tabla
 select top 5 id_cliente,nombre from Cliente,Cuenta as c,inhabilitacionesDeCuenta as i
 where i.num_cuenta=c.num_cuenta and c.codigo_cliente=id_cliente 
-and (year(i.fecha)=@a�o) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
+and (year(i.fecha)=@año) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
 order by i.fecha
 return
 end
@@ -1480,7 +1480,7 @@ for  insert
 as
 begin transaction
 update Usuario 
-set contrase�a=dbo.ensriptarSha256(contrase�a)
+set contraseña=dbo.ensriptarSha256(contraseña)
 where Id_usuario in (select id_usuario from inserted)
 
 update Usuario 
@@ -1505,7 +1505,7 @@ raiserror ('usuario inhabilitado',16,150)
 rollback
 end 
 if (exists (select ID_usuario from Usuario where
-Useranme=@username and Contrase�a=dbo.encriptarSha256(@contra)
+Useranme=@username and Contraseña=dbo.encriptarSha256(@contra)
 ))
 begin
 insert into Intentos_login	 select ID_usuario,1 from Usuario where
@@ -1519,3 +1519,31 @@ insert into Intentos_fallidos select MAX(Id_login) from Intentos_login
 raiserror ('usuario inhabilitado',16,150)
 end
 commit
+
+
+
+create procedure ingresarCliente
+@username varchar(50),@pw varchar(50),
+@pregunta varchar(50),@respuesta varchar(50),
+@nombre varchar(50),@apellido varchar(50),
+@tipodoc int,@numerodedoc numeric(18),
+@mail varchar(50),@rol int,
+@pais varchar(50),@calle varchar(50),
+@numero int,@piso int,
+@depto char(1),@fecha date
+as
+Begin
+Begin transaction set transaction isolation level serializable
+	declare @coduser int
+	declare @numeropais varchar(50)
+	insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values 
+						(@username,@pw,@pregunta,@respuesta,'habilitado')
+	set @coduser = (select Id_usuario from Usuario where Useranme=@username)
+	insert into Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
+	set @numeropais = (select Id_Pais from Pais where Descripcion=@pais) 
+	insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
+				values (@coduser,@nombre,@apellido,@tipodoc,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
+	
+	commit 
+	end 
+go
