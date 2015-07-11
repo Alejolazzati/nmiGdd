@@ -10,7 +10,7 @@ returns varchar(50)
 as
 begin
 Declare @temp varchar(30)
-select @temp=Hashbytes('sha2_256',@texto)
+select @temp=Hashbytes('sha1',@texto)
 return @temp
 end
 go
@@ -43,20 +43,20 @@ Respuesta varchar(50) not null
 go
 /*
 create trigger encriptarDatosUsuario on Usuario
-for  insert
+instead of  update,insert
 as
 begin transaction
-update Usuario 
+update inserted 
 set contraseña=dbo.ensriptarSha256(contraseña)
-where useranme in (select useranme from inserted)
 
-update Usuario 
-set Respuesta=dbo.ensriptarSha256(Respuesta)
-where useranme in (select useranme from inserted)
+
+delete from usuarios select * from deleted
+
+insert into usuarios select Username,Contraseña, from inserted
 commit
-go
+go/*
 
-*/
+ 
 create table Pais
 (Id_Pais int primary key,
 Descripcion varchar(50) not null
@@ -938,7 +938,7 @@ return @saldo
 end
 go
 
-/*create  trigger inhabilitarCuentasConMas5
+create  trigger inhabilitarCuentasConMas5
 on Transacciones
 after insert
 as
@@ -960,7 +960,7 @@ insert into 	inhabilitacionesDeCuenta
 	having count (*) > 5 
 	
 	commit 
-go*/
+go
 
 create Trigger inhabilitarCuentasConMasDe5
 on Transferencias
@@ -1058,7 +1058,7 @@ Begin
 			where Cod_transaccion=Id_transaccion
 			)union(
 			Select Cod_cuenta from Modificacion_cuenta
-			where Cod_transaccion=Id_transaccion)) in (select * from cuentasPorCliente(544) as d )
+			where Cod_transaccion=Id_transaccion)) in (select * from cuentasPorCliente(@numCliente) as d )
 	
 	
 	commit
@@ -1593,17 +1593,17 @@ end
 
 go
 
-create procedure updeteaDatosDelCliente @id_cliente int, @Cod_usuario int, @Nombre varchar(50),
+create procedure updeteaDatosDelCliente @id_cliente int,  @Nombre varchar(50),
 @Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento int,
-@Mail varchar(50),@Cod_pais numeric(10),@Calle varchar(50),
-@Numero numeric(18),@Piso int, @Depto Char(1),@Fecha date
+@Mail varchar(50),@Calle varchar(50),
+@Numero int,@Piso smallint, @Depto Char(1),@Fecha date
 as
 begin
 
 
 update Cliente set Nombre=@Nombre,Apellido=@Apellido,
 					Tipo_documento=(select Id_Dni from Tipo_DNI where Descripcion=@Tipo_documento),Numero_documento=@Numero_documento,
-					Mail=@Mail,Cod_pais=@Cod_Pais,Calle=@Calle,Numero=@Numero,
+					Mail=@Mail,Calle=@Calle,Numero=@Numero,
 					Piso=@Piso,Depto=@Depto,Fecha_nacimiento=@Fecha 
 
 					
@@ -1613,6 +1613,7 @@ end
 go
 
 
+ 
 create table suscripciones
 (id int identity(1,1) primary key,
 cuenta numeric(18),
@@ -1661,3 +1662,39 @@ go
 
 
 
+create procedure nuevaContra @usuario varchar(30),@respuesta varchar(50),@contra varchar(30)
+as
+begin transaction
+if(@respuesta
+--dbo.encriptarSha256(@respuesta)
+<> (select respuesta from Usuario where Useranme=@usuario)
+)
+begin
+raiserror ('respuesta secreta incorrecta',15,250)
+rollback
+return
+end
+
+update Usuario
+set Contraseña=@contra
+where Useranme=@usuario
+commit 
+GO
+
+create function totalFactura(@fact numeric(18))
+returns int
+as
+begin
+Declare @i int
+Select @i =sum(precio) from(
+select precio=Costo from Transacciones
+where cod_factura =@fact
+union
+select precio=costo from suscripciones
+where factura=@fact
+
+) sub
+
+return @i
+end
+go
