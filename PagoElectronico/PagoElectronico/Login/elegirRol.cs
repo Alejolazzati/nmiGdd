@@ -25,7 +25,7 @@ namespace PagoElectronico.Login
         {
             
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from rolesUsuario('" +unNombre + "')";
+            comando.CommandText = "Select * from NMI.rolesUsuario('" +unNombre + "')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             while (reader.Read())
                 {

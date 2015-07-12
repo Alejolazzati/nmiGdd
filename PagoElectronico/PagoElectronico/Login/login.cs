@@ -37,7 +37,7 @@ namespace PagoElectronico.Login
         private void button2_Click(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "execute dbo.loguear '"+nombre+"','"+pass+"'"  ;
+            comando.CommandText = "execute NMI.loguear '"+nombre+"','"+pass+"'"  ;
             try
             {
                 comando.ExecuteNonQuery();
