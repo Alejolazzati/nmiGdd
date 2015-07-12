@@ -24,13 +24,14 @@ namespace PagoElectronico.Login
 
         private void Recuperar_contraseña_Load(object sender, EventArgs e)
         {
-            comando.CommandText = "Select pregunta_secreta from usuario where useranme='" + userName + "'";
+            comando.CommandText = "Select pregunta_secreta from usuario where useranme='" + username + "'";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             if (reader.Read())
                 preguntaSecreta = reader.GetString(0);
             else
             {
                 MessageBox.Show("Usuario es incorrecto");
+                this.Close();
             }
             reader.Dispose();
             textBox1.Text = preguntaSecreta;
