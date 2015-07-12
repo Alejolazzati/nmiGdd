@@ -782,7 +782,7 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 while @@FETCH_STATUS=0
 begin
 Insert into NMI.Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
-Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
+Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from NMI.Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 end
