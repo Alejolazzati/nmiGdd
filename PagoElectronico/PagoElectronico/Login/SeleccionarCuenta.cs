@@ -11,8 +11,10 @@ namespace PagoElectronico.Login
 {
     public partial class SeleccionarCuenta : Form
     {
-        public SeleccionarCuenta()
+        int num;
+        public SeleccionarCuenta(int i)
         {
+            num = i;
             InitializeComponent();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "Select * from cuentasPorCliente(" + Program.cliente + ")";
@@ -30,9 +32,15 @@ namespace PagoElectronico.Login
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {   if (num==1)
             new PagoElectronico.Transferencias.nuevaTransferencia(comboBox1.SelectedItem.ToString()).Show();
-            this.Close();
+        if (num == 2)
+        {
+            Program.cuenta = comboBox1.SelectedItem.ToString();
+            new PagoElectronico.Facturacion.pagarSuscripciones().Show();
+        }
+                
+                this.Close();
         }
 
         private void SeleccionarCuenta_Load(object sender, EventArgs e)

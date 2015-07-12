@@ -11,8 +11,10 @@ namespace PagoElectronico.Login
 {
     public partial class SeleccionarCliente : Form
     {
-        public SeleccionarCliente()
+        int num;
+        public SeleccionarCliente(int i)
         {
+            num = i;
             InitializeComponent();
         }
 
@@ -23,8 +25,18 @@ namespace PagoElectronico.Login
 
 
         private void button1_Click(object sender, EventArgs e)
-        {   
-            Program.cliente=Convert.ToInt32(textBox3.Text);
+        {
+            Program.cliente = Convert.ToInt32(textBox3.Text);
+            if (num == 1)
+            {
+                
+                new PagoElectronico.Facturacion.Facturacion().Show();
+            }
+        }
+
+        private void SeleccionarCliente_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

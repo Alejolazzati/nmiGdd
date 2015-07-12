@@ -31,6 +31,7 @@ namespace PagoElectronico.Login
             else
             {
                 MessageBox.Show("Usuario es incorrecto");
+                this.Close();
             }
             reader.Dispose();
             textBox1.Text = preguntaSecreta;

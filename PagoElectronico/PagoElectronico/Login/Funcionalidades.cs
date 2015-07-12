@@ -63,7 +63,7 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String caseSwitch = comboBox1.SelectedItem.ToString();
+             String caseSwitch = comboBox1.SelectedItem.ToString();
             switch(caseSwitch)
             {
                 case "ABM Rol":
@@ -91,8 +91,9 @@ namespace PagoElectronico.Login
 
                 case "Facturacion":
                     if (roli == 2)
-                        new SeleccionarCliente().Show();
-                    new PagoElectronico.Facturacion.altaFacturacion(roli).Show();
+                        new SeleccionarCliente(1).Show();
+                    else
+                        new PagoElectronico.Facturacion.Facturacion().Show(); 
                     break;
 
                 case "Consultar saldo":
@@ -106,7 +107,7 @@ namespace PagoElectronico.Login
 
 
                 case "Transferencias":
-                    new SeleccionarCuenta();
+                    new SeleccionarCuenta(1);
                     break;
 
                 case "Depositos":

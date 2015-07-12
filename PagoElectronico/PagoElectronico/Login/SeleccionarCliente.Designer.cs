@@ -49,7 +49,6 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(224, 20);
             this.textBox3.TabIndex = 9;
-            //this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // button1
             // 
@@ -71,6 +70,7 @@
             this.Controls.Add(this.label1);
             this.Name = "SeleccionarCliente";
             this.Text = "SeleccionarCliente";
+            this.Load += new System.EventHandler(this.SeleccionarCliente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
