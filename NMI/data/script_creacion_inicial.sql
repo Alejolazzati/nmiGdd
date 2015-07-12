@@ -1,11 +1,14 @@
-create function fechaSistema()
+create schema NMI
+
+create function NMI.fechaSistema()
 returns datetime 
 as
 begin
 	return getdate()
 end
 go
-create function encriptarSha256(@texto varchar(30))
+
+create function NMI.encriptarSha256(@texto varchar(30))
 returns varchar(50)
 as
 begin
@@ -14,7 +17,8 @@ select @temp=Hashbytes('sha1',@texto)
 return @temp
 end
 go
-create function agregarDias(@fecha date , @dias int)
+
+create function NMI.agregarDias(@fecha date , @dias int)
 returns date
 as
 begin
@@ -22,54 +26,57 @@ Declare @temp date
 select @temp=dateadd(day,@dias,@fecha)
 return @temp
 end
-
-
 go
-Create table ultimaCuenta (
+
+Create table NMI.ultimaCuenta (
 numero numeric(18)
 )
 go
-insert into ultimaCuenta values (0) 
+
+insert into NMI.ultimaCuenta values (0) 
 go
-create table Usuario
+
+create table NMI.Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) unique not null,
-Contraseña varchar(50) not null,
-Fecha_creacion date default dbo.fechaSistema(),
-Ultima_modificacion date not null default dbo.fechaSistema(), 
+ContraseÃ±a varchar(50) not null,
+Fecha_creacion date default NMI.fechaSistema(),
+Ultima_modificacion date not null default NMI.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
 Respuesta varchar(50) not null
 )
 go
+
 /*
-create trigger encriptarDatosUsuario on Usuario
+create trigger NMI.encriptarDatosUsuario on Usuario
 instead of  update,insert
 as
 begin transaction
 update inserted 
-set contraseña=dbo.ensriptarSha256(contraseña)
+set contraseÃ±a=NMI..ensriptarSha256(contraseÃ±a)
 
 
-delete from usuarios select * from deleted
+delete from NMI.usuarios select * from deleted
 
-insert into usuarios select Username,Contraseña, from inserted
+insert into NMI.usuarios select Username,ContraseÃ±a, from inserted
 commit
-go/*
+go*/
 
  
-create table Pais
+create table NMI.Pais
 (Id_Pais int primary key,
 Descripcion varchar(50) not null
 )
 go
-create table Tipo_DNI(
+
+create table NMI.Tipo_DNI(
 Id_DNI int primary key,
 Descripcion Varchar(20) not null 
 )
 go
 
 
-Create Table Cliente(  --elimino localidad
+Create Table NMI.Cliente(  --elimino localidad
 Id_cliente int identity(1,1) primary key,
 Cod_usuario int not null,
 Nombre varchar (50) not null,
@@ -85,55 +92,63 @@ Depto char,
 Fecha_nacimiento date not null,
 unique (Tipo_documento,Numero_Documento),
 unique (mail),
-foreign key (Cod_pais) references Pais(Id_pais),
-foreign key (Cod_usuario) references Usuario(Id_usuario),
+foreign key (Cod_pais) references NMI.Pais(Id_pais),
+foreign key (Cod_usuario) references NMI.Usuario(Id_usuario),
 )
 go
-Create table Intentos_login(
+
+Create table NMI.Intentos_login(
 	Id_login int identity(1,1) primary key,
 	Codigo_usuario int not null,
 	Es_correcto bit not null,
-	foreign key (Codigo_usuario) references Usuario(Id_usuario)
-)
-go 
-Create table Intentos_fallidos(
-	Id_fallido int identity(1,1) primary key,
-	Cod_login int not null,
-	foreign key (Cod_login) references Intentos_login(Id_login)
+	foreign key (Codigo_usuario) references NMI.Usuario(Id_usuario)
 )
 go
-Create table Estado_rol(
+
+Create table NMI.Intentos_fallidos(
+	Id_fallido int identity(1,1) primary key,
+	Cod_login int not null,
+	foreign key (Cod_login) references NMI.Intentos_login(Id_login)
+)
+go
+
+Create table NMI.Estado_rol(
 	Id_estado int identity(1,1) primary key,
 	Descripcion varchar(20) not null
 )
 go
-Create table Rol(
+
+Create table NMI.Rol(
 	Id_rol int identity(1,1) primary key,
 	Nombre_rol varchar(30) not null,
 	Cod_estado int not null,
-	foreign key (Cod_estado) references Estado_rol(Id_estado),
+	foreign key (Cod_estado) references NMI.Estado_rol(Id_estado),
 )
 go
-Create table Usuario_rol(
+
+Create table NMI.Usuario_rol(
 	Cod_usuario int not null,
 	Cod_rol int not null,
-	Foreign key (Cod_usuario) references Usuario(Id_usuario),
-	Foreign key (Cod_rol) references Rol(Id_rol)
+	Foreign key (Cod_usuario) references NMI.Usuario(Id_usuario),
+	Foreign key (Cod_rol) references NMI.Rol(Id_rol)
 )
 go
-Create table Funcionalidad(
+
+Create table NMI.Funcionalidad(
 	Id_funcionalidad int identity(1,1) primary key, --Agrego identity
 	Descripcion varchar(30) not null
 )
 go
-Create table Rol_funcionalidad(
+
+Create table NMI.Rol_funcionalidad(
 	Cod_rol int not null,
 	Cod_funcionalidad int not null
-	foreign key (Cod_rol) references Rol(Id_rol),
-	foreign key (Cod_funcionalidad) references Funcionalidad(Id_funcionalidad)
+	foreign key (Cod_rol) references NMI.Rol(Id_rol),
+	foreign key (Cod_funcionalidad) references NMI.Funcionalidad(Id_funcionalidad)
 )
 go	
-create table Categoria(
+
+create table NMI.Categoria(
 	Id_categoria int identity(1,1) primary key,
 	Descripcion varchar(30) not null,
 	Costo float not null,
@@ -141,20 +156,23 @@ create table Categoria(
 	Duracion int
 )
 go
-create table Moneda(
+
+create table NMI.Moneda(
 	Id_moneda int identity(1,1) primary key,
 	Descripcion varchar(20) not null,
 	Conversion float not null default 1	
 )
 go
-create table Estado_cuenta(
+
+create table NMI.Estado_cuenta(
 	Id_estado int identity(1,1) primary key,
 	Descripcion varchar(20) not null
 )
 go
-create table Cuenta(
+
+create table NMI.Cuenta(
 	Num_cuenta numeric(18) primary key, -- modificacion del identity NO TIENE Q SER IDENTITY
-	Fecha_apertura date not null default dbo.fechaSistema(),
+	Fecha_apertura date not null default NMI.fechaSistema(),
 	Fecha_cierre date default null,
 	Fecha_vencimiento date,
 	Codigo_pais int not null,
@@ -163,57 +181,55 @@ create table Cuenta(
 	Codigo_cliente int not null,
 	Codigo_estado int not null default 3,
 	Saldo float not null default 0,
-	foreign key (Codigo_pais) references Pais(Id_pais),
-	foreign key (Codigo_moneda) references Moneda(Id_moneda),
-	foreign key (Codigo_categoria) references Categoria(Id_categoria),
-	foreign key (Codigo_cliente) references Cliente(Id_cliente),
-	foreign key (Codigo_estado) references Estado_cuenta(Id_estado)
+	foreign key (Codigo_pais) references NMI.Pais(Id_pais),
+	foreign key (Codigo_moneda) references NMI.Moneda(Id_moneda),
+	foreign key (Codigo_categoria) references NMI.Categoria(Id_categoria),
+	foreign key (Codigo_cliente) references NMI.Cliente(Id_cliente),
+	foreign key (Codigo_estado) references NMI.Estado_cuenta(Id_estado)
 )
 go	
-Create table Estado_transaccion(
+
+Create table NMI.Estado_transaccion(
 	Id_estado int identity(1,1) primary key,
 	Descripcion varchar(30) not null,
 )
 go
-Create table Transacciones(
+
+Create table NMI.Transacciones(
 	Id_transaccion int identity(1,1) primary key,
 	Cod_estado int not null,
 	Costo float not null,
-	Fecha date not null default dbo.fechaSistema(),
-	foreign key (Cod_estado) references Estado_transaccion(Id_estado)
+	Fecha date not null default NMI.fechaSistema(),
+	foreign key (Cod_estado) references NMI.Estado_transaccion(Id_estado)
 )
 go
-create table Tipo_modificacion(
+
+create table NMI.Tipo_modificacion(
 	Id_tipo int identity(1,1) primary key,
 	Descripcion varchar(30) not null,
 )
 go
-create table Modificacion_cuenta(
+
+create table NMI.Modificacion_cuenta(
 	Id_modificacion int identity(1,1) primary key,
 	Cod_tipo int not null,
 	Cod_cuenta numeric(18) not null,
 	Cod_transaccion int not null,
-	foreign key (Cod_tipo) references Tipo_modificacion(Id_tipo),
-	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
-	foreign key (Cod_transaccion) references Transacciones(Id_transaccion)
+	foreign key (Cod_tipo) references NMI.Tipo_modificacion(Id_tipo),
+	foreign key (Cod_cuenta) references NMI.Cuenta(Num_cuenta),
+	foreign key (Cod_transaccion) references NMI.Transacciones(Id_transaccion)
 )
-
 go
-/*
-create table Suscripcion(
-Cod_cuenta numeric(18),
 
-)*/
-
-create table Transferencias(
+create table NMI.Transferencias(
 	Id_transferencia int identity(1,1) primary key,
 	Importe float not null,
 	Cod_cuenta_origen numeric(18) not null,
 	Cod_cuenta_destino numeric(18) not null,
 	Cod_transaccion int not null,
-	foreign key (Cod_cuenta_origen) references Cuenta(Num_cuenta),
-	foreign key (Cod_cuenta_destino) references Cuenta(Num_cuenta),
-	foreign key (Cod_transaccion) references Transacciones(Id_transaccion),
+	foreign key (Cod_cuenta_origen) references NMI.Cuenta(Num_cuenta),
+	foreign key (Cod_cuenta_destino) references NMI.Cuenta(Num_cuenta),
+	foreign key (Cod_transaccion) references NMI.Transacciones(Id_transaccion),
 	check (Importe>=0)
 	
 
@@ -222,20 +238,21 @@ go
 
 
 
-create table Bancos(
+create table NMI.Bancos(
 	Id_banco int identity(1,1) primary key,
 	Nombre_banco varchar(30) not null,
 	Cod_pais int not null,
-	foreign key (Cod_pais) references Pais(Id_pais)
+	foreign key (Cod_pais) references NMI.Pais(Id_pais)
 )
 go
 
-create table inhabilitacionesDeCuenta(
-	num_cuenta numeric(18) foreign key references Cuenta(num_cuenta),
+create table NMI.inhabilitacionesDeCuenta(
+	num_cuenta numeric(18) foreign key references NMI.Cuenta(num_cuenta),
 	fecha datetime
 )
 go
-create trigger asentarCuentaInhabiltada on inhabilitacionesDeCuenta
+
+create trigger NMI.asentarCuentaInhabiltada on NMI.inhabilitacionesDeCuenta
 for insert
 as begin transaction
 Declare cursorPasados cursor for
@@ -248,9 +265,9 @@ select num_cuenta from inserted
 	
 	while (@@Fetch_status=0)
 	Begin
-		  update cuenta
-		  set codigo_estado= 2
-		  where num_cuenta=@cuentaOrigen
+		  update NMI.cuenta
+		  set NMI.cuenta.codigo_estado= 2
+		  where NMI.cuenta.num_cuenta=@cuentaOrigen
 			
 			fetch next from cursorPasados into @cuentaOrigen
 	end				
@@ -260,12 +277,13 @@ select num_cuenta from inserted
 	commit
 go
 
-create table Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
+create table NMI.Tarjeta_Emisor(           --Tabla de las emisoras de las tarjes american, visa etc
 	Id_tarjeta_emisor int identity(1,1) primary key,
 	Descripcion varchar(40)
 )
 go
-create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
+
+create table NMI.Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
 	Id_tarjeta int identity(1,1) primary key,
 	Num_tarjeta numeric(18) not null,
 	Cod_cliente int,
@@ -273,12 +291,12 @@ create table Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero c
 	Fecha_emision date not null,
 	Fecha_vencimiento date not null,
 	Cod_seguridad int,
-	foreign key (Cod_cliente) references Cliente(Id_cliente),
-	foreign key (Cod_emisor) references Tarjeta_Emisor(Id_tarjeta_emisor)
+	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente),
+	foreign key (Cod_emisor) references NMI.Tarjeta_Emisor(Id_tarjeta_emisor)
 )
 go
 
-create table Depositos(
+create table NMI.Depositos(
 	Id_deposito numeric(18) primary key,
 	Cod_cuenta numeric(18) not null,
 	Cod_moneda int not null,
@@ -286,67 +304,69 @@ create table Depositos(
 	Cod_TC int not null,
 	Fecha date,
 	check(Importe>1),
-	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
-	foreign key (Cod_moneda) references Moneda(Id_moneda),
-	foreign key (Cod_TC) references Tarjetas_credito(Id_tarjeta)
+	foreign key (Cod_cuenta) references NMI.Cuenta(Num_cuenta),
+	foreign key (Cod_moneda) references NMI.Moneda(Id_moneda),
+	foreign key (Cod_TC) references NMI.Tarjetas_credito(Id_tarjeta)
 )
 go
-create table Cheque(
+
+create table NMI.Cheque(
 	Id_cheque int identity(1,1) primary key,
 	Num_cheque int not null,
 	Cod_banco int not null,
 	Cod_cliente int not null,
-	Fecha date not null default dbo.fechaSistema(),
+	Fecha date not null default NMI.fechaSistema(),
 	
-	foreign key (Cod_banco) references Bancos(Id_banco),
-	foreign key (Cod_cliente) references Cliente(Id_cliente)
+	foreign key (Cod_banco) references NMI.Bancos(Id_banco),
+	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente)
 )
 go
-Create Table Facturas(
+
+Create Table NMI.Facturas(
 	Num_factura numeric(18) primary key,
 	Fecha_factura Date not null,
 )
 go
 
 
-create table Retiros (
+create table NMI.Retiros (
 	Id_retiro numeric(18) primary key,
 	Cod_cuenta numeric(18) not null,
 	Cod_cheque int not null,
-	foreign key (Cod_cuenta) references Cuenta(Num_cuenta),
-	Foreign key (Cod_cheque) references Cheque(Id_cheque)
+	foreign key (Cod_cuenta) references NMI.Cuenta(Num_cuenta),
+	Foreign key (Cod_cheque) references NMI.Cheque(Id_cheque)
 )
 go
 
 
 
 	
-Alter table Usuario
+Alter table NMI.Usuario
 add Estado Varchar(20) not null
 go	
-Alter table Transferencias
+Alter table NMI.Transferencias
 add Cod_moneda int not null
 go
-Alter table Transferencias
-add foreign key (Cod_moneda) references Moneda(Id_moneda)
+Alter table NMI.Transferencias
+add foreign key (Cod_moneda) references NMI.Moneda(Id_moneda)
 go
-ALTER TABLE Cheque
+ALTER TABLE NMI.Cheque
 add Importe float not null
 go
-Alter table Cheque 
+Alter table NMI.Cheque 
 add Cod_moneda int not null
 go
-Alter table Cheque 
-add foreign key (Cod_moneda) references Moneda(Id_moneda)
+Alter table NMI.Cheque 
+add foreign key (Cod_moneda) references NMI.Moneda(Id_moneda)
 go
-alter table Transacciones
+alter table NMI.Transacciones
 add  cod_factura numeric(18)
 go
-alter table Transacciones
-add foreign key (cod_factura) references Facturas(Num_factura)
+alter table NMI.Transacciones
+add foreign key (cod_factura) references NMI.Facturas(Num_factura)
 go
 
-create table tablaTemporal (
+create table NMI.tablaTemporal (
 	Id_transferencia int identity(1,1) primary key,
 	Importe float not null,
 	Cod_cuenta_origen numeric(18) not null,
@@ -354,7 +374,7 @@ create table tablaTemporal (
 	Id_transaccion int ,
 	Cod_estado int not null,
 	Costo float not null,
-	Fecha date not null default dbo.fechaSistema(),
+	Fecha date not null default NMI.fechaSistema(),
 	cod_moneda int,
 	cod_factura int
 
@@ -366,15 +386,15 @@ go
 
 
 
-Create trigger miTrigger on tablaTemporal
+Create trigger NMI.miTrigger on NMI.tablaTemporal
 instead of insert
 as
 begin transaction
-set IDENTITY_INSERT Transacciones ON
-insert into Transacciones(Id_transaccion,Cod_estado,Costo,Fecha,cod_factura)
+set IDENTITY_INSERT NMI.Transacciones ON
+insert into NMI.Transacciones(Id_transaccion,Cod_estado,Costo,Fecha,cod_factura)
 select Id_transaccion,Cod_estado,Costo,Fecha,cod_factura from inserted
-set IDENTITY_INSERT Transacciones Off
-insert into Transferencias (Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda)
+set IDENTITY_INSERT NMI.Transacciones Off
+insert into NMI.Transferencias (Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda)
 select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Id_transaccion,Cod_moneda from inserted
 
 
@@ -383,8 +403,8 @@ commit
 
 go
 
-Create trigger actualizarSaldosPorTransferencia 
-	on Transferencias
+Create trigger NMI.actualizarSaldosPorTransferencia 
+	on NMI.Transferencias
 	for insert, update, delete
 	as
 	Begin transaction 
@@ -403,12 +423,12 @@ Create trigger actualizarSaldosPorTransferencia
 	fetch next from cursor_deInsertados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	Update NMI.Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
+	Update NMI.Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
 	fetch next from cursor_deInsertados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
 	end
 	close cursor_deInsertados
@@ -418,7 +438,7 @@ Create trigger actualizarSaldosPorTransferencia
 	if ((select count (*) from deleted)>0)
 	begin
 	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta_origen,Cod_cuenta_destino,sum(Importe),Moneda.Conversion From deleted,Moneda
+	for (select Cod_cuenta_origen,Cod_cuenta_destino,sum(Importe),Moneda.Conversion From deleted,NMI.Moneda
 	group by Cod_cuenta_origen,Cod_cuenta_destino,Moneda.Conversion)
 		
 	
@@ -426,12 +446,12 @@ Create trigger actualizarSaldosPorTransferencia
 	fetch next from cursor_deBorrados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaDestino)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	Update NMI.Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaDestino
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuentaOrigen)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
+	Update NMI.Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuentaOrigen
 	fetch next from cursor_deBorrados into @cuentaOrigen,@cuentaDestino,@sumaDeImporte,@conversion
 	end
 	close cursor_deBorrados
@@ -442,7 +462,7 @@ Create trigger actualizarSaldosPorTransferencia
 	
 go
 	
-	create trigger ActualizarSaldosPorDeposito
+	create trigger NMI.ActualizarSaldosPorDeposito
 on Depositos 
 for insert, update, delete
 	as
@@ -450,7 +470,7 @@ for insert, update, delete
 	if ((select count (*) from inserted)>0)
 	begin
 	Declare cursor_deInsertados Cursor
-	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From inserted,Moneda
+	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From inserted,NMI.Moneda
 	where inserted.Cod_moneda=Moneda.Id_moneda
 	group by Cod_cuenta,Moneda.Conversion)
 	Declare @cuenta numeric(18)
@@ -461,9 +481,9 @@ for insert, update, delete
 	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
+	Update NMI.Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
 	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
 	end
 	close cursor_deInsertados
@@ -473,7 +493,7 @@ for insert, update, delete
 	if ((select count (*) from deleted)>0)
 	begin
 	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From deleted,Moneda
+	for (select Cod_cuenta,sum(Importe),Moneda.Conversion From deleted,NMI.Moneda
 	group by Cod_cuenta,Moneda.Conversion)
 		
 	
@@ -481,9 +501,9 @@ for insert, update, delete
 	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
+	Update NMI.Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
 	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
 	end
 	close cursor_deBorrados
@@ -493,7 +513,7 @@ for insert, update, delete
 	commit;
 go
 	
-create trigger ActualizarSaldosPorRetiro
+create trigger NMI.ActualizarSaldosPorRetiro
 on Retiros 
 for insert, update, delete
 	as
@@ -501,7 +521,7 @@ for insert, update, delete
 	if ((select count (*) from inserted)>0)
 	begin
 	Declare cursor_deInsertados Cursor
-	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From Cheque,inserted,Moneda
+	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From NMI.Cheque,inserted,NMI.Moneda
 	where Cheque.Cod_moneda=Moneda.Id_moneda and Cheque.Id_cheque=inserted.Cod_cheque
 	group by Cod_cuenta,Moneda.Conversion)
 	Declare @cuenta numeric(18)
@@ -512,9 +532,9 @@ for insert, update, delete
 	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
+	Update NMI.Cuenta set Saldo=Saldo-@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
 	fetch next from cursor_deInsertados into @cuenta,@sumaDeImporte,@conversion
 	end
 	close cursor_deInsertados
@@ -524,7 +544,7 @@ for insert, update, delete
 	if ((select count (*) from deleted)>0)
 	begin
 	Declare cursor_deBorrados Cursor
-	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From Cheque,deleted,Moneda
+	for (select Cod_cuenta,sum(Cheque.Importe),Moneda.Conversion From NMI.Cheque,deleted,NMI.Moneda
 	where Cheque.Cod_moneda=Moneda.Id_moneda and Cheque.Id_cheque=deleted.Cod_cheque
 	group by Cod_cuenta,Moneda.Conversion)
 	
@@ -532,9 +552,9 @@ for insert, update, delete
 	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
 	while(@@FETCH_STATUS=0)
 	begin
-	select @ConversionFinal=(Select Moneda.Conversion from Moneda,Cuenta
+	select @ConversionFinal=(Select Moneda.Conversion from NMI.Moneda,NMI.Cuenta
 	where Moneda.Id_moneda=Cuenta.Codigo_moneda and Cuenta.Num_Cuenta=@cuenta)
-	Update Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
+	Update NMI.Cuenta set Saldo=Saldo+@sumaDeImporte*@conversion/@ConversionFinal where Num_cuenta=@cuenta
 	fetch next from cursor_deBorrados into @cuenta,@sumaDeImporte,@conversion
 	end
 	close cursor_deBorrados
@@ -544,8 +564,8 @@ for insert, update, delete
 	commit;
 go
 	
-	Create  trigger CuaandoSeIngresanLoginsIncorrectos
-on Intentos_login
+	Create  trigger NMI.CuaandoSeIngresanLoginsIncorrectos
+on NMI.Intentos_login
 for  insert
 as
 Begin transaction
@@ -563,7 +583,7 @@ open cursorDeIncorrectos
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 while(@@FETCH_STATUS=0)
 begin
-Insert into Intentos_fallidos (Cod_login)values (@num_login)
+Insert into NMI.Intentos_fallidos (Cod_login)values (@num_login)
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 end
 
@@ -575,8 +595,8 @@ commit;
 go
 
 
-Create  trigger CuaandoSeIngresanLoginsCorrectos
-on Intentos_login
+Create  trigger NMI.CuaandoSeIngresanLoginsCorrectos
+on NMI.Intentos_login
 for  insert
 as
 Begin transaction
@@ -595,7 +615,7 @@ open cursorDeIncorrectos
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 while(@@FETCH_STATUS=0)
 begin
-Delete from Intentos_fallidos where Cod_login=@num_login
+Delete from NMI.Intentos_fallidos where Cod_login=@num_login
 fetch next from cursorDeIncorrectos into @num_login,@Correcto
 end
 close cursorDeIncorrectos
@@ -607,8 +627,8 @@ commit;
 go
 
 
-Create  trigger CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
-on Intentos_fallidos
+Create  trigger NMI.CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
+on NMI.Intentos_fallidos
 for  insert
 as
 Begin transaction
@@ -620,11 +640,11 @@ open cursorDeFallidos
 fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
 while(@@FETCH_STATUS=0)
 begin
-if ((select count(*) from Intentos_fallidos,Usuario,Intentos_login
-where Intentos_fallidos.Cod_login=Intentos_login.Id_login and Intentos_login.Codigo_usuario=Usuario.Id_usuario)>2)
-update Usuario
-set Estado="inhabilitado"
-where Id_usuario = (Select Codigo_usuario from Intentos_loguin where Id_loguin=@Cod_loguin)
+if ((select count(*) from NMI.Intentos_fallidos,NMI.Usuario,NMI.Intentos_login
+where NMI.Intentos_fallidos.Cod_login=NMI.Intentos_login.Id_login and NMI.Intentos_login.Codigo_usuario=NMI.Usuario.Id_usuario)>2)
+update NMI.Usuario
+set NMI.Estado="inhabilitado"
+where Id_usuario = (Select Codigo_usuario from NMI.Intentos_loguin where Id_loguin=@Cod_loguin)
 fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
 
 end
@@ -634,7 +654,7 @@ commit;
 go	
 
 --Pais
-insert into Pais
+insert into NMI.Pais
 select * from (select distinct Cli_Pais_Codigo, Cli_Pais_Desc 
 from gd_esquema.Maestra 
 union
@@ -644,93 +664,94 @@ where Cli_Pais_Codigo is not null and Cuenta_Dest_Pais_Codigo is not null
 )A
 
 go
+
 --Moneda
-insert into Moneda(Descripcion,Conversion) values ('Dolar',1);
+insert into NMI.Moneda(Descripcion,Conversion) values ('Dolar',1);
 
 go
 --Tipo de dni
-insert into Tipo_DNI
+insert into NMI.Tipo_DNI
 select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
 from gd_esquema.Maestra
 
 go
 --Bancos
-insert into Bancos(Nombre_banco,Cod_pais) values ((select distinct 
+insert into NMI.Bancos(Nombre_banco,Cod_pais) values ((select distinct 
 top 1 Banco_Nombre from gd_esquema.Maestra where Banco_Nombre is not null),8)
 go
-insert into Bancos(Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
+insert into NMI.Bancos(Nombre_banco,Cod_pais) values ((select distinct top 1 Banco_Nombre 
 from gd_esquema.Maestra where Banco_Nombre is not null and Banco_Nombre like '%Nac%'),8)
 go
 
 --Categorias de cuentas
-insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('oro',30,0.03,365)
-insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('plata',20,0.05,90)
-insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('bronce',10,0.07,30)
-insert into Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('gratuita',0,0.1,10)
+insert into NMI.Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('oro',30,0.03,365)
+insert into NMI.Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('plata',20,0.05,90)
+insert into NMI.Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('bronce',10,0.07,30)
+insert into NMI.Categoria (Descripcion,precioSuscripcion,Costo,Duracion) values ('gratuita',0,0.1,10)
 
 go
 --Tabla de Estados_Rol
-insert into Estado_rol (Descripcion) values ('Activo')
-insert into Estado_rol (Descripcion) values ('Inactivo')
+insert into NMI.Estado_rol (Descripcion) values ('Activo')
+insert into NMI.Estado_rol (Descripcion) values ('Inactivo')
 
 go
 --Tabla de roles
-insert into Rol (Nombre_rol,Cod_estado) values ('Cliente',1)
-insert into Rol (Nombre_rol,Cod_estado) values ('Administrador',1)
+insert into NMI.Rol (Nombre_rol,Cod_estado) values ('Cliente',1)
+insert into NMI.Rol (Nombre_rol,Cod_estado) values ('Administrador',1)
 
 go
 /*--Tabla de funcionalidades
-insert into Funcionalidad (Descripcion) values ('ABM Usuarios')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Usuarios')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Clientes')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Clientes')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Cuentas')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Cuentas')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Credit Card')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Credit Card')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Despositos')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Despositos')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Retiros')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Retiros')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Transferencias')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Transferencias')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Facturacion')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Facturacion')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Estadisticas')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Estadisticas')
 go
-insert into Funcionalidad (Descripcion) values ('ABM Consulta Saldo')
+insert into NMI.Funcionalidad (Descripcion) values ('ABM Consulta Saldo')
 go
 
 --Tabla Rol_Funcionalidades
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (1,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (1,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (2,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (2,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (3,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (3,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (3,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (3,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (4,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (4,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (5,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (5,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (6,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (6,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (7,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (7,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (8,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (8,1)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (8,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (8,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (9,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (9,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,2)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,2)
 go
-insert into Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,1)
+insert into NMI.Rol_funcionalidad(Cod_funcionalidad,Cod_rol) values (10,1)
 go
 */
 --Tabla Tarjeta Emisor
-insert into Tarjeta_Emisor (Descripcion)
+insert into NMI.Tarjeta_Emisor (Descripcion)
 select distinct Tarjeta_Emisor_Descripcion
 from gd_esquema.Maestra
 where Tarjeta_Emisor_Descripcion is not null;
@@ -760,8 +781,8 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 while @@FETCH_STATUS=0
 begin
-Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
-Insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
+Insert into NMI.Usuario(Useranme,ContraseÃ±a,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
+Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from NMI.Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 end
@@ -773,28 +794,28 @@ go
 
 
 --Tabla de usuario_rol
-insert into Usuario_rol (Cod_usuario,Cod_rol) (select Id_usuario,1 from Usuario);
+insert into NMI.Usuario_rol (Cod_usuario,Cod_rol) (select Id_usuario,1 from NMI.Usuario);
 go
 
 
 --Tarjetas de credito
-insert into Tarjetas_credito(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento
+insert into NMI.Tarjetas_credito(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento
 ,Cod_seguridad)
 select distinct a.Tarjeta_Numero,b.Id_cliente,c.Id_tarjeta_emisor,a.Tarjeta_Fecha_Emision,
 a.Tarjeta_Fecha_Vencimiento,a.Tarjeta_Codigo_Seg
-from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento 
-inner join Tarjeta_Emisor c on a.Tarjeta_Emisor_Descripcion=c.Descripcion) 
+from (gd_esquema.Maestra a inner join NMI.Cliente b on a.Cli_Nro_Doc=b.Numero_documento 
+inner join NMI.Tarjeta_Emisor c on a.Tarjeta_Emisor_Descripcion=c.Descripcion) 
 
 go
 
 --Estado de cuentas
-insert into Estado_cuenta(Descripcion) values ('Habilitada')
+insert into NMI.Estado_cuenta(Descripcion) values ('Habilitada')
 go
-insert into Estado_cuenta(Descripcion) values ('Inahilitada')
+insert into NMI.Estado_cuenta(Descripcion) values ('Inahilitada')
 go
-insert into Estado_cuenta(Descripcion) values ('Pendiente')
+insert into NMI.Estado_cuenta(Descripcion) values ('Pendiente')
 go
-insert into Estado_cuenta(Descripcion) values ('Cerrada')
+insert into NMI.Estado_cuenta(Descripcion) values ('Cerrada')
 
 go
 
@@ -802,24 +823,25 @@ go
 
 --Cuentas
 
-insert into Cuenta(Num_cuenta,Fecha_apertura,Fecha_cierre,Codigo_pais,Codigo_moneda,
+insert into NMI.Cuenta(Num_cuenta,Fecha_apertura,Fecha_cierre,Codigo_pais,Codigo_moneda,
 Codigo_categoria,Codigo_cliente,Codigo_estado,Saldo)
 select distinct a.Cuenta_Numero,a.Cuenta_Fecha_Creacion,a.Cuenta_Fecha_Cierre,a.Cuenta_Pais_Codigo,1,4,b.Id_cliente,1,0
-from (gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento) 
+from (gd_esquema.Maestra a inner join NMI.Cliente b on a.Cli_Nro_Doc=b.Numero_documento) 
 
 go
-update ultimaCuenta
-set numero=(Select MAX(Num_cuenta) from Cuenta)
+update NMI.ultimaCuenta
+set numero=(Select MAX(Num_cuenta) from NMI.Cuenta)
 go
+
 --Depositos
-insert Depositos(Id_deposito,Cod_cuenta,Cod_moneda,Importe,Cod_TC,Fecha)
+insert NMI.Depositos(Id_deposito,Cod_cuenta,Cod_moneda,Importe,Cod_TC,Fecha)
 select distinct a.Deposito_Codigo,c.Num_cuenta,1,a.Deposito_Importe,
 d.Id_tarjeta,a.Deposito_Fecha
-from gd_esquema.Maestra a inner join Cliente b 
+from gd_esquema.Maestra a inner join NMI.Cliente b 
 on a.Cli_Nro_Doc=b.Numero_documento
-inner join Cuenta c 
+inner join NMI.Cuenta c 
 on b.Id_cliente=c.Codigo_cliente and c.Num_cuenta=a.Cuenta_Numero
-inner join Tarjetas_credito d on
+inner join NMI.Tarjetas_credito d on
 b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
 where Deposito_Codigo is not null
 
@@ -827,32 +849,32 @@ go
 
 --Cheques
 
-insert into Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
+insert into NMI.Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
 select distinct Cheque_Numero, Cheque_Importe, Cheque_Fecha,1,b.Id_cliente,c.Id_banco
-from gd_esquema.Maestra a inner join Cliente b on a.Cli_Nro_Doc=b.Numero_documento
-inner join Bancos c on a.Banco_Nombre=c.Nombre_banco 
+from gd_esquema.Maestra a inner join NMI.Cliente b on a.Cli_Nro_Doc=b.Numero_documento
+inner join NMI.Bancos c on a.Banco_Nombre=c.Nombre_banco 
 
 go
 
 --Retiros
-insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque)
+insert into NMI.Retiros(Id_retiro,Cod_cuenta,Cod_cheque)
 select distinct a.Retiro_Codigo,a.Cuenta_Numero,c.Id_cheque
-from gd_esquema.Maestra a inner join Cliente b on
-a.Cli_Nro_Doc=b.Numero_documento inner join Cheque c
+from gd_esquema.Maestra a inner join NMI.Cliente b on
+a.Cli_Nro_Doc=b.Numero_documento inner join NMI.Cheque c
 on  a.Retiro_Fecha=c.Fecha and a.Retiro_Importe=c.importe and 
 b.Id_cliente=c.Cod_cliente and a.Cheque_Numero=c.Num_cheque 
-inner join Cuenta d on b.Id_cliente=d.Codigo_cliente 
+inner join NMI.Cuenta d on b.Id_cliente=d.Codigo_cliente 
 go
 
-insert into Facturas
+insert into NMI.Facturas
 select distinct Factura_Numero,Factura_Fecha from gd_esquema.Maestra
 where Factura_Numero is not null
 go
 
-Insert into Estado_transaccion(Descripcion) values ('Sin Facturar');
+Insert into NMI.Estado_transaccion(Descripcion) values ('Sin Facturar');
 
 go
-Insert into Estado_transaccion(Descripcion) values ('Facturado');
+Insert into NMI.Estado_transaccion(Descripcion) values ('Facturado');
 go
 --begin transaction
 --Declare cursorTransferencias Cursor 
@@ -878,14 +900,14 @@ go
 --commit
 
 
-insert into tablaTemporal(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Id_transaccion,Cod_estado,Costo,Fecha,cod_moneda,cod_factura)
+insert into NMI.tablaTemporal(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Id_transaccion,Cod_estado,Costo,Fecha,cod_moneda,cod_factura)
 select
 Trans_Importe,Cuenta_Numero,Cuenta_Dest_Numero,ROW_NUMBER()over (order by Transf_Fecha),2,Item_Factura_Importe,Transf_Fecha,1,Factura_Numero from gd_esquema.Maestra
 where (Transf_Fecha is not null) and Item_Factura_Importe is not null
 go
 
 
-drop table tablaTemporal
+drop table NMI.tablaTemporal
 go
 
 --select * from facturas
@@ -896,13 +918,13 @@ go
 --set cod_factura = (select m.Factura_Numero from gd_esquema.Maestra m join Transferencias t
 --on (t.Cod_transaccion=Id_transaccion and t.Cod_cuenta_destino=m.Cuenta_Dest_Numero and t.Cod_cuenta_origen=m.Cuenta_Numero and m.Transf_Fecha=Fecha and m.Factura_Numero is not null))
 
-create function cuentasPorUsuario(@username varchar(30))
+create function NMI.cuentasPorUsuario(@username varchar(30))
 returns  @tabla table(
 cuenta numeric(18))
 as
 begin
 insert into @tabla 
-select  Cuenta.Num_cuenta from Cuenta,Cliente,Usuario
+select  Cuenta.Num_cuenta from NMI.Cuenta,NMI.Cliente,NMI.Usuario
 where Cuenta.Codigo_cliente=Cliente.Id_cliente and Cliente.Cod_usuario=Id_usuario
 and Useranme=@username
 return
@@ -910,26 +932,26 @@ end
 
 go
 
-create function cuentasPorCliente(@cliente numeric(18))
+create function NMI.cuentasPorCliente(@cliente numeric(18))
 returns  @tabla table(
 cuenta numeric(18))
 as
 begin
 insert into @tabla 
-select  Cuenta.Num_cuenta from Cuenta
+select  Cuenta.Num_cuenta from NMI.Cuenta
 where Cuenta.Codigo_cliente=@cliente
 return
 end
 
 go
 
-create Function saldoCuenta(@cuenta numeric(18))
+create Function NMI.saldoCuenta(@cuenta numeric(18))
 returns int
 as 
 begin
 declare @saldo int
 select @saldo=(
-select Saldo from Cuenta
+select Saldo from NMI.Cuenta
 where num_cuenta=@cuenta
 
 ) 
@@ -938,21 +960,21 @@ return @saldo
 end
 go
 
-create  trigger inhabilitarCuentasConMas5
-on Transacciones
+create  trigger NMI.inhabilitarCuentasConMas5
+on NMI.Transacciones
 after insert
 as
 begin transaction
-insert into 	inhabilitacionesDeCuenta
-	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),dbo.fechaSistema(),101) 
-	From transferencias t1 join transacciones t2
+insert into 	NMI.inhabilitacionesDeCuenta
+	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),NMI..fechaSistema(),101) 
+	From NMI.transferencias t1 join NMI.transacciones t2
 	on (t2.Id_transaccion=t1.cod_transaccion)
 	where COD_factura is null -- and t2.id_transaccion in (select id_transaccion from inserted)
-	 and t1.cod_cuenta_origen in (select t4.cod_cuenta_origen from  inserted,Transferencias t4
+	 and t1.cod_cuenta_origen in (select t4.cod_cuenta_origen from  inserted,NMI.Transferencias t4
 	where t4.cod_transaccion=inserted.id_transaccion ) 
 	/*UNION
-	select cuenta=m.Cod_cuenta,fecha=convert(varchar(30),dbo.fechaSistema(),101)
-	from Modificacion_Cuenta m join transacciones t
+	select cuenta=m.Cod_cuenta,fecha=convert(varchar(30),NMI.fechaSistema(),101)
+	from NMI.Modificacion_Cuenta m join NMI.transacciones t
 	on (m.cod_transaccion=t.Id_transaccion)
 	where cod_factura is null*/
 	) tabla
@@ -962,14 +984,14 @@ insert into 	inhabilitacionesDeCuenta
 	commit 
 go
 
-create Trigger inhabilitarCuentasConMasDe5
-on Transferencias
+create Trigger NMI.inhabilitarCuentasConMasDe5
+on NMI.Transferencias
 for insert
 as
 begin transaction
-insert into 	inhabilitacionesDeCuenta
-Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),dbo.fechaSistema(),101) 
-	From transferencias t1 join transacciones t2
+insert into 	NMI.inhabilitacionesDeCuenta
+Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),NMI.fechaSistema(),101) 
+	From NMI.transferencias t1 join NMI.transacciones t2
 	on (t2.Id_transaccion=t1.cod_transaccion),Cuenta
 	where COD_factura is null -- and t2.id_transaccion in (select id_transaccion from inserted)
 	 --and t1.cod_cuenta_origen in (select cod_cuenta_origen from  inserted
@@ -984,16 +1006,16 @@ Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varch
 	
 go
 
-create trigger noPermitirTransferenciasEnInhabilitadas
-on transferencias
+create trigger NMI.noPermitirTransferenciasEnInhabilitadas
+on NMI.transferencias
 after insert
 
 as
 	begin transaction
-		if ((select count(*) from inserted,cuenta where inserted.cod_cuenta_origen=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
+		if ((select count(*) from inserted,NMI.cuenta where inserted.cod_cuenta_origen=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
 			begin
 			raiserror ('Cuenta inhabilitada',16,150)
-			delete from Tansferencias
+			delete from NMI.Tansferencias
 			where id_tranferencia in (select id_transferencia from inserted) 
 			end
 		else 
@@ -1001,16 +1023,16 @@ as
 		commit	
 go
 
-create trigger noPermitirModificacionesEnInhabilitadas
-on Modificacion_cuenta
+create trigger NMI.noPermitirModificacionesEnInhabilitadas
+on NMI.Modificacion_cuenta
 after insert
 
 as
 	begin transaction
-		if ((select count(*) from inserted,cuenta where inserted.cod_cuenta=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
+		if ((select count(*) from inserted,NMI.cuenta where inserted.cod_cuenta=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
 			begin
 			raiserror ('Cuenta inhabilitada',16,150)
-			delete from Transferencias
+			delete from NMI.Transferencias
 			where id_transferencia in (select id_transferencia from inserted
 			)
 			end
@@ -1019,22 +1041,22 @@ as
 		commit
 go	
 
-create trigger habilitarCuenta
-on transacciones
+create trigger NMI.habilitarCuenta
+on NMI.transacciones
 instead of update
 as
 	begin transaction
-		update cuentas
+		update NMI.cuentas
 		set codigo_estado=1
 		where num_cuenta in  
 							((select c1.num_cuenta
-							from cuentas c1  join transferencias t1 
+							from NMI.cuentas c1  join NMI.transferencias t1 
 												on (t1.num_cuenta_origen=c1.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=t1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=t1.cod_transaccion) is not null				
 							and c1.Codigo_estado=2) 
 							UNION
 							(select c2.num_cuenta
-							from cuentas c2 join modificaciones m1
+							from NMI.cuentas c2 join NMI.modificaciones m1
 												on(m1.num_cuenta=c2.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=m1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=m1.cod_transaccion) is not null				
 							and c2.Codigo_estado=2))
@@ -1044,20 +1066,20 @@ as
 go
 
 
-create procedure facturar @numCliente numeric(18)
+create procedure NMI.facturar @numCliente numeric(18)
 
 as
 Begin
 	Begin transaction set transaction isolation level serializable
 	Declare @fact numeric(18)
-	select @fact=MAX(Facturas.Num_factura)+1 from Facturas
-	insert into Facturas values (@fact,dbo.fechaSistema())	
-	update Transacciones
+	select @fact=MAX(Facturas.Num_factura)+1 from NMI.Facturas
+	insert into NMI.Facturas values (@fact,NMI..fechaSistema())	
+	update NMI.Transacciones
 	set cod_factura=@fact
-	where ((Select Cod_cuenta_origen from Transferencias
+	where ((Select Cod_cuenta_origen from NMI.Transferencias
 			where Cod_transaccion=Id_transaccion
 			)union(
-			Select Cod_cuenta from Modificacion_cuenta
+			Select Cod_cuenta from NMI.Modificacion_cuenta
 			where Cod_transaccion=Id_transaccion)) in (select * from cuentasPorCliente(@numCliente) as d )
 	
 	
@@ -1066,19 +1088,19 @@ Begin
 end
 go
 
-create function usernamesParecidos(@busqueda varchar(30))
+create function NMI.usernamesParecidos(@busqueda varchar(30))
 returns @tabla table(username varchar(30))
 as
 begin
 insert into @tabla
-select useranme  from Usuarios 
+select useranme  from NMI.Usuarios 
 where useranme like '%'+@busqueda+'%'
 
 return 
 end
 go
 
-create function categoriasDisponibles()
+create function NMI.categoriasDisponibles()
 returns @tablita table(id int,
 Descr varchar(30),
 costo float,
@@ -1090,7 +1112,7 @@ As
 Begin
 	insert into @tablita
 	select *
-	from categoria
+	from NMI.categoria
 	
 	return
 end
@@ -1114,19 +1136,19 @@ begin
 end
 go	
 */
-create Procedure getUltimaCuenta @retorno numeric(18)
+create Procedure NMI.getUltimaCuenta @retorno numeric(18)
 
 as
 begin
  
-select @retorno=(Select max(UltimaCuenta.numero) from UltimaCuenta)
-Update UltimaCuenta
+select @retorno=(Select max(UltimaCuenta.numero) from NMI.UltimaCuenta)
+Update NMI.UltimaCuenta
 set numero=@retorno+1
 return @retorno
 end
 go
 
-create function rolesUsuario(@username varchar(30))
+create function NMI.rolesUsuario(@username varchar(30))
 returns @tablaRetorno table
 (rol varchar(30)
 )
@@ -1141,39 +1163,39 @@ end
 
 go
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'ABM Rol');
 
 /*insert into Funcionalidad values(
 'Login');
 */
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'ABM usuario');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'ABM cliente');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'ABM cuenta');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Depositos');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Retiro de efectivo');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Transferencias');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Facturacion');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Consultar saldo');
 
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Listado estadistico');
-insert into Funcionalidad values(
+insert into NMI.Funcionalidad values(
 'Asociar/desasociar TC')
 
 
@@ -1181,47 +1203,47 @@ go
 
 --insert into Rol_funcionalidad values(1,2);
 
-insert into Rol_funcionalidad values(1,4);
+insert into NMI.Rol_funcionalidad values(1,4);
 
-insert into Rol_funcionalidad values(1,5);
+insert into NMI.Rol_funcionalidad values(1,5);
 
-insert into Rol_funcionalidad values(1,6);
+insert into NMI.Rol_funcionalidad values(1,6);
 
-insert into Rol_funcionalidad values(1,7);
+insert into NMI.Rol_funcionalidad values(1,7);
 
-insert into Rol_funcionalidad values(1,8);
+insert into NMI.Rol_funcionalidad values(1,8);
 
-insert into Rol_funcionalidad values(1,9);
+insert into NMI.Rol_funcionalidad values(1,9);
 
-insert into Rol_funcionalidad values(1,11);
+insert into NMI.Rol_funcionalidad values(1,11);
 
 
-insert into Rol_funcionalidad values(2,1);
+insert into NMI.Rol_funcionalidad values(2,1);
 --insert into Rol_funcionalidad values(2,2);
-insert into Rol_funcionalidad values(2,2);
-insert into Rol_funcionalidad values(2,3);
-insert into Rol_funcionalidad values(2,4);
-insert into Rol_funcionalidad values(2,8);
-insert into Rol_funcionalidad values(2,9);
-insert into Rol_funcionalidad values(2,10);
+insert into NMI.Rol_funcionalidad values(2,2);
+insert into NMI.Rol_funcionalidad values(2,3);
+insert into NMI.Rol_funcionalidad values(2,4);
+insert into NMI.Rol_funcionalidad values(2,8);
+insert into NMI.Rol_funcionalidad values(2,9);
+insert into NMI.Rol_funcionalidad values(2,10);
 
 go
 
-create function funcionalidadesRol(@Rol int)
+create function NMI.funcionalidadesRol(@Rol int)
 returns @tabla table (
 descripcion varchar(30)
 )
 as
 begin
 insert into @tabla
-select Descripcion from Rol_funcionalidad,Funcionalidad
+select Descripcion from NMI.Rol_funcionalidad,NMI.Funcionalidad
 	where Cod_rol=@Rol and Id_funcionalidad=Cod_funcionalidad
 
 return end
 go
 
 
-create function ultimos5Depositos(@cuenta numeric(18))
+create function NMI.ultimos5Depositos(@cuenta numeric(18))
 returns @tabla table(Importe float,
 	Moneda varchar(30),
 	Fecha date,
@@ -1232,8 +1254,8 @@ as
 Begin
 	insert into @tabla
 	select top 5 d.Importe, m.Descripcion , d.Fecha, t.Num_tarjeta
-	from Depositos d join Tarjetas_credito t on (d.Cod_TC=t.Id_tarjeta)
-						join Moneda m on (d.Cod_moneda=m.Id_moneda)
+	from NMI.Depositos d join NMI.Tarjetas_credito t on (d.Cod_TC=t.Id_tarjeta)
+						join NMI.Moneda m on (d.Cod_moneda=m.Id_moneda)
 	where d.Cod_cuenta=@cuenta
 	order by d.fecha
 	return
@@ -1242,7 +1264,7 @@ end
 	
 go
 
-create function ultimos5Retiros(@cuenta numeric(18))
+create function NMI.ultimos5Retiros(@cuenta numeric(18))
 returns @tabla table(
 	Num_cheque numeric(18),
 	Banco varchar(30),
@@ -1255,7 +1277,7 @@ returns @tabla table(
 as
 Begin
 	insert into @tabla
-	select top 5 Num_cheque,Bancos.Nombre_banco,Importe,Descripcion,Fecha from Retiros,Cheque,Bancos,Moneda
+	select top 5 Num_cheque,Bancos.Nombre_banco,Importe,Descripcion,Fecha from NMI.Retiros,NMI.Cheque,NMI.Bancos,NMI.Moneda
 	where
 	Cod_banco=Id_banco and
 	Cod_cheque=Id_cheque
@@ -1267,7 +1289,7 @@ Begin
 	end
 	go
 	
-	create function ultimas10Transf(@cuenta numeric(18))
+	create function NMI.ultimas10Transf(@cuenta numeric(18))
 	returns @tablita table(
 	Cuenta_destino	numeric(18),
 	Importe float,
@@ -1277,7 +1299,7 @@ Begin
 	as
 	begin
 	insert into @tablita 
-	select top 10 Cod_cuenta_destino,Importe,Descripcion,Fecha from Transferencias,Moneda,Transacciones
+	select top 10 Cod_cuenta_destino,Importe,Descripcion,Fecha from NMI.Transferencias,NMI.Moneda,NMI.Transacciones
 	where Id_transaccion=Cod_transaccion
 	and Cod_moneda=Id_moneda
 	and Cod_cuenta_origen=@cuenta
@@ -1292,42 +1314,42 @@ Begin
 	
 	)*/
 	
-	create  procedure transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
+	create  procedure NMI.transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
 	as
 	begin
 	begin transaction set transaction isolation level serializable
-	insert into Transacciones(Cod_estado,Costo) values(1,(select @importe*Costo from Cuenta,Categoria
+	insert into NMI.Transacciones(Cod_estado,Costo) values(1,(select @importe*Costo from NMI.Cuenta,NMI.Categoria
 		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen)) 
-	insert into Transferencias select
-	@importe,@cta_origen,@cta_destino,MAX(Id_transaccion),1 from Transacciones
+	insert into NMI.Transferencias select
+	@importe,@cta_origen,@cta_destino,MAX(Id_transaccion),1 from NMI.Transacciones
 	commit 	
 	end
 	go
 	
-	Insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
+	Insert into NMI.Usuario(Useranme,ContraseÃ±a,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
 	go
-	insert into Usuario_rol select MAX (Usuario.Id_usuario),2 from Usuario 
+	insert into NMI.Usuario_rol select MAX (Usuario.Id_usuario),2 from NMI.Usuario 
 	go
 	
 	
-create  trigger insertarTransferencia on Transferencias
+create  trigger NMI.insertarTransferencia on NMI.Transferencias
 instead of insert
 as
 begin transaction
 
-update cuenta
+update NMI.cuenta
 set Codigo_estado=2
-where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
+where Fecha_vencimiento < NMI.fechaSistema() and Codigo_estado=1
 
-insert into Transferencias
+insert into NMI.Transferencias
 select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda
 from inserted 
 
 commit
 go
 
-create trigger validarSaldoMayorQueTransferencia
-on Transferencias
+create trigger NMI.validarSaldoMayorQueTransferencia
+on NMI.Transferencias
 for insert
 as
 begin transaction
@@ -1344,15 +1366,15 @@ end
 	
 go	
 
-create trigger validarDestinoValidoTransferencia
-on Transferencias
+create trigger NMI.validarDestinoValidoTransferencia
+on NMI.Transferencias
 for insert
 as
 begin transaction
 if(0<(
 	select count(*) from inserted
 	where 
-	(Select Codigo_estado from Cuenta where Num_cuenta=Cod_cuenta_destino )  in (3,4)))
+	(Select Codigo_estado from NMI.Cuenta where Num_cuenta=Cod_cuenta_destino )  in (3,4)))
 begin
 raiserror ('Cuenta no puede recibir',16,150)
 rollback
@@ -1363,41 +1385,41 @@ commit
 	
 go
 
-create trigger insertarDeposito on Depositos
+create trigger NMI.insertarDeposito on NMI.Depositos
 instead of insert
 as
 begin transaction
 
-update cuenta
+update NMI.cuenta
 set Codigo_estado=2
-where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
-insert into Depositos
+where Fecha_vencimiento < NMI.fechaSistema() and Codigo_estado=1
+insert into NMI.Depositos
 select *
 from inserted 
 commit
 go
 
-create trigger insertarRetiro on Retiros
+create trigger NMI.insertarRetiro on NMI.Retiros
 instead of insert
 as
 begin transaction
 
-update cuenta
+update NMI.cuenta
 set Codigo_estado=2
-where Fecha_vencimiento < dbo.fechaSistema() and Codigo_estado=1
-insert into Retiros
+where Fecha_vencimiento < NMI..fechaSistema() and Codigo_estado=1
+insert into NMI.Retiros
 select *
 from inserted 
 commit
 go
 
-create trigger haySAldoParaRetiro on Retiros
+create trigger NMI.haySAldoParaRetiro on NMI.Retiros
 for insert
 as 
 begin transaction 
 if(0<(
-select count(*) from inserted,Cheque
- where Cod_cheque=Id_Cheque and Importe > (select Saldo from Cuenta where Num_cuenta=Cod_cuenta)))
+select count(*) from inserted,NMI.Cheque
+ where Cod_cheque=Id_Cheque and Importe > (select Saldo from NMI.Cuenta where Num_cuenta=Cod_cuenta)))
 begin
 raiserror ('Cuenta sin saldo',16,150)
 rollback
@@ -1406,45 +1428,45 @@ else
 commit
 
 go
-create  procedure limpiar
+create  procedure NMI.limpiar
 as 
 begin
 
-drop table Depositos
-drop table Retiros
-drop Table modificacion_cuenta
-drop table transferencias
-drop table tipo_modificacion
-drop table intentos_fallidos
-drop table intentos_login
-drop table tarjetas_credito
-drop table tarjeta_emisor
-drop table rol_funcionalidad
-drop table transacciones
-drop table suscripciones
-drop table facturas
-drop table usuario_rol
-drop table ultimaCuenta
-drop table inhabilitacionesDeCuenta
-drop table cuenta
-drop table cheque
-drop table funcionalidad
-drop table cliente
-drop table bancos
-drop table categoria
-drop table estado_cuenta
-drop table rol
-drop table estado_rol
-drop table estado_transaccion
-drop table moneda
-drop table pais
-drop table tipo_dni
-drop table usuario
+drop table NMI.Depositos
+drop table NMI.Retiros
+drop Table NMI.modificacion_cuenta
+drop table NMI.transferencias
+drop table NMI.tipo_modificacion
+drop table NMI.intentos_fallidos
+drop table NMI.intentos_login
+drop table NMI.tarjetas_credito
+drop table NMI.tarjeta_emisor
+drop table NMI.rol_funcionalidad
+drop table NMI.transacciones
+drop table NMI.suscripciones
+drop table NMI.facturas
+drop table NMI.usuario_rol
+drop table NMI.ultimaCuenta
+drop table NMI.inhabilitacionesDeCuenta
+drop table NMI.cuenta
+drop table NMI.cheque
+drop table NMI.funcionalidad
+drop table NMI.cliente
+drop table NMI.bancos
+drop table NMI.categoria
+drop table NMI.estado_cuenta
+drop table NMI.rol
+drop table NMI.estado_rol
+drop table NMI.estado_transaccion
+drop table NMI.moneda
+drop table NMI.pais
+drop table NMI.tipo_dni
+drop table NMI.usuario
 
 end
 go
 
-create function clientesInhabilitados(@año int,@trimestre int)
+create function NMI.clientesInhabilitados(@aÃ±o int,@trimestre int)
 returns @tabla table(
 num_cliente int,
 nom_cliente varchar(32)
@@ -1452,9 +1474,9 @@ nom_cliente varchar(32)
 as
 begin
 insert into @tabla
-select top 5 id_cliente,nombre from Cliente,Cuenta as c,inhabilitacionesDeCuenta as i
+select top 5 id_cliente,nombre from NMI.Cliente,NMI.Cuenta as c,NMI.inhabilitacionesDeCuenta as i
 where i.num_cuenta=c.num_cuenta and c.codigo_cliente=id_cliente 
-and (year(i.fecha)=@año) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
+and (year(i.fecha)=@aÃ±o) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
 order by i.fecha
 return
 end
@@ -1462,11 +1484,11 @@ end
 
 go
 
-sp_settriggerorder 'inhabilitarCuentasConMasDe5','last','insert',null
+sp_settriggerorder 'NMI.inhabilitarCuentasConMasDe5','last','insert',null
 go
 
 
-create function documentosDisponibles()
+create function NMI.documentosDisponibles()
 returns @tabla table(
 	descripcion varchar(30)
 )
@@ -1475,38 +1497,38 @@ as
 begin
 	insert into @tabla
 	select descripcion
-	from tipo_dni
+	from NMI.tipo_dni
 	return
 end
 go
 
-insert into Tipo_DNI values (1001,'DNI')
+insert into NMI.Tipo_DNI values (1001,'DNI')
 
 go
 
-create function getNacionalidades()
+create function NMI.getNacionalidades()
 returns @tabla table(pais varchar(100))
 as
 begin
 insert into @tabla
-select Descripcion from Pais
+select Descripcion from NMI.Pais
 return end
 go
 
 
 
 
-create procedure Loguear @username varchar(30),@contra varchar(30)
+create procedure NMI.Loguear @username varchar(30),@contra varchar(30)
 as
 begin transaction set transaction isolation level serializable
-if(not Exists (select ID_usuario from Usuario where
+if(not Exists (select ID_usuario from NMI.Usuario where
 Useranme=@username
 ))begin
 raiserror ('no existe usuario',16,150)
 rollback
 return
 end
-if (exists (select ID_usuario from Usuario where
+if (exists (select ID_usuario from NMI.Usuario where
 Useranme=@username and Estado='inhabilitado'
 ))
 begin
@@ -1514,23 +1536,24 @@ raiserror ('usuario inhabilitado',16,150)
 rollback
 return
 end 
-if (exists (select ID_usuario from Usuario where
-Useranme=@username and Contraseña=@contra
+if (exists (select ID_usuario from NMI.Usuario where
+Useranme=@username and ContraseÃ±a=@contra
 --dbo.encriptarSha256(@contra)
 ))
 begin
-insert into Intentos_login	 select ID_usuario,1 from Usuario where
+insert into NMI.Intentos_login	 select ID_usuario,1 from NMI.Usuario where
 Useranme=@username
 end
 else
 begin
-insert into Intentos_login	 select ID_usuario,0 from Usuario where
+insert into NMI.Intentos_login	 select ID_usuario,0 from NMI.Usuario where
 Useranme=@username
 raiserror ('mal contra',16,150)
 end
 commit
 go
-create procedure ingresarCliente
+
+create procedure NMI.ingresarCliente
 @username varchar(50),@pw varchar(50),
 @pregunta varchar(50),@respuesta varchar(50),
 @nombre varchar(50),@apellido varchar(50),
@@ -1545,13 +1568,13 @@ Begin transaction set transaction isolation level serializable
 	declare @coduser int
 	declare @numeropais varchar(50)
 	declare @tipoDeDocumentoNumero numeric(10)
-	insert into Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values 
+	insert into NMI.Usuario(Useranme,ContraseÃ±a,Pregunta_secreta,Respuesta,Estado) values 
 						(@username,@pw,@pregunta,@respuesta,'habilitado')
-	set @coduser = (select Id_usuario from Usuario where Useranme=@username)
-	set @tipoDeDocumentoNumero=(select Id_DNI from Tipo_DNI where Descripcion=@tipodoc)
-	insert into Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
-	set @numeropais = (select Id_Pais from Pais where Descripcion=@pais) 
-	insert into Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
+	set @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
+	set @tipoDeDocumentoNumero=(select Id_DNI from NMI.Tipo_DNI where Descripcion=@tipodoc)
+	insert into NMI.Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
+	set @numeropais = (select Id_Pais from NMI.Pais where Descripcion=@pais) 
+	insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
 				values (@coduser,@nombre,@apellido,@tipoDeDocumentoNumero,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
 	
 	commit 
@@ -1560,14 +1583,14 @@ go
 
 
 
-create function clientesConMasTransferenciasEntreCuentas()
+create function NMI.clientesConMasTransferenciasEntreCuentas()
 returns @tabla table(
 nombre varchar(30),
 apellido varchar(30)
 )
 as begin
 insert into @tabla
-select top 5 c1.Nombre,c1.Apellido from cliente c1,cuenta c2,Transferencias t,cuenta c3,cliente c4
+select top 5 c1.Nombre,c1.Apellido from NMI.cliente c1,NMI.cuenta c2,NMI.Transferencias t,NMI.cuenta c3,NMI.cliente c4
 where
 c1.Id_cliente=c2.Codigo_cliente and c2.Num_cuenta=t.Cod_cuenta_origen and c3.Num_cuenta=t.Cod_cuenta_destino
 and c3.Codigo_cliente=c4.Id_cliente and c1.Id_cliente=c4.Id_cliente
@@ -1579,7 +1602,7 @@ go
 
 
 
-create function datosDelCliente(@idDelCliente numeric(18))
+create function NMI.datosDelCliente(@idDelCliente numeric(18))
 returns @tabla table (id_cliente int, Cod_usuario int, Nombre varchar(50),
 Apellido  varchar(50),Tipo_documento varchar(30),Numero_documento int, 
 Mail varchar(50),Cod_pais numeric(10),Calle varchar(50),
@@ -1587,13 +1610,13 @@ Numero numeric(18),Piso int, Depto Char(1),Fecha date)
 as
 Begin
 insert into @tabla
-select Id_cliente,Cod_usuario,Nombre,Apellido,Descripcion,Numero_documento,mail,cod_pais,calle,numero,piso,depto,fecha_nacimiento from Cliente,Tipo_Dni where Tipo_Documento=Id_DNI and Id_cliente=@idDelCliente
+select Id_cliente,Cod_usuario,Nombre,Apellido,Descripcion,Numero_documento,mail,cod_pais,calle,numero,piso,depto,fecha_nacimiento from NMI.Cliente,NMI.Tipo_Dni where Tipo_Documento=Id_DNI and Id_cliente=@idDelCliente
 return 
 end
 
 go
 
-create procedure updeteaDatosDelCliente @id_cliente int,  @Nombre varchar(50),
+create procedure NMI.updeteaDatosDelCliente @id_cliente int,  @Nombre varchar(50),
 @Apellido  varchar(50),@Tipo_documento varchar(50),@Numero_documento int,
 @Mail varchar(50),@Calle varchar(50),
 @Numero int,@Piso smallint, @Depto Char(1),@Fecha date
@@ -1601,8 +1624,8 @@ as
 begin
 
 
-update Cliente set Nombre=@Nombre,Apellido=@Apellido,
-					Tipo_documento=(select Id_Dni from Tipo_DNI where Descripcion=@Tipo_documento),Numero_documento=@Numero_documento,
+update NMI.Cliente set Nombre=@Nombre,Apellido=@Apellido,
+					Tipo_documento=(select Id_Dni from NMI.Tipo_DNI where Descripcion=@Tipo_documento),Numero_documento=@Numero_documento,
 					Mail=@Mail,Calle=@Calle,Numero=@Numero,
 					Piso=@Piso,Depto=@Depto,Fecha_nacimiento=@Fecha 
 
@@ -1614,18 +1637,18 @@ go
 
 
  
-create table suscripciones
+create table NMI.suscripciones
 (id int identity(1,1) primary key,
 cuenta numeric(18),
 cantidad int,
-factura numeric(18) foreign key references Facturas(Num_factura),
+factura numeric(18) foreign key references NMI.Facturas(Num_factura),
 costo float)
 
 go
-create procedure pagarSuscripciones @cuenta numeric(18),@cantidad int, @numeroFactura numeric(18)
+create procedure NMI.pagarSuscripciones @cuenta numeric(18),@cantidad int, @numeroFactura numeric(18)
 as
 begin
-insert into suscripciones (cuenta,cantidad,factura) values
+insert into NMI.suscripciones (cuenta,cantidad,factura) values
 			(@cuenta,@cantidad,@numeroFactura)
 end
 go
@@ -1636,38 +1659,38 @@ go
 
 
 
-create trigger actualizarCosto 
-on Suscripciones
+create trigger NMI.actualizarCosto 
+on NMI.Suscripciones
 for insert
 as
 begin transaction
 	declare @costo float
-	update suscripciones set costo = 
-	cantidad*(select precioSuscripcion from Cuenta,Categoria where Cuenta.Codigo_categoria=Categoria.Id_categoria
+	update NMI.suscripciones set costo = 
+	cantidad*(select precioSuscripcion from NMI.Cuenta,NMI.Categoria where Cuenta.Codigo_categoria=Categoria.Id_categoria
 	and Cuenta.Num_cuenta=cuenta) where id in (select id from inserted)  
 	 
 	commit 
 	go
 
-create trigger actualizarVencimiento
-on Suscripciones 
+create trigger NMI.actualizarVencimiento
+on NMI.Suscripciones 
 for insert
 as
 begin transaction
-	update Cuenta set Fecha_vencimiento = dateadd (day,(select inserted.cantidad from inserted
-	where inserted.cuenta=Num_cuenta)*(select Duracion from Categoria where Codigo_categoria=Categoria.Id_categoria),Fecha_vencimiento)
+	update NMI.Cuenta set Fecha_vencimiento = dateadd (day,(select inserted.cantidad from inserted
+	where inserted.cuenta=Num_cuenta)*(select Duracion from NMI.Categoria where Codigo_categoria=Categoria.Id_categoria),Fecha_vencimiento)
 	where Num_cuenta in (select Cuenta from inserted)
 commit
 go
 
 
 
-create procedure nuevaContra @usuario varchar(30),@respuesta varchar(50),@contra varchar(30)
+create procedure NMI.nuevaContra @usuario varchar(30),@respuesta varchar(50),@contra varchar(30)
 as
 begin transaction
 if(@respuesta
 --dbo.encriptarSha256(@respuesta)
-<> (select respuesta from Usuario where Useranme=@usuario)
+<> (select respuesta from NMI.Usuario where Useranme=@usuario)
 )
 begin
 raiserror ('respuesta secreta incorrecta',15,250)
@@ -1675,22 +1698,22 @@ rollback
 return
 end
 
-update Usuario
-set Contraseña=@contra
+update NMI.Usuario
+set ContraseÃ±a=@contra
 where Useranme=@usuario
 commit 
 GO
 
-create function totalFactura(@fact numeric(18))
+create function NMI.totalFactura(@fact numeric(18))
 returns int
 as
 begin
 Declare @i int
 Select @i =sum(precio) from(
-select precio=Costo from Transacciones
+select precio=Costo from NMI.Transacciones
 where cod_factura =@fact
 union
-select precio=costo from suscripciones
+select precio=costo from NMI.suscripciones
 where factura=@fact
 
 ) sub
