@@ -18,7 +18,7 @@ namespace PagoElectronico.ABM_Cuenta
         String numCuenta;
         String pais;
         String moneda;
-        String fechaApertura;
+        DateTime fechaApertura;
         String categoria;
 
         public altaCuentaPorAdm()
@@ -63,7 +63,7 @@ namespace PagoElectronico.ABM_Cuenta
             this.Show();
             reader3.Dispose();
 
-
+            maskedTextBox1.Mask = "0999999999999999999999999999";
 
 
         }
@@ -129,7 +129,61 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new Form1(this).Show();
+            new Form2(this).Show();
+
+        }
+
+        public void recibirFecha(DateTime unaFecha)
+        {
+            fechaApertura = unaFecha;
+            textBox4.Text = unaFecha.ToShortDateString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Haceme");
+            userName = listBox1.SelectedItem.ToString();
+            //ver si hace falta el Id_cliente
+            numCuenta = maskedTextBox1.Text;
+            pais = comboBox3.SelectedItem.ToString();
+            moneda = comboBox1.SelectedItem.ToString();
+            categoria = comboBox2.SelectedItem.ToString();
+
+
+            /*
+             *             comando.CommandText = "exec sarasa "
+            comando.ExecuteNonQuery(); 
+
+		try
+            {
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Operacion exitosa");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                MessageBox.Show(er.Message);
+            }
+             */
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
