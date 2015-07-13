@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -46,7 +47,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,6 +76,15 @@
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Alta cuenta";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(9, 431);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(117, 39);
+            this.button5.TabIndex = 26;
+            this.button5.Text = "Volver atras";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // comboBox2
             // 
@@ -204,6 +213,7 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Buscar";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox3
             // 
@@ -219,15 +229,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(9, 431);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(117, 39);
-            this.button5.TabIndex = 26;
-            this.button5.Text = "Volver atras";
-            this.button5.UseVisualStyleBackColor = true;
             // 
             // altaCuentaPorAdm
             // 

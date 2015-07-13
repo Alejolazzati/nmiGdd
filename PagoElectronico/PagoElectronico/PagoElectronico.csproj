@@ -187,6 +187,12 @@
     <Compile Include="Facturacion\Facturacion.Designer.cs">
       <DependentUpon>Facturacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Facturacion\ListadoFactura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\ListadoFactura.designer.cs">
+      <DependentUpon>ListadoFactura.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facturacion\pagarSuscripciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\Facturacion.resx">
       <DependentUpon>Facturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\ListadoFactura.resx">
+      <DependentUpon>ListadoFactura.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\pagarSuscripciones.resx">
       <DependentUpon>pagarSuscripciones.cs</DependentUpon>

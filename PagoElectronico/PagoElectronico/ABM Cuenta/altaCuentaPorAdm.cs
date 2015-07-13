@@ -11,6 +11,15 @@ namespace PagoElectronico.ABM_Cuenta
 {
     public partial class altaCuentaPorAdm : Form
     {
+
+        System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+
+        String numCuenta;
+        String pais;
+        String moneda;
+        String fechaApertura;
+        String categoria;
+
         public altaCuentaPorAdm()
         {
             InitializeComponent();
@@ -48,6 +57,20 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void label4_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            comando.CommandText = "Select * from NMI.usernamesParecidos('" + textBox3.Text + "')";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                listBox1.Items.Add(reader.GetSqlString(0));
+
+            }
+            this.Show();
+            reader.Dispose();
 
         }
     }

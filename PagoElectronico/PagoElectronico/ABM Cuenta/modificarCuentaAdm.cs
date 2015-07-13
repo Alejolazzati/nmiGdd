@@ -31,7 +31,6 @@ namespace PagoElectronico.ABM_Cuenta
             System.Data.SqlClient.SqlDataReader reader4 = comando.ExecuteReader();
             reader4.Read();
 
-            MessageBox.Show(reader4.GetString(0));
             comboBox3.Text = reader4.GetString(0);
             comboBox1.Text = reader4.GetString(1);
             comboBox2.Text = reader4.GetString(2);

@@ -52,8 +52,8 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button1_Click(object sender, EventArgs e)
         {
-            long numCuentaTru=1111111111111111;
-            new modificarCuentaAdm(numCuentaTru.ToString()).Show();
+            
+            new modificarCuentaAdm(listBox2.SelectedItem.ToString()).Show();
         }
 
         private void buscarCuentaAdm_Load(object sender, EventArgs e)
