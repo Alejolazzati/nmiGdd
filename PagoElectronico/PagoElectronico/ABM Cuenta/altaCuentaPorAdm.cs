@@ -14,6 +14,7 @@ namespace PagoElectronico.ABM_Cuenta
 
         System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
 
+        String userName;
         String numCuenta;
         String pais;
         String moneda;
@@ -72,6 +73,11 @@ namespace PagoElectronico.ABM_Cuenta
             this.Show();
             reader.Dispose();
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            userName = listBox1.SelectedItem.ToString();
         }
     }
 }

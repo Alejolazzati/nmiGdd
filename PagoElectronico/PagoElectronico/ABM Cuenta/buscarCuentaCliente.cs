@@ -65,5 +65,14 @@ namespace PagoElectronico.ABM_Cuenta
         {
             new PagoElectronico.ABM_Cuenta.altaCuentaPorCliente().Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String cuenta = listBox2.SelectedItem.ToString();
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "exec NMI.bajaCuenta " +cuenta;
+            comando.ExecuteNonQuery(); 
+            
+        }
     }
 }
