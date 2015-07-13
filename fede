@@ -1,10 +1,13 @@
-create function NMI.tarjetasPorCliente(@cliente numeric(18))
+create function NMI.funcionalidadesPorRol(@Nombre_rol varchar(30))
 returns  @tabla table(
-tarjeta numeric(18))
+Descripcion varchar(30))
 as
 begin
 insert into @tabla 
-select  Tarjetas_credito.Num_tarjeta from NMI.Tarjetas_credito
-where Tarjetas_credito.Cod_cliente=@cliente
+select NMI.Funcionalidad.Descripcion 
+from NMI.Rol
+inner join NMI.Rol_funcionalidad on NMI.Rol.Id_rol=NMI.Rol_funcionalidad.Cod_rol
+inner join NMI.Funcionalidad on NMI.Rol_funcionalidad.Cod_funcionalidad=NMI.Funcionalidad.Id_funcionalidad
+where NMI.Rol.Nombre_rol=@Nombre_rol
 return
 end
