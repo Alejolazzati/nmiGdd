@@ -80,6 +80,20 @@ namespace PagoElectronico.ABM_Cuenta
             pais = comboBox3.SelectedItem.ToString();
             moneda = comboBox1.SelectedItem.ToString();
             tipo = comboBox2.SelectedItem.ToString();
+            MessageBox.Show("Haceme");
+            /*
+            comando.CommandText = "exec sarasa "
+            comando.ExecuteNonQuery(); 
+
+		try
+            {
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Operacion exitosa");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                MessageBox.Show(er.Message);
+            } */
 
 
         }
