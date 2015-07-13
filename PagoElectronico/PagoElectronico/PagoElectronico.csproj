@@ -72,17 +72,17 @@
     <Compile Include="ABM Cliente\administrarTarjetas.Designer.cs">
       <DependentUpon>administrarTarjetas.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\Calendario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\Calendario.Designer.cs">
+      <DependentUpon>Calendario.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\modificarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ABM Cliente\modificarCliente.Designer.cs">
       <DependentUpon>modificarCliente.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Cliente\modificarTarjeta.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cliente\modificarTarjeta.Designer.cs">
-      <DependentUpon>modificarTarjeta.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cuenta\altaCuentaPorAdm.cs">
       <SubType>Form</SubType>
@@ -199,6 +199,12 @@
     <Compile Include="Facturacion\altaFacturacion.Designer.cs">
       <DependentUpon>altaFacturacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Facturacion\Facturacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\Facturacion.Designer.cs">
+      <DependentUpon>Facturacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facturacion\pagarSuscripciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +240,12 @@
     <Compile Include="Login\login.Designer.cs">
       <DependentUpon>login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\Recuperar contraseña.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\Recuperar contraseña.Designer.cs">
+      <DependentUpon>Recuperar contraseña.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login\SeleccionarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,11 +272,11 @@
     <EmbeddedResource Include="ABM Cliente\administrarTarjetas.resx">
       <DependentUpon>administrarTarjetas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\Calendario.resx">
+      <DependentUpon>Calendario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\modificarCliente.resx">
       <DependentUpon>modificarCliente.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cliente\modificarTarjeta.resx">
-      <DependentUpon>modificarTarjeta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\altaCuentaPorAdm.resx">
       <DependentUpon>altaCuentaPorAdm.cs</DependentUpon>
@@ -323,6 +335,9 @@
     <EmbeddedResource Include="Facturacion\altaFacturacion.resx">
       <DependentUpon>altaFacturacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\Facturacion.resx">
+      <DependentUpon>Facturacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\pagarSuscripciones.resx">
       <DependentUpon>pagarSuscripciones.cs</DependentUpon>
     </EmbeddedResource>
@@ -337,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login\login.resx">
       <DependentUpon>login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\Recuperar contraseña.resx">
+      <DependentUpon>Recuperar contraseña.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\SeleccionarCliente.resx">
       <DependentUpon>SeleccionarCliente.cs</DependentUpon>
