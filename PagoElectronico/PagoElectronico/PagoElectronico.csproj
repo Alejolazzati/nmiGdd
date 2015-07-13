@@ -126,12 +126,6 @@
     <Compile Include="ABM Cuenta\modificarCuentaAdm.Designer.cs">
       <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaCliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaCliente.Designer.cs">
-      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
-    </Compile>
     <Compile Include="ABM de Usuario\altaUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,18 +161,6 @@
     </Compile>
     <Compile Include="ABM Rol\modificarRol.Designer.cs">
       <DependentUpon>modificarRol.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Administrador\seleccionABM.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Administrador\seleccionABM.Designer.cs">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Cliente\seleccionABM.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Cliente\seleccionABM.Designer.cs">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
     </Compile>
     <Compile Include="Coneccion.cs" />
     <Compile Include="Consulta Saldos\consultaSaldos.cs">
@@ -305,9 +287,6 @@
     <EmbeddedResource Include="ABM Cuenta\modificarCuentaAdm.resx">
       <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\modificarCuentaCliente.resx">
-      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\altaUsuario.resx">
       <DependentUpon>altaUsuario.cs</DependentUpon>
     </EmbeddedResource>
@@ -325,12 +304,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\modificarRol.resx">
       <DependentUpon>modificarRol.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Administrador\seleccionABM.resx">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Cliente\seleccionABM.resx">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Saldos\consultaSaldos.resx">
       <DependentUpon>consultaSaldos.cs</DependentUpon>
