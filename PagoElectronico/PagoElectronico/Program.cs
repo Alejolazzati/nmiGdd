@@ -24,8 +24,7 @@ namespace PagoElectronico
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
 
-            login unLogin = new Login.login();
-             unLogin.Show();
+            new PagoElectronico.Login.login().Show();
             Application.Run();
             
 
