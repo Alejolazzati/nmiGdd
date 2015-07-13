@@ -32,11 +32,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBox2
@@ -71,13 +69,6 @@
             this.textBox2.Size = new System.Drawing.Size(181, 20);
             this.textBox2.TabIndex = 43;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(138, 33);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(181, 20);
-            this.textBox1.TabIndex = 42;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -106,16 +97,7 @@
             this.label2.TabIndex = 39;
             this.label2.Text = "País";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(37, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 13);
-            this.label1.TabIndex = 38;
-            this.label1.Text = "Número de cuenta";
-            // 
-            // modificarCuenta
+            // modificarCuentaAdm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -124,12 +106,10 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "modificarCuenta";
+            this.Name = "modificarCuentaAdm";
             this.Text = "modificarCuenta";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -142,10 +122,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
     }
 }

@@ -95,8 +95,9 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(95, 40);
             this.button5.TabIndex = 16;
-            this.button5.Text = "Modificar";
+            this.button5.Text = "Nueva cuenta";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button1
             // 
@@ -104,8 +105,9 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(140, 20);
             this.button1.TabIndex = 14;
-            this.button1.Text = "Seleccionar cuenta";
+            this.button1.Text = "Modificar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // listBox2
             // 
@@ -141,6 +143,7 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Buscar";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox3
             // 
@@ -148,6 +151,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(565, 20);
             this.textBox3.TabIndex = 8;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // listBox1
             // 
@@ -156,6 +160,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // buscarCuentaAdm
             // 

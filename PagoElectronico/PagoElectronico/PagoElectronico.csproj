@@ -168,18 +168,6 @@
     <Compile Include="ABM Rol\modificarRol.Designer.cs">
       <DependentUpon>modificarRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Administrador\seleccionABM.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Administrador\seleccionABM.Designer.cs">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Cliente\seleccionABM.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Cliente\seleccionABM.Designer.cs">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
-    </Compile>
     <Compile Include="Coneccion.cs" />
     <Compile Include="Consulta Saldos\consultaSaldos.cs">
       <SubType>Form</SubType>
@@ -325,12 +313,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\modificarRol.resx">
       <DependentUpon>modificarRol.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Administrador\seleccionABM.resx">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Cliente\seleccionABM.resx">
-      <DependentUpon>seleccionABM.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Saldos\consultaSaldos.resx">
       <DependentUpon>consultaSaldos.cs</DependentUpon>
