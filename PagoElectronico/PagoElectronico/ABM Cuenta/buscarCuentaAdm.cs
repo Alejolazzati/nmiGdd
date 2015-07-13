@@ -85,13 +85,25 @@ namespace PagoElectronico.ABM_Cuenta
             String cuenta = listBox2.SelectedItem.ToString();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "exec NMI.bajaCuenta " + cuenta;
-            comando.ExecuteNonQuery(); 
+            try
+            {
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Operacion exitosa");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            { MessageBox.Show(er.Message); }
             
         }
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Login.Funcionalidades().Show();
+            this.Close();
         }
     }
 }

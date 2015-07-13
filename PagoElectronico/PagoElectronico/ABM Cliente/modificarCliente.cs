@@ -12,10 +12,10 @@ namespace PagoElectronico.ABM_Cliente
     public partial class modificarCliente : Form
     {
         String cliente;
-
+        DateTime fecha;
         string nombre;
         string apellido;
-        DateTime fechaElegida;
+        
         String numeroDoc;
         String mail;
         string domicilio;
@@ -39,7 +39,7 @@ namespace PagoElectronico.ABM_Cliente
             InitializeComponent();
             
             
-            comando.CommandText = "Select * from dbo.datosDelCliente(" + cliente  + ")";
+            comando.CommandText = "Select * from NMI.datosDelCliente(" + cliente  + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             reader.Read();
             nombre = reader.GetString(2);
@@ -51,6 +51,7 @@ namespace PagoElectronico.ABM_Cliente
             numero = reader.GetSqlValue(9).ToString();
             piso = reader.GetInt32(10);
             depto = reader.GetString(11);
+            fecha = reader.GetDateTime(12);
             textBox11.Text = nombre;
             textBox1.Text = apellido;
             textBox10.Text = numeroDoc.ToString();
@@ -75,7 +76,7 @@ namespace PagoElectronico.ABM_Cliente
             numero = textBox7.Text;
             depto = textBox4.Text;
             piso = Convert.ToInt32(textBox2.Text);    
-            comando.CommandText = "execute dbo.updeteaDatosDelCliente " + cliente + ", '" + nombre + "','" + apellido + "','" + tipoDocumento + "'," + numeroDoc + ",'"+mail+"','"+domicilio+"'," + numero + "," + piso + ",'" + depto + "','" + fechaElegida + "'";
+            comando.CommandText = "execute NMI.updeteaDatosDelCliente " + cliente + ", '" + nombre + "','" + apellido + "','" + tipoDocumento + "'," + numeroDoc + ",'"+mail+"','"+domicilio+"'," + numero + "," + piso + ",'" + depto + "','" + fecha + "'";
             try
             {
                 comando.ExecuteNonQuery();
