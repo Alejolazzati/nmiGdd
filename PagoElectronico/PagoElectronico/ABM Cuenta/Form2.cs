@@ -16,11 +16,19 @@ namespace PagoElectronico.ABM_Cuenta
         {
             InitializeComponent();
             abmSuper = abmANterior;
+
+            monthCalendar1.MaxSelectionCount = 1;
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            abmSuper.recibirFecha(monthCalendar1.SelectionRange.Start);
+            this.Close();
         }
     }
 }

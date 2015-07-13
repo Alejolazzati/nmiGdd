@@ -46,6 +46,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Confirmar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form2
             // 
@@ -55,7 +56,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.monthCalendar1);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.Text = "Calendario";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
 
