@@ -115,6 +115,11 @@ namespace PagoElectronico.Login
                     MessageBox.Show("HACERME");
                     break;
 
+
+                case "Retiro de efectivo":
+                    new SeleccionarCuenta(3);
+                    break;
+
                 case "":
                     MessageBox.Show("Seleccione una opcion");
                     break;
@@ -129,6 +134,11 @@ namespace PagoElectronico.Login
             this.Close();
             this.Hide();
             
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Program.end();
         }
 
       

@@ -33,7 +33,7 @@ namespace PagoElectronico.ABM_Cliente
         public altaCliente()
            {
             InitializeComponent();
-            comando.CommandText = "Select * from documentosDisponibles()";
+            comando.CommandText = "Select * from NMI.documentosDisponibles()";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())
@@ -47,7 +47,7 @@ namespace PagoElectronico.ABM_Cliente
             
             //CARGAR NACIONALIDADES
 
-            comando.CommandText = "Select * from getNacionalidades()";
+            comando.CommandText = "Select * from NMI.getNacionalidades()";
             System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
             while (reader2.Read())
             {
@@ -59,7 +59,7 @@ namespace PagoElectronico.ABM_Cliente
            
             //Cargar roles
 
-            comando.CommandText = "Select nombre_rol from Rol";
+            comando.CommandText = "Select nombre_rol from NMI.Rol";
             System.Data.SqlClient.SqlDataReader reader3 = comando.ExecuteReader();
 
 
@@ -105,7 +105,7 @@ namespace PagoElectronico.ABM_Cliente
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
                                                                                                                 // exec dbo.ingresarCliente 'usr1','pw1','p1reguntame','u1narespuesta', 'n1om','ap1e', 'Pasaporte',1233,'ma23i3l',1,' China','undom3',52,23,'B', '1901-03-03' 
 
-            comando.CommandText = "exec dbo.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , "+ numero+ " , "+ piso +",'"+ depto+"', '"+ fechaElegida+"'" ;
+            comando.CommandText = "exec NMI.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , "+ numero+ " , "+ piso +",'"+ depto+"', '"+ fechaElegida+"'" ;
             comando.ExecuteNonQuery(); 
             // try { comando.ExecuteNonQuery(); }
            // catch { MessageBox.Show("Ingrese correctamente los valores"); }
