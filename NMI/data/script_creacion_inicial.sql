@@ -1,4 +1,5 @@
 create schema NMI
+go
 
 create function NMI.fechaSistema()
 returns datetime 
@@ -32,14 +33,14 @@ Create table NMI.ultimaCuenta (
 numero numeric(18)
 )
 go
-
+/*
 insert into NMI.ultimaCuenta values (0) 
-go
+go*/
 
 create table NMI.Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) unique not null,
-Contraseña varchar(50) not null,
+Contrasenia varchar(50) not null,
 Fecha_creacion date default NMI.fechaSistema(),
 Ultima_modificacion date not null default NMI.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
@@ -47,20 +48,6 @@ Respuesta varchar(50) not null
 )
 go
 
-/*
-create trigger NMI.encriptarDatosUsuario on Usuario
-instead of  update,insert
-as
-begin transaction
-update inserted 
-set contraseña=NMI..ensriptarSha256(contraseña)
-
-
-delete from NMI.usuarios select * from deleted
-
-insert into NMI.usuarios select Username,Contraseña, from inserted
-commit
-go*/
 
  
 create table NMI.Pais
@@ -633,19 +620,19 @@ for  insert
 as
 Begin transaction
 Declare @num_fallido int
-Declare @Cod_loguin int
+Declare @Cod_login int
 Declare cursorDeFallidos Cursor
 for select * from inserted
 open cursorDeFallidos
-fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
+fetch next from cursorDeFallidos into @num_fallido,@Cod_login
 while(@@FETCH_STATUS=0)
 begin
 if ((select count(*) from NMI.Intentos_fallidos,NMI.Usuario,NMI.Intentos_login
 where NMI.Intentos_fallidos.Cod_login=NMI.Intentos_login.Id_login and NMI.Intentos_login.Codigo_usuario=NMI.Usuario.Id_usuario)>2)
 update NMI.Usuario
 set NMI.Estado="inhabilitado"
-where Id_usuario = (Select Codigo_usuario from NMI.Intentos_loguin where Id_loguin=@Cod_loguin)
-fetch next from cursorDeFallidos into @num_fallido,@Cod_loguin
+where Id_usuario = (Select Codigo_usuario from NMI.Intentos_login where Id_login=@Cod_login)
+fetch next from cursorDeFallidos into @num_fallido,@Cod_login
 
 end
 close cursorDeFallidos
@@ -781,7 +768,7 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 while @@FETCH_STATUS=0
 begin
-Insert into NMI.Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
+Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
 Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from NMI.Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
@@ -966,7 +953,7 @@ after insert
 as
 begin transaction
 insert into 	NMI.inhabilitacionesDeCuenta
-	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),NMI..fechaSistema(),101) 
+	Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varchar(30),NMI.fechaSistema(),101) 
 	From NMI.transferencias t1 join NMI.transacciones t2
 	on (t2.Id_transaccion=t1.cod_transaccion)
 	where COD_factura is null -- and t2.id_transaccion in (select id_transaccion from inserted)
@@ -1043,7 +1030,7 @@ go
 
 create trigger NMI.habilitarCuenta
 on NMI.transacciones
-instead of update
+for update
 as
 	begin transaction
 		update NMI.cuentas
@@ -1054,26 +1041,27 @@ as
 												on (t1.num_cuenta_origen=c1.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=t1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=t1.cod_transaccion) is not null				
 							and c1.Codigo_estado=2) 
-							UNION
+							/*UNION
 							(select c2.num_cuenta
 							from NMI.cuentas c2 join NMI.modificaciones m1
 												on(m1.num_cuenta=c2.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=m1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=m1.cod_transaccion) is not null				
-							and c2.Codigo_estado=2))
+							and c2.Codigo_estado=2)*/)
 		
 		
 	commit               
 go
 
 
-create procedure NMI.facturar @numCliente numeric(18)
+
+create procedure NMI.facturar @numCliente numeric(18),@fact numeric(18) output
 
 as
 Begin
 	Begin transaction set transaction isolation level serializable
-	Declare @fact numeric(18)
+	
 	select @fact=MAX(Facturas.Num_factura)+1 from NMI.Facturas
-	insert into NMI.Facturas values (@fact,NMI..fechaSistema())	
+	insert into NMI.Facturas values (@fact,NMI.fechaSistema())	
 	update NMI.Transacciones
 	set cod_factura=@fact
 	where ((Select Cod_cuenta_origen from NMI.Transferencias
@@ -1326,7 +1314,7 @@ Begin
 	end
 	go
 	
-	Insert into NMI.Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
+	Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
 	go
 	insert into NMI.Usuario_rol select MAX (Usuario.Id_usuario),2 from NMI.Usuario 
 	go
@@ -1378,7 +1366,7 @@ if(0<(
 begin
 raiserror ('Cuenta no puede recibir',16,150)
 rollback
-end
+end				
 else 
 
 commit
@@ -1406,7 +1394,7 @@ begin transaction
 
 update NMI.cuenta
 set Codigo_estado=2
-where Fecha_vencimiento < NMI..fechaSistema() and Codigo_estado=1
+where Fecha_vencimiento < NMI.fechaSistema() and Codigo_estado=1
 insert into NMI.Retiros
 select *
 from inserted 
@@ -1466,7 +1454,7 @@ drop table NMI.usuario
 end
 go
 
-create function NMI.clientesInhabilitados(@año int,@trimestre int)
+create function NMI.clientesInhabilitados(@anio int,@trimestre int)
 returns @tabla table(
 num_cliente int,
 nom_cliente varchar(32)
@@ -1476,7 +1464,7 @@ begin
 insert into @tabla
 select top 5 id_cliente,nombre from NMI.Cliente,NMI.Cuenta as c,NMI.inhabilitacionesDeCuenta as i
 where i.num_cuenta=c.num_cuenta and c.codigo_cliente=id_cliente 
-and (year(i.fecha)=@año) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
+and (year(i.fecha)=@anio) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
 order by i.fecha
 return
 end
@@ -1537,7 +1525,7 @@ rollback
 return
 end 
 if (exists (select ID_usuario from NMI.Usuario where
-Useranme=@username and Contraseña=@contra
+Useranme=@username and Contrasenia=@contra
 --dbo.encriptarSha256(@contra)
 ))
 begin
@@ -1568,7 +1556,7 @@ Begin transaction set transaction isolation level serializable
 	declare @coduser int
 	declare @numeropais varchar(50)
 	declare @tipoDeDocumentoNumero numeric(10)
-	insert into NMI.Usuario(Useranme,Contraseña,Pregunta_secreta,Respuesta,Estado) values 
+	insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values 
 						(@username,@pw,@pregunta,@respuesta,'habilitado')
 	set @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
 	set @tipoDeDocumentoNumero=(select Id_DNI from NMI.Tipo_DNI where Descripcion=@tipodoc)
@@ -1699,7 +1687,7 @@ return
 end
 
 update NMI.Usuario
-set Contraseña=@contra
+set Contrasenia=@contra
 where Useranme=@usuario
 commit 
 GO
