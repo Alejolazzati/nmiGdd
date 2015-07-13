@@ -296,14 +296,13 @@ create table NMI.Depositos(
 	foreign key (Cod_TC) references NMI.Tarjetas_credito(Id_tarjeta)
 )
 go
-
 create table NMI.Cheque(
 	Id_cheque int identity(1,1) primary key,
 	Num_cheque int not null,
 	Cod_banco int not null,
 	Cod_cliente int not null,
 	Fecha date not null default NMI.fechaSistema(),
-	unique (Num_cheque,Cod_banco)
+	unique (Num_cheque,Cod_banco),
 	
 	foreign key (Cod_banco) references NMI.Bancos(Id_banco),
 	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente)
@@ -631,7 +630,7 @@ begin
 if ((select count(*) from NMI.Intentos_fallidos,NMI.Usuario,NMI.Intentos_login
 where NMI.Intentos_fallidos.Cod_login=NMI.Intentos_login.Id_login and NMI.Intentos_login.Codigo_usuario=NMI.Usuario.Id_usuario)>2)
 update NMI.Usuario
-set NMI.Estado="inhabilitado"
+set Estado='inhabilitado'
 where Id_usuario = (Select Codigo_usuario from NMI.Intentos_login where Id_login=@Cod_login)
 fetch next from cursorDeFallidos into @num_fallido,@Cod_login
 
