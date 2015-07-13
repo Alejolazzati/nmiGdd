@@ -11,15 +11,15 @@ namespace PagoElectronico.ABM_Cliente
 {
     public partial class altaCliente : Form
     {
-
-        string nombre;
-        string apellido;
+        
+        String nombre;
+        String apellido;
         DateTime fechaElegida;
-        string numeroDoc;
+        Int32 numeroDoc;
         String mail;
-        string domicilio;
-        string piso;
-        string depto;
+        String domicilio;
+        Int32 piso;
+        String depto;
         String tipoDocumento;
         String Nacionalidad;
         String userName;
@@ -27,7 +27,7 @@ namespace PagoElectronico.ABM_Cliente
         String preguntaSecreta;
         String respuestaSecreta;
         int Rol;
-        string numero;
+        Int32 numero;
         System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             
         public altaCliente()
@@ -40,9 +40,10 @@ namespace PagoElectronico.ABM_Cliente
             {
                 comboBox2.Items.Add(reader.GetSqlString(0));
             }
-            this.Show();
+            
 
             reader.Dispose();
+            
            
             
             //CARGAR NACIONALIDADES
@@ -75,28 +76,62 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button4_Click(object sender, EventArgs e)
         {
-            nombre = textBox11.Text;
+            nombre = textBox5.Text;
             apellido = textBox1.Text;
-            numeroDoc = textBox10.Text;
+            numeroDoc = Int32.Parse(textBox10.Text);
             mail = textBox9.Text;
             domicilio = textBox3.Text;
-            piso = textBox7.Text;
+            piso = Int32.Parse(textBox2.Text);
             depto = textBox4.Text;
             tipoDocumento = comboBox2.SelectedItem.ToString();
             Nacionalidad = comboBox1.SelectedItem.ToString();
             userName=textBox6.Text;
             contraseña = textBox7.Text;
             preguntaSecreta = textBox8.Text;
-            respuestaSecreta = textBox9.Text;
-            numero = textBox12.Text;
+            respuestaSecreta = textBox11.Text;
+            numero = Int32.Parse(textBox12.Text);
+          
            
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-                                                                                                                // exec dbo.ingresarCliente 'usr1','pw1','p1reguntame','u1narespuesta', 'n1om','ap1e', 'Pasaporte',1233,'ma23i3l',1,' China','undom3',52,23,'B', '1901-03-03' 
+            comando.CommandText = "exec NMI.ingresarUsuario '" + userName + "','" + contraseña + "','" + preguntaSecreta + "','" + respuestaSecreta + "'," + 1.ToString();
+            try { comando.ExecuteNonQuery();
+            
+           /* comando.CommandText = "NMI.facturar";
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.Add("@username", SqlDbType.VarChar);
+            comando.Parameters.Add("@nombre", SqlDbType.VarChar);
+            comando.Parameters.Add("@apellido", SqlDbType.VarChar);
+            comando.Parameters.Add("@nombre", SqlDbType.VarChar);
+            @apellido varchar(50),
+@tipodoc varchar(50),@numerodedoc int,
+@mail varchar(50),/*
+@pais varchar(50),*//*@calle varchar(50),
+@numero int,@piso int,
+@depto char(1),@fecha date
+            comando.Parameters["@numCliente"].Value = Program.cliente;
+            comando.Parameters["@fact"].Value = Program.cliente;
+       */
+            
+            comando.CommandText = "exec NMI.ingresarCliente '"+userName+"','"+nombre+"','"+apellido+"','"+tipoDocumento+"',"+numeroDoc+",'"+mail+"','"+Nacionalidad+"','"+domicilio+"',"+numero+","+piso+",'"+depto+"','"+fechaElegida+"'";
+ 
 
-            comando.CommandText = "exec NMI.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , "+ numero+ " , "+ piso +",'"+ depto+"', '"+ fechaElegida+"'" ;
-            comando.ExecuteNonQuery(); 
-            // try { comando.ExecuteNonQuery(); }
-           // catch { MessageBox.Show("Ingrese correctamente los valores"); }
+             /*   + userName + "', '" + nombre + 
+                "' , '" + apellido + "' , '" + 
+                tipoDocumento + "' , " + numeroDoc + ", '" + mail +
+                "', '" /*+ Nacionalidad + "' , '"*//* + domicilio + "' , " + numero +
+                " , " + piso + ",'" + depto + "', '"+ fechaElegida+"'" ;
+            */
+           
+                comando.ExecuteNonQuery(); new PagoElectronico.Login.Funcionalidades().Show();
+                this.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+             
+            }
+            catch { MessageBox.Show("Ingrese correctamente los valores"); }
+
                
         }
 
@@ -114,6 +149,17 @@ namespace PagoElectronico.ABM_Cliente
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Login.Funcionalidades().Show();
+            this.Close();
         }
 
         

@@ -1540,7 +1540,6 @@ raiserror ('mal contra',16,150)
 end
 commit
 go
-
 create procedure NMI.ingresarCliente
 @username varchar(50)/*,@pw varchar(50),
 @pregunta varchar(50),@respuesta varchar(50)*/,
@@ -1551,22 +1550,22 @@ create procedure NMI.ingresarCliente
 @numero int,@piso int,
 @depto char(1),@fecha date
 as
-Begin
+
 Begin transaction set transaction isolation level serializable
 	declare @coduser int
-	declare @numeropais varchar(50)
+	declare @numeropais int
 	declare @tipoDeDocumentoNumero numeric(10)
 	/*insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values 
 						(@username,@pw,@pregunta,@respuesta,'habilitado')
-	*/set @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
-	set @tipoDeDocumentoNumero=(select Id_DNI from NMI.Tipo_DNI where Descripcion=@tipodoc)
+	*/select @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
+	select @tipoDeDocumentoNumero=(select Id_DNI from NMI.Tipo_DNI where Descripcion=@tipodoc)
 	insert into NMI.Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,1)
-	set @numeropais = (select Id_Pais from NMI.Pais where Descripcion=@pais) 
+	select @numeropais= (select Id_Pais from NMI.Pais where Descripcion=/*' '+*/@pais) 
 	insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
 				values (@coduser,@nombre,@apellido,@tipoDeDocumentoNumero,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
 	
 	commit 
-	end 
+	 
 go
 
 
@@ -1802,3 +1801,17 @@ commit
 end
 
  go
+
+
+create procedure NMI.ingresarUsuario @username varchar(30),@pw varchar(30),@pregunta varchar(50), @Respuesta varchar (50), @rol int 
+as
+begin transaction
+insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(@username,@pw,@pregunta,@Respuesta,'habilitado')
+Declare @codUser int
+select @codUser=Id_usuario from NMI.Usuario
+where Useranme=@username
+insert into NMI.Usuario_rol(Cod_rol,Cod_usuario) values(@rol,@codUser)
+commit
+go
+
+
