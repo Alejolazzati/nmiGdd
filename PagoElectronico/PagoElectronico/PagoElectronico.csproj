@@ -126,12 +126,6 @@
     <Compile Include="ABM Cuenta\modificarCuentaAdm.Designer.cs">
       <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaCliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaCliente.Designer.cs">
-      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
-    </Compile>
     <Compile Include="ABM de Usuario\altaUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,9 +286,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\modificarCuentaAdm.resx">
       <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\modificarCuentaCliente.resx">
-      <DependentUpon>modificarCuentaCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\altaUsuario.resx">
       <DependentUpon>altaUsuario.cs</DependentUpon>

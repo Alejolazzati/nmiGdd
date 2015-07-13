@@ -52,7 +52,8 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new modificarCuentaAdm().Show();
+            long numCuentaTru=1111111111111111;
+            new modificarCuentaAdm(numCuentaTru.ToString()).Show();
         }
     }
 }
