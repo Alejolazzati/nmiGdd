@@ -31,6 +31,7 @@ namespace PagoElectronico.Login
             {
                 
                 new PagoElectronico.Facturacion.Facturacion().Show();
+                this.Close();
             }
         }
 

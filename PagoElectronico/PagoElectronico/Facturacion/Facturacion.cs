@@ -38,7 +38,7 @@ namespace PagoElectronico.Facturacion
             catch (System.Data.SqlClient.SqlException er)
             {
                 MessageBox.Show(er.Message);
-                new PagoElectronico.Login.Funcionalidades(1).Show();
+                new PagoElectronico.Login.Funcionalidades().Show();
                 this.Close();
 
             }
@@ -51,6 +51,18 @@ namespace PagoElectronico.Facturacion
         private void button3_Click(object sender, EventArgs e)
         {
            new  PagoElectronico.Login.SeleccionarCuenta(2).Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Login.Funcionalidades().Show();
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Facturacion.ListadoFactura().Show();
+            new PagoElectronico.Login.Funcionalidades().Show(); this.Close();
         }
 
         

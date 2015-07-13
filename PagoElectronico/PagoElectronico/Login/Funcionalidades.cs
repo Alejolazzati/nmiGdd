@@ -11,14 +11,14 @@ namespace PagoElectronico.Login
 {
     public partial class Funcionalidades : Form
     {
-        int roli;
-        public Funcionalidades(int rol)
+        
+        public Funcionalidades()
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             InitializeComponent();
-            roli = rol;
+            
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (rol == 1)
+            if (Program.rol == 1)
             {
                 comando.CommandText = "Select Id_cliente from NMI.Cliente,NMI.Usuario where Id_usuario=Cod_usuario and Useranme='" + Login.login.nombre + "'";
                 System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
@@ -29,7 +29,7 @@ namespace PagoElectronico.Login
             }
             else label2.Text = "administrador";
 
-            comando.CommandText = "Select * from NMI.funcionalidadesRol(" + rol + ")";
+            comando.CommandText = "Select * from NMI.funcionalidadesRol(" + Program.rol + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())
@@ -80,7 +80,7 @@ namespace PagoElectronico.Login
                     break;
 
                 case "ABM cuenta":
-                    if (roli == 1)
+                    if (Program.rol== 1)
                     {
                         new PagoElectronico.ABM_Cuenta.buscarCuentaCliente().Show();
                     }
@@ -91,14 +91,14 @@ namespace PagoElectronico.Login
                     break;
 
                 case "Facturacion":
-                    if (roli == 2)
+                    if (Program.rol == 2)
                         new SeleccionarCliente(1).Show();
                     else
                         new PagoElectronico.Facturacion.Facturacion().Show(); 
                     break;
 
                 case "Consultar saldo":
-                    PagoElectronico.Consulta_Saldos.consultaSaldosCliente unaConsulta = new PagoElectronico.Consulta_Saldos.consultaSaldosCliente(roli);
+                    PagoElectronico.Consulta_Saldos.consultaSaldosCliente unaConsulta = new PagoElectronico.Consulta_Saldos.consultaSaldosCliente();
                     unaConsulta.Show();
                     break;
 

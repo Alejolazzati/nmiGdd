@@ -27,14 +27,14 @@ namespace PagoElectronico.Transferencias
         private void button4_Click(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "execute dbo.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text/*+",'"+Program.fecha+"'"*/;
+            comando.CommandText = "execute NMI.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text/*+",'"+Program.fecha+"'"*/;
             try { comando.ExecuteNonQuery();
             MessageBox.Show("Transferencia exitosa");
             }
             catch (System.Data.SqlClient.SqlException er)
             {
                 MessageBox.Show(er.Message);
-                new PagoElectronico.Login.Funcionalidades(1).Show();
+                new PagoElectronico.Login.Funcionalidades().Show();
                 this.Close();
        
             }
@@ -44,7 +44,7 @@ namespace PagoElectronico.Transferencias
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new PagoElectronico.Login.Funcionalidades(1).Show();
+            new PagoElectronico.Login.Funcionalidades().Show();
             this.Close();
         }
 

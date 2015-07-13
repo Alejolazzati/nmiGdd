@@ -8,6 +8,7 @@ namespace PagoElectronico
 {
     static class Program
     {
+        public static int rol;
         public static System.Data.SqlTypes.SqlDecimal factura;
         public static String fecha;
         public static Int32 cliente;

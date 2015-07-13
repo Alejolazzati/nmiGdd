@@ -57,7 +57,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(116, 20);
             this.textBox3.TabIndex = 13;
-                       // 
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -93,6 +93,7 @@
             this.button2.TabIndex = 18;
             this.button2.Text = "Volver atras";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label3
             // 
