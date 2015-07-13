@@ -15,5 +15,20 @@ namespace PagoElectronico.ABM_de_Usuario
         {
             InitializeComponent();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "Select * from NMI.usernamesParecidos('"+textBox1.Text+"')";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                listBox1.Items.Add(reader.GetSqlString(0));
+            }
+
+
+            reader.Dispose();
+        }
     }
 }

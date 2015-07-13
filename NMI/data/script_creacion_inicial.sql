@@ -1543,11 +1543,11 @@ commit
 go
 
 create procedure NMI.ingresarCliente
-@username varchar(50),@pw varchar(50),
-@pregunta varchar(50),@respuesta varchar(50),
+@username varchar(50)/*,@pw varchar(50),
+@pregunta varchar(50),@respuesta varchar(50)*/,
 @nombre varchar(50),@apellido varchar(50),
 @tipodoc varchar(50),@numerodedoc int,
-@mail varchar(50),@rol int,
+@mail varchar(50),
 @pais varchar(50),@calle varchar(50),
 @numero int,@piso int,
 @depto char(1),@fecha date
@@ -1557,11 +1557,11 @@ Begin transaction set transaction isolation level serializable
 	declare @coduser int
 	declare @numeropais varchar(50)
 	declare @tipoDeDocumentoNumero numeric(10)
-	insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values 
+	/*insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values 
 						(@username,@pw,@pregunta,@respuesta,'habilitado')
-	set @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
+	*/set @coduser = (select Id_usuario from NMI.Usuario where Useranme=@username)
 	set @tipoDeDocumentoNumero=(select Id_DNI from NMI.Tipo_DNI where Descripcion=@tipodoc)
-	insert into NMI.Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,@rol)
+	insert into NMI.Usuario_rol(Cod_usuario,Cod_rol) values (@coduser,1)
 	set @numeropais = (select Id_Pais from NMI.Pais where Descripcion=@pais) 
 	insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento)
 				values (@coduser,@nombre,@apellido,@tipoDeDocumentoNumero,@numerodedoc,@mail,@numeropais,@calle,@numero,@piso,@depto,@fecha)
@@ -1747,3 +1747,5 @@ create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe f
  select @Id_cheque=max(Id_cheque) from NMI.Cheque
  insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque) values(@retiro,@cuenta,@Id_cheque)
  commit
+ go
+ create procedure NMI.IngresarUsuario
