@@ -16,8 +16,10 @@ namespace PagoElectronico.ABM_Cuenta
         System.DateTime fechaElegida;
         String pais;
         String moneda;
-        String fechaApertura;
         String tipo;
+
+        System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+           
         public altaCuentaPorCliente()
         {
             InitializeComponent();
@@ -25,6 +27,46 @@ namespace PagoElectronico.ABM_Cuenta
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+            //cargar paises
+            comando.CommandText = "Select descripcion from NMI.pais";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                comboBox3.Items.Add(reader.GetSqlString(0));
+
+            }
+            this.Show();
+            reader.Dispose();
+            
+            //cargar moneda
+
+
+            comando.CommandText = "Select descripcion from NMI.MONEDA";
+            System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
+            while (reader2.Read())
+            {
+                comboBox1.Items.Add(reader2.GetSqlString(0));
+
+            }
+            this.Show();
+            reader2.Dispose();
+
+
+            // cargar categoria
+
+
+            comando.CommandText = "Select descripcion from NMI.categoria";
+            System.Data.SqlClient.SqlDataReader reader3 = comando.ExecuteReader();
+            while (reader3.Read())
+            {
+                comboBox2.Items.Add(reader3.GetSqlString(0));
+
+            }
+            this.Show();
+            reader3.Dispose();
+
+
+            maskedTextBox1.Mask = "0999999999999999999999999999";
         }
 
         private void altaCuentaPorCliente_Load(object sender, EventArgs e)
@@ -34,7 +76,12 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button2_Click(object sender, EventArgs e)
         {
-            numCuenta = textBox1.Text;
+            numCuenta = maskedTextBox1.Text;
+            pais = comboBox3.SelectedItem.ToString();
+            moneda = comboBox1.SelectedItem.ToString();
+            tipo = comboBox2.SelectedItem.ToString();
+
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -59,6 +106,16 @@ namespace PagoElectronico.ABM_Cuenta
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
