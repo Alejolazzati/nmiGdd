@@ -1833,3 +1833,12 @@ where Tarjetas_credito.Cod_cliente=@cliente
 return
 end
 go
+
+create procedure NMI.setFecha @fecha date
+as
+begin 
+delete from NMI.fechaDeSistema
+insert into NMI.fechaDeSistema values (@fecha)
+end
+go
+

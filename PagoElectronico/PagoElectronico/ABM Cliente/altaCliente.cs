@@ -75,29 +75,40 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button4_Click(object sender, EventArgs e)
         {
-            nombre = textBox11.Text;
+
+
+            nombre = textBox5.Text;
+
             apellido = textBox1.Text;
             numeroDoc = textBox10.Text;
             mail = textBox9.Text;
             domicilio = textBox3.Text;
-            piso = textBox7.Text;
+            piso = textBox2.Text;
             depto = textBox4.Text;
             tipoDocumento = comboBox2.SelectedItem.ToString();
             Nacionalidad = comboBox1.SelectedItem.ToString();
-            userName=textBox6.Text;
+            userName = textBox6.Text;
             contraseña = textBox7.Text;
             preguntaSecreta = textBox8.Text;
-            respuestaSecreta = textBox9.Text;
+            respuestaSecreta = textBox11.Text;
             numero = textBox12.Text;
-           
-            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-                                                                                                                // exec dbo.ingresarCliente 'usr1','pw1','p1reguntame','u1narespuesta', 'n1om','ap1e', 'Pasaporte',1233,'ma23i3l',1,' China','undom3',52,23,'B', '1901-03-03' 
+System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            try
+            {
+            
+                comando.CommandText = "begin transaction exec NMI.ingresarUsuario '" + userName + "','" + contraseña + "','" + preguntaSecreta + "','" + respuestaSecreta + "'," + 1.ToString()+" exec NMI.ingresarCliente '" + userName + "','" + nombre + "','" + apellido + "','" + tipoDocumento + "'," + numeroDoc + ",'" + mail + "','" + Nacionalidad + "','" + domicilio + "'," + numero + "," + piso + ",'" + depto + "','" + fechaElegida + "'"+" commit";
 
-            comando.CommandText = "exec NMI.ingresarCliente '"+userName+"', '"+contraseña+"', '"+preguntaSecreta+"', '"+ respuestaSecreta+"' , '"+ nombre +"' , '"+apellido+ "' , '"+ tipoDocumento+ "' , " +numeroDoc+ ", '"+ mail +"' , "+ Rol + ", '"+ Nacionalidad +"' , '"+ domicilio+ "' , "+ numero+ " , "+ piso +",'"+ depto+"', '"+ fechaElegida+"'" ;
-            comando.ExecuteNonQuery(); 
-            // try { comando.ExecuteNonQuery(); }
-           // catch { MessageBox.Show("Ingrese correctamente los valores"); }
-               
+
+
+                comando.ExecuteNonQuery(); new PagoElectronico.Login.Funcionalidades().Show();
+                this.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+            catch { MessageBox.Show("Ingrese correctamente los valores"); }
         }
 
         public void recibirFecha(System.DateTime unaFecha)

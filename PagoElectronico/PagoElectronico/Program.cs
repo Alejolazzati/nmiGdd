@@ -19,11 +19,14 @@ namespace PagoElectronico
         [STAThread]
         static void Main()
         {
-            fecha = "20151025";
+           
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
-          //  fecha=PagoElectronico.Properties.Settings.Default.fechaDelSistema;
+          fecha=PagoElectronico.Properties.Settings.Default.fechaDelSistema;
+          System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+          comando.CommandText = "exec NMI.setFecha '" + fecha + "'";
+          comando.ExecuteNonQuery();
             new PagoElectronico.Login.login().Show();
             Application.Run();
             
