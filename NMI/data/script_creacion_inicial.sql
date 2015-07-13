@@ -1081,7 +1081,7 @@ returns @tabla table(username varchar(30))
 as
 begin
 insert into @tabla
-select useranme  from NMI.Usuarios 
+select useranme  from NMI.Usuario 
 where useranme like '%'+@busqueda+'%'
 
 return 
