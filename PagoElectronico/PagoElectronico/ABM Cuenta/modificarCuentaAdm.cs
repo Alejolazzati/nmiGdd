@@ -101,5 +101,22 @@ namespace PagoElectronico.ABM_Cuenta
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            MessageBox.Show("HACEME");
+            /*comando.CommandText = "exec NMI"
+            try
+            {
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Operacion exitosa");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                MessageBox.Show(er.Message);
+            }
+           */
+        }
     }
 }
