@@ -51,7 +51,8 @@ namespace PagoElectronico.Login
             if (comboBox1.SelectedItem.ToString() == "Cliente")
             { rol = 1; }
             else { rol = 2; }
-            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades(rol);
+            Program.rol = rol;
+            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades();
                 formFuncion.Show();
                 this.Close();
                 this.Hide();

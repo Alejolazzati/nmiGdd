@@ -1065,10 +1065,10 @@ Begin
 	update NMI.Transacciones
 	set cod_factura=@fact
 	where ((Select Cod_cuenta_origen from NMI.Transferencias
-			where Cod_transaccion=Id_transaccion
+			where Cod_transaccion=Id_transaccion and cod_factura IS null
 			)union(
 			Select Cod_cuenta from NMI.Modificacion_cuenta
-			where Cod_transaccion=Id_transaccion)) in (select * from cuentasPorCliente(@numCliente) as d )
+			where cod_factura is null and Cod_transaccion=Id_transaccion)) in (select * from cuentasPorCliente(@numCliente) as d )
 	
 	
 	commit
@@ -1709,20 +1709,21 @@ where factura=@fact
 return @i
 end
 go
-------------------------------
-create procedure NMI.altaCuenta
-@cliente int, @numero numeric(20), @pais varchar(50), @moneda varchar(20),
-@apertura date,@tipo varchar(50)
+
+create function NMI.listadoFactura(@fact numeric(18))
+returns @tabla table(
+item varchar(50),
+precio float
+)
 as
 begin
-declare @idmoneda int
-declare @idpais int	
-declare @idecategoria int	
-	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
-	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
-	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
-	update NMI.ultimaCuenta set numero=@numero
-	insert into NMI.Cuenta values (@numero,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
-commit
+insert into @tabla
+select 'transferencia a cuenta '+convert(varchar(20),cod_cuenta_destino),costo from NMI.Transacciones t1,NMI.Transferencias t2
+where t1.id_transaccion=t2.cod_transaccion and t1.cod_factura=@fact
+union
+select 'suscripcion por dias: '+convert(varchar(3),cantidad),costo from NMI.suscripciones where factura=@fact
+
+
+return
 end
-go	
+go

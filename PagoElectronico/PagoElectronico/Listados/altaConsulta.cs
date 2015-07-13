@@ -113,7 +113,7 @@ namespace PagoElectronico.Listados
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new PagoElectronico.Login.Funcionalidades(2).Show();
+            new PagoElectronico.Login.Funcionalidades().Show();
             this.Close();
         }
 

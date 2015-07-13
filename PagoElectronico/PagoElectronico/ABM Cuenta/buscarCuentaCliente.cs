@@ -50,7 +50,7 @@ namespace PagoElectronico.ABM_Cuenta
         private void button5_Click(object sender, EventArgs e)
         {
 
-            PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades(1);
+            PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades();
             funci.Show();
             this.Close();
         }

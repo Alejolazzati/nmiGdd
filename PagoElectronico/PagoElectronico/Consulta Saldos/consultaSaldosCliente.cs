@@ -11,10 +11,10 @@ namespace PagoElectronico.Consulta_Saldos
 {
     public partial class consultaSaldosCliente : Form
     {
-        int rol;
-        public consultaSaldosCliente(int roli)
+        
+        public consultaSaldosCliente()
         {
-            rol= roli;
+            
             InitializeComponent();
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             
@@ -49,7 +49,7 @@ namespace PagoElectronico.Consulta_Saldos
 
         private void button6_Click(object sender, EventArgs e)
         {
-            PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades(rol);
+            PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades();
             funci.Show();
             this.Close();
             
