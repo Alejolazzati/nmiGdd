@@ -165,6 +165,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(171, 20);
             this.textBox1.TabIndex = 2;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -186,6 +187,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "modificarRol";
             this.Text = "modificarRol";
+            this.Load += new System.EventHandler(this.modificarRol_Load);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);

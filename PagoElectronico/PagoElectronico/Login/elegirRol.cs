@@ -14,6 +14,7 @@ namespace PagoElectronico.Login
         public elegirRol()
         {
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void elegirRol_Load(object sender, EventArgs e)
@@ -25,7 +26,7 @@ namespace PagoElectronico.Login
         {
             
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from rolesUsuario('" +unNombre + "')";
+            comando.CommandText = "Select * from NMI.rolesUsuario('" +unNombre + "')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             while (reader.Read())
                 {
@@ -34,6 +35,7 @@ namespace PagoElectronico.Login
                 }
                 this.Show();   
             reader.Dispose();
+            
         }
 
         

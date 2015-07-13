@@ -11,9 +11,22 @@ namespace PagoElectronico.ABM_Rol
 {
     public partial class modificarRol : Form
     {
-        public modificarRol()
+        String rol;
+        public modificarRol(String unRol)
         {
             InitializeComponent();
+            rol = unRol;
+            textBox1.Text = rol;
+        }
+
+        private void modificarRol_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -17,7 +17,7 @@ namespace PagoElectronico.Login
             num = i;
             InitializeComponent();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from cuentasPorCliente(" + Program.cliente + ")";
+            comando.CommandText = "Select * from NMI.cuentasPorCliente(" + Program.cliente + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())

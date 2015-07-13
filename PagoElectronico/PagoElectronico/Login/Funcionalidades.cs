@@ -16,10 +16,11 @@ namespace PagoElectronico.Login
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             roli = rol;
             if (rol == 1)
             {
-                comando.CommandText = "Select Id_cliente from Cliente,Usuario where Id_usuario=Cod_usuario and Useranme='" + Login.login.nombre + "'";
+                comando.CommandText = "Select Id_cliente from NMI.Cliente,NMI.Usuario where Id_usuario=Cod_usuario and Useranme='" + Login.login.nombre + "'";
                 System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
                 label2.Text = "cliente";
                 reader2.Read();
@@ -28,7 +29,7 @@ namespace PagoElectronico.Login
             }
             else label2.Text = "administrador";
 
-            comando.CommandText = "Select * from funcionalidadesRol(" + rol + ")";
+            comando.CommandText = "Select * from NMI.funcionalidadesRol(" + rol + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())

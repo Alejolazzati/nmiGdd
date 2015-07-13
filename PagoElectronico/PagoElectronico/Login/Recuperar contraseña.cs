@@ -24,7 +24,7 @@ namespace PagoElectronico.Login
 
         private void Recuperar_contraseña_Load(object sender, EventArgs e)
         {
-            comando.CommandText = "Select pregunta_secreta from usuario where useranme='" + username + "'";
+            comando.CommandText = "Select pregunta_secreta from NMI.usuario where useranme='" + username + "'";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             if (reader.Read())
                 preguntaSecreta = reader.GetString(0);
@@ -59,7 +59,7 @@ namespace PagoElectronico.Login
                 return;
 
             }
-            comando.CommandText = "execute dbo.nuevaContra '" + username + "','" + respuestaSecreta + "','" + pasword1 + "'";
+            comando.CommandText = "execute NMI.nuevaContra '" + username + "','" + respuestaSecreta + "','" + pasword1 + "'";
             try
             {
                 comando.ExecuteNonQuery();
