@@ -1736,3 +1736,23 @@ update NMI.Cuenta set Codigo_estado=4 where Num_cuenta=@numero
 commit
 end
 go
+
+
+create procedure NMI.modificarCuenta
+@numero numeric(20),@pais varchar(50),@moneda varchar(50),@tipo varchar(50)
+as
+begin
+declare @idmoneda int
+declare @idpais int
+declare @idecategoria int
+	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
+	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
+	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+
+
+update NMI.Cuenta set Codigo_pais=@idpais,Codigo_moneda=@idmoneda,Codigo_categoria=@idecategoria
+					where Num_cuenta=@numero
+
+commit 
+end
+go
