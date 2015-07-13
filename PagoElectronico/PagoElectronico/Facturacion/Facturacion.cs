@@ -19,7 +19,7 @@ namespace PagoElectronico.Facturacion
         private void Facturacion_Load(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "dbo.facturar";
+            comando.CommandText = "NMI.facturar";
             comando.CommandType = CommandType.StoredProcedure;
             comando.Parameters.Add("@numCliente", SqlDbType.Decimal);
             comando.Parameters.Add("@fact", SqlDbType.Decimal);
