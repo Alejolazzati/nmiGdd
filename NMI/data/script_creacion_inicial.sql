@@ -1033,18 +1033,18 @@ on NMI.transacciones
 for update
 as
 	begin transaction
-		update NMI.cuentas
+		update NMI.Cuenta
 		set codigo_estado=1
 		where num_cuenta in  
 							((select c1.num_cuenta
-							from NMI.cuentas c1  join NMI.transferencias t1 
-												on (t1.num_cuenta_origen=c1.num_cuenta)
+							from NMI.cuenta c1  join NMI.transferencias t1 
+												on (t1.cod_cuenta_origen=c1.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=t1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=t1.cod_transaccion) is not null				
 							and c1.Codigo_estado=2) 
 							/*UNION
 							(select c2.num_cuenta
-							from NMI.cuentas c2 join NMI.modificaciones m1
-												on(m1.num_cuenta=c2.num_cuenta)
+							from NMI.cuenta c2 join NMI.modificaciones m1
+												on(m1.cod_cuenta=c2.num_cuenta)
 							where (select cod_factura from deleted where Id_transaccion=m1.cod_transaccion) is null and (select cod_factura from inserted where Id_transaccion=m1.cod_transaccion) is not null				
 							and c2.Codigo_estado=2)*/)
 		
@@ -1143,7 +1143,7 @@ returns @tablaRetorno table
 as
 begin
 insert into @tablaRetorno
-select Nombre_rol from Usuario,Usuario_rol,Rol
+select Nombre_rol from NMI.Usuario,NMI.Usuario_rol,NMI.Rol
 where Id_rol=Cod_rol and Useranme=@username 
 and Id_usuario=Cod_usuario
 return
