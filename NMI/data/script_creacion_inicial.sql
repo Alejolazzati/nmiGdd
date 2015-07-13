@@ -1726,3 +1726,13 @@ declare @idecategoria int
 commit
 end
 go	
+
+
+create procedure NMI.bajaCuenta
+@numero numeric(20)
+as
+begin
+update NMI.Cuenta set Codigo_estado=4 where Num_cuenta=@numero
+commit
+end
+go
