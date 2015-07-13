@@ -15,7 +15,7 @@ namespace PagoElectronico.ABM_Cuenta
         {
             InitializeComponent();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from cuentasPorCliente(" + Program.cliente + ")";
+            comando.CommandText = "Select * from NMI.cuentasPorCliente(" + Program.cliente + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())
@@ -35,7 +35,7 @@ namespace PagoElectronico.ABM_Cuenta
         {
             String cuenta = listBox2.SelectedItem.ToString();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select dbo.saldoCuenta(" + cuenta + ")";
+            comando.CommandText = "Select NMI.saldoCuenta(" + cuenta + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             reader.Read();
             textBox1.Text = reader.GetSqlValue(0).ToString();

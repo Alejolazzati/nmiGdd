@@ -16,8 +16,10 @@ namespace PagoElectronico.Consulta_Saldos
         {
             rol= roli;
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from cuentasPorCliente(" + Program.cliente + ")";
+            comando.CommandText = "Select * from NMI.cuentasPorCliente(" + Program.cliente + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())
@@ -38,7 +40,7 @@ namespace PagoElectronico.Consulta_Saldos
         private void button7_Click(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select dbo.saldoCuenta(" + comboBox1.SelectedItem + ")";
+            comando.CommandText = "Select NMI.saldoCuenta(" + comboBox1.SelectedItem + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             reader.Read();
             MessageBox.Show(reader.GetSqlValue(0).ToString());

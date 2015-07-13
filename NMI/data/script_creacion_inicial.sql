@@ -1709,3 +1709,20 @@ where factura=@fact
 return @i
 end
 go
+------------------------------
+create procedure NMI.altaCuenta
+@cliente int, @numero numeric(20), @pais varchar(50), @moneda varchar(20),
+@apertura date,@tipo varchar(50)
+as
+begin
+declare @idmoneda int
+declare @idpais int	
+declare @idecategoria int	
+	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
+	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
+	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+	update NMI.ultimaCuenta set numero=@numero
+	insert into NMI.Cuenta values (@numero,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
+commit
+end
+go	

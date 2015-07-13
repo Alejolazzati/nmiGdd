@@ -20,11 +20,11 @@ namespace PagoElectronico.ABM_Cliente
         public buscarCliente()
         {
             InitializeComponent();
-            comando.CommandText = "Select ID_cliente, Nombre, Apellido, mail, numero_documento, tipoDeDocumento=(Select Descripcion from tipo_Dni where id_DNI=tipo_documento) into #tablaTemporal from Cliente";
+            comando.CommandText = "Select ID_cliente, Nombre, Apellido, mail, numero_documento, tipoDeDocumento=(Select Descripcion from NMI.tipo_Dni where id_DNI=tipo_documento) into #tablaTemporal from NMI.Cliente";
             comando.ExecuteNonQuery();
 
             comboBox1.Items.Add("no especifica");
-            comando.CommandText = "Select * from documentosDisponibles()";
+            comando.CommandText = "Select * from NMI.documentosDisponibles()";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())

@@ -17,6 +17,7 @@ namespace PagoElectronico.Login
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             InitializeComponent();
             roli = rol;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             if (rol == 1)
             {
                 comando.CommandText = "Select Id_cliente from NMI.Cliente,NMI.Usuario where Id_usuario=Cod_usuario and Useranme='" + Login.login.nombre + "'";
