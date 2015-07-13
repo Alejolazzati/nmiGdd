@@ -1,11 +1,18 @@
 create schema NMI
 go
-
+create table NMI.fechaDeSistema(
+fecha date not null
+)
+go
+insert into NMI.fechaDeSistema values (getdate())
+go
 create function NMI.fechaSistema()
 returns datetime 
 as
 begin
-	return getdate()
+Declare @fecha date
+select @fecha=max(fecha) from NMI.fechaDeSistema	
+	return @fecha
 end
 go
 
@@ -1450,6 +1457,7 @@ drop table NMI.moneda
 drop table NMI.pais
 drop table NMI.tipo_dni
 drop table NMI.usuario
+drop table NMI.fechaDeSistema
 
 end
 go
@@ -1824,3 +1832,4 @@ select  Tarjetas_credito.Num_tarjeta from NMI.Tarjetas_credito
 where Tarjetas_credito.Cod_cliente=@cliente
 return
 end
+go

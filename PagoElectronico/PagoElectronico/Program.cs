@@ -23,7 +23,7 @@ namespace PagoElectronico
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
-
+          //  fecha=PagoElectronico.Properties.Settings.Default.fechaDelSistema;
             new PagoElectronico.Login.login().Show();
             Application.Run();
             
