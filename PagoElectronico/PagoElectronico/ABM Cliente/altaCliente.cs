@@ -59,17 +59,9 @@ namespace PagoElectronico.ABM_Cliente
            
             //Cargar roles
 
-            comando.CommandText = "Select nombre_rol from NMI.Rol";
-            System.Data.SqlClient.SqlDataReader reader3 = comando.ExecuteReader();
+           
 
-
-            while (reader3.Read())
-            {
-                comboBox3.Items.Add(reader3.GetSqlString(0));
-            }
-            this.Show();
-
-            reader3.Dispose();
+           
            
 
 
@@ -97,11 +89,7 @@ namespace PagoElectronico.ABM_Cliente
             preguntaSecreta = textBox8.Text;
             respuestaSecreta = textBox9.Text;
             numero = textBox12.Text;
-            if (comboBox3.SelectedItem.ToString()=="Cliente") {
-                        Rol = 1; 
-            }
-            else Rol=2;
-
+           
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
                                                                                                                 // exec dbo.ingresarCliente 'usr1','pw1','p1reguntame','u1narespuesta', 'n1om','ap1e', 'Pasaporte',1233,'ma23i3l',1,' China','undom3',52,23,'B', '1901-03-03' 
 

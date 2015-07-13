@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -36,12 +37,12 @@
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Controls.Add(this.button5);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.button2);
@@ -49,13 +50,21 @@
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Location = new System.Drawing.Point(50, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(592, 363);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscar usuario";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(231, 311);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(109, 36);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "Nuevo usuario";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -92,6 +101,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Buscar";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -112,19 +122,10 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 145);
+            this.listBox1.Location = new System.Drawing.Point(44, 161);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(565, 147);
-            this.listBox1.TabIndex = 0;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(231, 311);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(109, 36);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Nuevo usuario";
-            this.button5.UseVisualStyleBackColor = true;
+            this.listBox1.Size = new System.Drawing.Size(274, 95);
+            this.listBox1.TabIndex = 9;
             // 
             // buscarUsuario
             // 
@@ -147,10 +148,10 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.ListBox listBox1;
 
     }
 }

@@ -31,8 +31,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -70,8 +68,6 @@
             // 
             this.groupBox2.Controls.Add(this.textBox12);
             this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.comboBox3);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.textBox11);
             this.groupBox2.Controls.Add(this.label7);
@@ -124,24 +120,6 @@
             this.label16.Size = new System.Drawing.Size(44, 13);
             this.label16.TabIndex = 54;
             this.label16.Text = "Numero";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(270, 233);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(23, 13);
-            this.label15.TabIndex = 53;
-            this.label15.Text = "Rol";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(299, 230);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(180, 21);
-            this.comboBox3.TabIndex = 52;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // label9
             // 
@@ -437,8 +415,6 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label16;
     }
