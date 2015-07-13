@@ -29,5 +29,10 @@ namespace PagoElectronico.ABM_Cliente
         {
             abmSuper.recibirFecha(monthCalendar1.SelectionRange.Start);
         }
+
+        private void Calendario_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

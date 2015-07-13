@@ -16,6 +16,9 @@ namespace PagoElectronico.Listados
         public altaConsulta()
         {
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            
         }
 
         private void altaConsulta_Load(object sender, EventArgs e)
@@ -33,6 +36,7 @@ namespace PagoElectronico.Listados
                 comboBox1.Items.Add("Primer trimestre");
                 comboBox1.Items.Add("Segundo trimestre");
                 comboBox1.Items.Add("Tercer trimestre");
+                comboBox1.Items.Add("Cuarto trimestre");
             }
         
 
@@ -72,23 +76,23 @@ namespace PagoElectronico.Listados
             int opcion=comboBox2.SelectedIndex;
             switch (opcion){
                 case 0:
-                    comando.CommandText = "Select * from clientesInhabilitados(" + año+"," + trimestre + ")";
+                    comando.CommandText = "Select * from NMI.clientesInhabilitados(" + año+"," + trimestre + ")";
                     break;
 
                 case 1:
-                    comando.CommandText = "Select * from clientesClienteConMayorCantidadComisiones(" + año + "," + trimestre + ")";
+                    comando.CommandText = "Select * from NMI.clientesClienteConMayorCantidadComisiones(" + año + "," + trimestre + ")";
                     break;
 
                 case 2:
-                    comando.CommandText = "Select * from clientesClienteConMayorCantidadDeTransEntreCuentasPropias(" + año + "," + trimestre + ")";
+                    comando.CommandText = "Select * from NMI.clientesClienteConMayorCantidadDeTransEntreCuentasPropias(" + año + "," + trimestre + ")";
                     break;
 
                 case 3:
-                    comando.CommandText = "Select * from paisesConMayorCantidadDeMovimientos(" + año + "," + trimestre + ")";
+                    comando.CommandText = "Select * from NMI.paisesConMayorCantidadDeMovimientos(" + año + "," + trimestre + ")";
                     break;
 
                 case 4:
-                    comando.CommandText = "Select * from totalFacturadoParaTiposCuenta(" + año + "," + trimestre + ")";
+                    comando.CommandText = "Select * from NMI.totalFacturadoParaTiposCuenta(" + año + "," + trimestre + ")";
                     break;
 
             }

@@ -1,6 +1,6 @@
-﻿namespace PagoElectronico.ABM_Cliente
+﻿namespace PagoElectronico.ABM_Cuenta
 {
-    partial class Calendario
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -34,31 +34,30 @@
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(-2, -3);
+            this.monthCalendar1.Location = new System.Drawing.Point(-1, -1);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 0;
-            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(-2, 151);
+            this.button1.Location = new System.Drawing.Point(-1, 156);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(164, 23);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 2;
             this.button1.Text = "Confirmar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Calendario
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(161, 174);
+            this.ClientSize = new System.Drawing.Size(163, 179);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.monthCalendar1);
-            this.Name = "Calendario";
+            this.Name = "Form1";
             this.Text = "Calendario";
-            this.Load += new System.EventHandler(this.Calendario_Load);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

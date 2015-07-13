@@ -108,6 +108,12 @@
     <Compile Include="ABM Cuenta\buscarCuentaCliente.Designer.cs">
       <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cuenta\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cuenta\modificarCategorias.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\buscarCuentaCliente.resx">
       <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\modificarCategorias.resx">
       <DependentUpon>modificarCategorias.cs</DependentUpon>
