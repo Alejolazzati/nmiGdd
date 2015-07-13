@@ -303,6 +303,7 @@ create table NMI.Cheque(
 	Cod_banco int not null,
 	Cod_cliente int not null,
 	Fecha date not null default NMI.fechaSistema(),
+	unique (Num_cheque,Cod_banco)
 	
 	foreign key (Cod_banco) references NMI.Bancos(Id_banco),
 	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente)
@@ -1081,7 +1082,7 @@ returns @tabla table(username varchar(30))
 as
 begin
 insert into @tabla
-select useranme  from NMI.Usuario 
+select useranme  from NMI.Usuarios 
 where useranme like '%'+@busqueda+'%'
 
 return 
@@ -1726,36 +1727,23 @@ select 'suscripcion por dias: '+convert(varchar(3),cantidad),costo from NMI.susc
 
 return
 end
-
-go	
-
-
-create procedure NMI.bajaCuenta
-@numero numeric(20)
-as
-begin
-update NMI.Cuenta set Codigo_estado=4 where Num_cuenta=@numero
-commit
-end
 go
-
-
-create procedure NMI.modificarCuenta
-@numero numeric(20),@pais varchar(50),@moneda varchar(50),@tipo varchar(50)
-as
-begin
-declare @idmoneda int
-declare @idpais int
-declare @idecategoria int
-	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
-	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
-	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
-
-
-update NMI.Cuenta set Codigo_pais=@idpais,Codigo_moneda=@idmoneda,Codigo_categoria=@idecategoria
-					where Num_cuenta=@numero
-
-commit 
-end
-
-go
+create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe float, @banco varchar(50),@cliente int, @moneda varchar(50)
+ as
+ begin transaction
+ set transaction isolation level serializable
+ Declare @cod_banco int
+ declare @cod_moneda int
+ select @cod_banco=Id_banco from NMI.Bancos
+ where Nombre_banco=@banco
+ select @cod_moneda=Id_moneda from NMI.Moneda
+ where Descripcion=@moneda
+ Declare @fecha date
+ select @fecha=NMI.fechaSistema()
+ insert into NMI.Cheque values(@numCheque,@cod_banco,@cliente,@fecha,@Importe,@cod_moneda)
+ Declare @Id_cheque int
+ Declare @retiro numeric(18)
+ select @retiro=MAX(Id_retiro)+1 from NMI.Retiros
+ select @Id_cheque=max(Id_cheque) from NMI.Cheque
+ insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque) values(@retiro,@cuenta,@Id_cheque)
+ commit

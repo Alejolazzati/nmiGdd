@@ -32,12 +32,18 @@ namespace PagoElectronico.Login
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   if (num==1)
+        {
+            Program.cuenta = comboBox1.SelectedItem.ToString();
+            if (num==1)
             new PagoElectronico.Transferencias.nuevaTransferencia(comboBox1.SelectedItem.ToString()).Show();
         if (num == 2)
         {
-            Program.cuenta = comboBox1.SelectedItem.ToString();
+         
             new PagoElectronico.Facturacion.pagarSuscripciones().Show();
+        }
+        if (num == 3)
+        {
+            new PagoElectronico.Retiros.altaRetiro().Show();
         }
                 
                 this.Close();
