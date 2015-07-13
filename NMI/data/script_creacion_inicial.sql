@@ -1082,7 +1082,7 @@ returns @tabla table(username varchar(30))
 as
 begin
 insert into @tabla
-select useranme  from NMI.Usuarios 
+select useranme  from NMI.Usuario 
 where useranme like '%'+@busqueda+'%'
 
 return 
@@ -1748,4 +1748,58 @@ create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe f
  insert into Retiros(Id_retiro,Cod_cuenta,Cod_cheque) values(@retiro,@cuenta,@Id_cheque)
  commit
  go
- create procedure NMI.IngresarUsuario
+
+
+create procedure NMI.altaCuenta
+
+@cliente int, @numero numeric(20), @pais varchar(50), @moneda varchar(20),
+
+@apertura date,@tipo varchar(50)
+
+ 
+ as
+ begin
+
+declare @idmoneda int
+
+declare @idpais int	
+declare @idecategoria int	
+	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
+	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
+	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+	update NMI.ultimaCuenta set numero=@numero
+	insert into NMI.Cuenta values (@numero,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
+commit
+ end
+go	
+
+
+create procedure NMI.bajaCuenta
+@numero numeric(20)
+as
+begin
+update NMI.Cuenta set Codigo_estado=4 where Num_cuenta=@numero
+commit
+end
+go
+
+
+create procedure NMI.modificarCuenta
+@numero numeric(20),@pais varchar(50),@moneda varchar(50),@tipo varchar(50)
+as
+begin
+declare @idmoneda int
+declare @idpais int
+declare @idecategoria int
+	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
+	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
+	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+
+
+update NMI.Cuenta set Codigo_pais=@idpais,Codigo_moneda=@idmoneda,Codigo_categoria=@idecategoria
+					where Num_cuenta=@numero
+
+commit 
+end
+
+ go
