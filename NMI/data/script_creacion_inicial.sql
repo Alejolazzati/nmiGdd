@@ -1546,7 +1546,7 @@ create procedure NMI.ingresarCliente
 @username varchar(50),@pw varchar(50),
 @pregunta varchar(50),@respuesta varchar(50),
 @nombre varchar(50),@apellido varchar(50),
-@tipodoc varchar(50),@numerodedoc varchar(30),
+@tipodoc varchar(50),@numerodedoc int,
 @mail varchar(50),@rol int,
 @pais varchar(50),@calle varchar(50),
 @numero int,@piso int,
