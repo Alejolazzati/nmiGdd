@@ -47,5 +47,10 @@ namespace PagoElectronico.ABM_Rol
             new PagoElectronico.ABM_Rol.formRol().Show();
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
