@@ -24,6 +24,48 @@ namespace PagoElectronico.ABM_Cuenta
         public altaCuentaPorAdm()
         {
             InitializeComponent();
+
+            //cargar paises
+            comando.CommandText = "Select descripcion from NMI.pais";
+            System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                comboBox3.Items.Add(reader.GetSqlString(0));
+
+            }
+            this.Show();
+            reader.Dispose();
+
+            //cargar moneda
+
+
+            comando.CommandText = "Select descripcion from NMI.MONEDA";
+            System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
+            while (reader2.Read())
+            {
+                comboBox1.Items.Add(reader2.GetSqlString(0));
+
+            }
+            this.Show();
+            reader2.Dispose();
+
+
+            // cargar categoria
+
+
+            comando.CommandText = "Select descripcion from NMI.categoria";
+            System.Data.SqlClient.SqlDataReader reader3 = comando.ExecuteReader();
+            while (reader3.Read())
+            {
+                comboBox2.Items.Add(reader3.GetSqlString(0));
+
+            }
+            this.Show();
+            reader3.Dispose();
+
+
+
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -78,6 +120,16 @@ namespace PagoElectronico.ABM_Cuenta
         private void button3_Click(object sender, EventArgs e)
         {
             userName = listBox1.SelectedItem.ToString();
+        }
+
+        private void altaCuentaPorAdm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new Form1(this).Show();
         }
     }
 }
