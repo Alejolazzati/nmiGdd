@@ -47,6 +47,7 @@ namespace PagoElectronico.Login
             catch (System.Data.SqlClient.SqlException er)
             {
                 MessageBox.Show(er.Message);
+                new PagoElectronico.Login.login().Show();
             }
             
             this.Close();

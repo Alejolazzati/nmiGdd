@@ -16,6 +16,7 @@ namespace PagoElectronico.Login
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             roli = rol;
             if (rol == 1)
             {
