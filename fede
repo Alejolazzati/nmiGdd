@@ -1,0 +1,10 @@
+create function NMI.tarjetasPorCliente(@cliente numeric(18))
+returns  @tabla table(
+tarjeta numeric(18))
+as
+begin
+insert into @tabla 
+select  Tarjetas_credito.Num_tarjeta from NMI.Tarjetas_credito
+where Tarjetas_credito.Cod_cliente=@cliente
+return
+end
