@@ -134,6 +134,7 @@
             this.button3.TabIndex = 11;
             this.button3.Text = "Seleccionar usuario";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -170,6 +171,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "buscarCuentaAdm";
             this.Text = "buscarCuenta";
+            this.Load += new System.EventHandler(this.buscarCuentaAdm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

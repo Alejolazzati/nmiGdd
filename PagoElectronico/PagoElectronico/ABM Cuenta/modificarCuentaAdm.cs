@@ -27,11 +27,14 @@ namespace PagoElectronico.ABM_Cuenta
             comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
 
 
-            comando.CommandText = "Select p.descripcion from NMI.Cuenta join NMI.pais p on (Codigo_pais=Id_pais) where Num_cuenta="+numCuenta;
+            comando.CommandText = "Select p.descripcion, m.descripcion, c.descripcion from NMI.Cuenta join NMI.categoria c on (c.Id_categoria=Codigo_categoria) join NMI.moneda m on (m.Id_moneda=codigo_moneda) join NMI.pais p on (Codigo_pais=Id_pais) where Num_cuenta="+numCuenta;
             System.Data.SqlClient.SqlDataReader reader4 = comando.ExecuteReader();
             reader4.Read();
 
-            comboBox3.Text = reader4.GetSqlString(0).ToString();
+            MessageBox.Show(reader4.GetString(0));
+            comboBox3.Text = reader4.GetString(0);
+            comboBox1.Text = reader4.GetString(1);
+            comboBox2.Text = reader4.GetString(2);
             reader4.Dispose();
 
             
@@ -63,6 +66,20 @@ namespace PagoElectronico.ABM_Cuenta
             this.Show();
             reader3.Dispose();
 
+            // cargar pais
+
+
+            comando.CommandText = "Select descripcion from NMI.pais";
+            System.Data.SqlClient.SqlDataReader reader7 = comando.ExecuteReader();
+            while (reader7.Read())
+            {
+                comboBox3.Items.Add(reader7.GetSqlString(0));
+
+            }
+            this.Show();
+            reader7.Dispose();
+
+
 
         }
 
@@ -77,6 +94,11 @@ namespace PagoElectronico.ABM_Cuenta
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
