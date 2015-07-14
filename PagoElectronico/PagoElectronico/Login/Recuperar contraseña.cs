@@ -45,10 +45,10 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String respuestaSecreta;
-            String pasword1;
-            String pasword2;
-            respuestaSecreta = Encriptar.SHA256(textBox2.Text);
+            
+            string pasword1;
+            string pasword2;
+            string respuestaSecreta = Encriptar.SHA256(textBox2.Text);
             pasword1 = textBox3.Text;
             pasword2 = textBox4.Text;
             if (pasword2 != pasword1)
@@ -67,6 +67,11 @@ namespace PagoElectronico.Login
                 MessageBox.Show("Contraseña actualizada");
             }
             catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

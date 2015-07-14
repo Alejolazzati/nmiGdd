@@ -99,6 +99,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(153, 20);
             this.textBox2.TabIndex = 6;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox3
             // 
