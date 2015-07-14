@@ -86,6 +86,7 @@ Depto char,
 Fecha_nacimiento date not null,
 unique (Tipo_documento,Numero_Documento),
 unique (mail),
+unique(Cod_usuario),
 foreign key (Cod_pais) references NMI.Pais(Id_pais),
 foreign key (Cod_usuario) references NMI.Usuario(Id_usuario),
 )
@@ -1842,3 +1843,28 @@ insert into NMI.fechaDeSistema values (@fecha)
 end
 go
 
+ create function NMI.funcionalidadesPorRol(@Nombre_rol varchar(30))
+returns  @tabla table(
+Descripcion varchar(30))
+as
+begin
+insert into @tabla 
+select NMI.Funcionalidad.Descripcion 
+from NMI.Rol
+inner join NMI.Rol_funcionalidad on NMI.Rol.Id_rol=NMI.Rol_funcionalidad.Cod_rol
+inner join NMI.Funcionalidad on NMI.Rol_funcionalidad.Cod_funcionalidad=NMI.Funcionalidad.Id_funcionalidad
+where NMI.Rol.Nombre_rol=@Nombre_rol
+return
+end
+go
+
+exec NMI.ingresarUsuario 'perez','w22e','nombre','fede',2
+go
+
+exec NMI.ingresarUsuario 'lazzati','w22e','nombre','fede',2
+
+go
+exec NMI.ingresarUsuario 'basile','w22e','nombre','fede',2
+go
+exec NMI.ingresarUsuario 'bec','w22e','nombre','fede',2
+go
