@@ -1,58 +1,56 @@
+Msg 2714, Level 16, State 6, Server JOHN-VAIO\SQLSERVER2008, Line 1
+There is already an object named 'NMI' in the database.
+Msg 2759, Level 16, State 1, Server JOHN-VAIO\SQLSERVER2008, Line 1
+CREATE SCHEMA failed due to previous errors.
+Msg 2714, Level 16, State 6, Server JOHN-VAIO\SQLSERVER2008, Line 1
+There is already an object named 'fechaDeSistema' in the database.
 
-(1 filas afectadas)
+(1 rows affected)
+Msg 2714, Level 16, State 3, Server JOHN-VAIO\SQLSERVER2008, Procedure fechaSistema, Line 7
+There is already an object named 'fechaSistema' in the database.
+Msg 2714, Level 16, State 3, Server JOHN-VAIO\SQLSERVER2008, Procedure encriptarSha256, Line 8
+There is already an object named 'encriptarSha256' in the database.
+Msg 2714, Level 16, State 3, Server JOHN-VAIO\SQLSERVER2008, Procedure agregarDias, Line 8
+There is already an object named 'agregarDias' in the database.
 
-(1 filas afectadas)
+(206 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
-Mensaje 4121, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento encriptarDatosUsuario, Línea 6
-No se encuentra la columna "dbo" o la función definida por el usuario o agregado "dbo.ensriptarSha256"; o bien, el nombre es ambiguo.
+(1 rows affected)
 
-(0 filas afectadas)
+(1 rows affected)
 
-(0 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(3 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(165 rows affected)
 
-(1 filas afectadas)
+(323 rows affected)
 
-(0 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(0 filas afectadas)
+(1 rows affected)
 
-(0 filas afectadas)
+(1 rows affected)
 
-(0 filas afectadas)
+(0 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
-Mensaje 547, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento miTrigger, Línea 15
-Instrucción INSERT en conflicto con la restricción FOREIGN KEY "FK__Transfere__Cod_c__7C46EB91". El conflicto ha aparecido en la base de datos "GD1C2015", tabla "dbo.Cuenta", column 'Num_cuenta'.
-Se terminó la instrucción.
-Mensaje 156, Nivel 15, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento modificarCuenta, Línea 16
-Sintaxis incorrecta cerca de la palabra clave 'commit'.
+(1 rows affected)
 
-(1 filas afectadas)
+(1 rows affected)
 
-(1 filas afectadas)
-Mensaje 4121, Nivel 16, Estado 1, Servidor GD\SQLSERVER2008, Procedimiento encriptarDatosUsuario, Línea 6
-No se encuentra la columna "dbo" o la función definida por el usuario o agregado "dbo.ensriptarSha256"; o bien, el nombre es ambiguo.
-Mensaje 515, Nivel 16, Estado 2, Servidor GD\SQLSERVER2008, Línea 1
-No se puede insertar el valor NULL en la columna 'Cod_usuario', tabla 'GD1C2015.dbo.Usuario_rol'. La columna no admite valores NULL. Error de INSERT.
-Se terminó la instrucción.
-
-(1 filas afectadas)
+(1 rows affected)

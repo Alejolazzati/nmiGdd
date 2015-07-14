@@ -48,7 +48,7 @@ namespace PagoElectronico.Login
             String respuestaSecreta;
             String pasword1;
             String pasword2;
-            respuestaSecreta = textBox2.Text;
+            respuestaSecreta = Encriptar.SHA256(textBox2.Text);
             pasword1 = textBox3.Text;
             pasword2 = textBox4.Text;
             if (pasword2 != pasword1)
@@ -59,6 +59,7 @@ namespace PagoElectronico.Login
                 return;
 
             }
+            pasword1 = Encriptar.SHA256(textBox3.Text);
             comando.CommandText = "execute NMI.nuevaContra '" + username + "','" + respuestaSecreta + "','" + pasword1 + "'";
             try
             {

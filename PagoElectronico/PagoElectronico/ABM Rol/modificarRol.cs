@@ -31,6 +31,19 @@ namespace PagoElectronico.ABM_Rol
             this.Show();
 
             reader.Dispose();
+/*
+            comando.CommandText = "Select NMI.funcionalidadesPorRol(" + rol + ")";
+            reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                listBox2.Items.Add(reader.GetSqlValue(0));
+                this.Show();
+
+
+            }
+            reader.Dispose();
+*/
 
         }
 
@@ -45,6 +58,11 @@ namespace PagoElectronico.ABM_Rol
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

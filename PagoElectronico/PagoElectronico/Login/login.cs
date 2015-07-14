@@ -37,7 +37,9 @@ namespace PagoElectronico.Login
         private void button2_Click(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "execute NMI.loguear '"+nombre+"','"+pass+"'"  ;
+            string contraseniaEncriptada = Encriptar.SHA256(pass);
+            Console.WriteLine(contraseniaEncriptada);
+            comando.CommandText = "execute NMI.loguear '" + nombre + "','" + contraseniaEncriptada + "'";
             try
             {
                 comando.ExecuteNonQuery();

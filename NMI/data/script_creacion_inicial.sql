@@ -47,11 +47,11 @@ go*/
 create table NMI.Usuario
 (Id_usuario int  identity(1,1) primary key ,
 Useranme Varchar(30) unique not null,
-Contrasenia varchar(50) not null,
+Contrasenia varchar(255) not null,
 Fecha_creacion date default NMI.fechaSistema(),
 Ultima_modificacion date not null default NMI.fechaSistema(), 
 Pregunta_secreta varchar(50) not null,
-Respuesta varchar(50) not null
+Respuesta varchar(255) not null
 )
 go
 
@@ -776,7 +776,7 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 while @@FETCH_STATUS=0
 begin
-Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),Rtrim (@nombre)+left(@apellido,1),'nombre',@nombre,'habilitado')
+Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),'f46e3b17a6b639e5efddc3d1498ad73491599c22220f7ef6e14772f4ee25b913','nombre','867591a1b127029f1ff8186740cbea1f8eca76479b6f7f59853a695061fda464','habilitado')
 Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from NMI.Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
@@ -1322,7 +1322,7 @@ Begin
 	end
 	go
 	
-	Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values('a','a','como es tu nombre?','a',1)
+	Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values('a','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb','como es tu nombre?','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb',1)
 	go
 	insert into NMI.Usuario_rol select MAX (Usuario.Id_usuario),2 from NMI.Usuario 
 	go
@@ -1515,7 +1515,7 @@ go
 
 
 
-create procedure NMI.Loguear @username varchar(30),@contra varchar(30)
+create procedure NMI.Loguear @username varchar(30),@contra varchar(255)
 as
 begin transaction set transaction isolation level serializable
 if(not Exists (select ID_usuario from NMI.Usuario where
@@ -1535,7 +1535,6 @@ return
 end 
 if (exists (select ID_usuario from NMI.Usuario where
 Useranme=@username and Contrasenia=@contra
---dbo.encriptarSha256(@contra)
 ))
 begin
 insert into NMI.Intentos_login	 select ID_usuario,1 from NMI.Usuario where
@@ -1681,11 +1680,10 @@ go
 
 
 
-create procedure NMI.nuevaContra @usuario varchar(30),@respuesta varchar(50),@contra varchar(30)
+create procedure NMI.nuevaContra @usuario varchar(30),@respuesta varchar(255),@contra varchar(255)
 as
 begin transaction
 if(@respuesta
---dbo.encriptarSha256(@respuesta)
 <> (select respuesta from NMI.Usuario where Useranme=@usuario)
 )
 begin
@@ -1812,7 +1810,7 @@ end
  go
 
 
-create procedure NMI.ingresarUsuario @username varchar(30),@pw varchar(30),@pregunta varchar(50), @Respuesta varchar (50), @rol int 
+create procedure NMI.ingresarUsuario @username varchar(30),@pw varchar(255),@pregunta varchar(50), @Respuesta varchar (255), @rol int 
 as
 begin transaction
 insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(@username,@pw,@pregunta,@Respuesta,'habilitado')
