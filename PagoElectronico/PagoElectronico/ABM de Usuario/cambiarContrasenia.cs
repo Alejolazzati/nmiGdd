@@ -32,7 +32,7 @@ namespace PagoElectronico.ABM_de_Usuario
 
             }
             System.Data.SqlClient.SqlCommand comando=Coneccion.getComando();
-            comando.CommandText = "execute NMI.nuevaContraseña " + username + ",'"  + pasword1 + "'";
+           // comando.CommandText = "execute NMI.nuevaContraseña " + username + ",'"  + pasword1 + "'";
             try
             {
                 comando.ExecuteNonQuery();
@@ -42,4 +42,4 @@ namespace PagoElectronico.ABM_de_Usuario
         }
         }
     }
-}
+
