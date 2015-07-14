@@ -50,8 +50,7 @@ namespace PagoElectronico.Depositos
             reader.Dispose();
 
             maskedTextBox1.Mask = "0999999999999999999999999999";
-
-            textBox2.Text = Properties.Settings.Default.fechaDelSistema; 
+  
         }
 
         private void altaDeposito_Load(object sender, EventArgs e)
