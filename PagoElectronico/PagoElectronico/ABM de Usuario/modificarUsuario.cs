@@ -16,7 +16,7 @@ namespace PagoElectronico.ABM_de_Usuario
         public modificarUsuario(String user)
         {   username=user;
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText="select Id_usuario from NMI.Usuario where useranme='"+user+"'"
+            comando.CommandText = "select Id_usuario from NMI.Usuario where useranme='" + user + "'";
             System.Data.SqlClient.SqlDataReader reader =comando.ExecuteReader();
             reader.Read();
             codUser=Int32.Parse(reader.GetValue(0).ToString());
@@ -27,7 +27,7 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void modificarUsuario_Load(object sender, EventArgs e)
         {
-            textBox1.Text = username;
+            //textBox1.Text = username;
 
         }
     }
