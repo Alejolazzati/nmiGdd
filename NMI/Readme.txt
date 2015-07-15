@@ -36,7 +36,7 @@ begin
 set @mesdiadesde='1001'
 set @mesdiahasta='1231'
 end
-select top 5 sum(a.Costo),d.Nombre,d.Apellido 
+select top 5 d.Nombre,d.Apellido 
 from (select costo, Id_transaccion from NMI.Transacciones 
 where Fecha between @anio+@mesdiadesde and @anio+@mesdiahasta) a 
 inner join NMI.Transferencias b
@@ -44,7 +44,7 @@ on a.Id_transaccion=b.Cod_transaccion
 inner join NMi.Cuenta c on b.Cod_cuenta_origen=c.Num_cuenta
 inner join NMI.cliente d on c.Codigo_cliente=d.Id_cliente 
 group by d.Nombre,d.Apellido
-order by 1 desc
+order by sum(a.Costo) desc
 end
 -----------------
 
@@ -74,7 +74,7 @@ begin
 set @mesdiadesde='1001'
 set @mesdiahasta='1231'
 end
-select top 5 l.Descripcion,sum(z.k) from 
+select top 5 l.Descripcion from 
 (select MovCuentas.B, sum (MovCuentas.A) k from (select Cod_cuenta_origen B,COUNT(Cod_cuenta_origen) A
 from NMI.transferencias e inner join NMI.Transacciones g
 on e.Id_transferencia=g.Id_transaccion where 
@@ -87,5 +87,5 @@ group by Cod_cuenta_destino ) MovCuentas
 group by MovCuentas.B ) Z inner join nmi.Cuenta Y on z.b=y.num_cuenta
 inner join NMI.Pais l on y.Codigo_pais=l.Id_Pais
 group by l.Descripcion
-order by 2 desc 
+order by sum(z.k)  desc 
 end
