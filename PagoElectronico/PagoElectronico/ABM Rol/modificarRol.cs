@@ -31,8 +31,20 @@ namespace PagoElectronico.ABM_Rol
             this.Show();
 
             reader.Dispose();
-/*
-            comando.CommandText = "Select NMI.funcionalidadesPorRol(" + rol + ")";
+
+            comando.CommandText = "Select * from NMI.funcionalidadesPorRol('" + rol + "')";
+            reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                listBox1.Items.Add(reader.GetSqlValue(0));
+                this.Show();
+
+
+            }
+            reader.Dispose();
+
+            comando.CommandText = "Select NMI.Funcionalidad.Descripcion from NMI.Funcionalidad  left join NMI.funcionalidadesPorRol('" + rol + "') as t2  on NMI.Funcionalidad.Descripcion=t2.Descripcion where t2.Descripcion is null";
             reader = comando.ExecuteReader();
 
             while (reader.Read())
@@ -43,7 +55,6 @@ namespace PagoElectronico.ABM_Rol
 
             }
             reader.Dispose();
-*/
 
         }
 
@@ -65,6 +76,18 @@ namespace PagoElectronico.ABM_Rol
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            listBox2.Items.Add(listBox1.SelectedItem);
+            listBox1.Items.Remove(listBox1.SelectedItem);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Add(listBox2.SelectedItem);
+            listBox2.Items.Remove(listBox2.SelectedItem);
         }
     }
 }

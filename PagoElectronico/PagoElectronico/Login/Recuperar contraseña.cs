@@ -60,6 +60,9 @@ namespace PagoElectronico.Login
 
             }
             pasword1 = Encriptar.SHA256(textBox3.Text);
+            Console.WriteLine(respuestaSecreta);
+            Console.WriteLine(pasword1);
+
             comando.CommandText = "execute NMI.nuevaContra '" + username + "','" + respuestaSecreta + "','" + pasword1 + "'";
             try
             {

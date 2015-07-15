@@ -88,7 +88,7 @@ namespace PagoElectronico.ABM_Cliente
             tipoDocumento = comboBox2.SelectedItem.ToString();
             Nacionalidad = comboBox1.SelectedItem.ToString();
             userName = textBox6.Text;
-            contraseña = Encriptar.SHA256(textBox7.Text);
+            contraseña = textBox7.Text;
             preguntaSecreta = textBox8.Text;
             respuestaSecreta = textBox11.Text;
             numero = textBox12.Text;
@@ -100,7 +100,8 @@ System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
 
 
 
-                comando.ExecuteNonQuery(); new PagoElectronico.Login.Funcionalidades().Show();
+                comando.ExecuteNonQuery(); 
+                new PagoElectronico.Login.Funcionalidades().Show();
                 this.Close();
             }
             catch (System.Data.SqlClient.SqlException ex)
@@ -128,6 +129,11 @@ System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
         }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox12_TextChanged(object sender, EventArgs e)
         {
 
         }
