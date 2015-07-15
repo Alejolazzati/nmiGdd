@@ -118,7 +118,7 @@ begin
 set @mesdiadesde='1001'
 set @mesdiahasta='1231'
 end
-select Cod_cuenta_origen,SUM(importe) from
+select top 5 Cod_cuenta_origen from
 nmi.Transferencias a inner join nmi.Transacciones b on
 a.Cod_transaccion=b.Id_transaccion where Fecha
 between @anio+@mesdiadesde and @anio+@mesdiahasta
