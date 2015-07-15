@@ -46,3 +46,46 @@ inner join NMI.cliente d on c.Codigo_cliente=d.Id_cliente
 group by d.Nombre,d.Apellido
 order by 1 desc
 end
+-----------------
+
+create procedure NMI.PaisesMasMov 
+@anio char(4), @trimestre int
+as
+begin 
+declare @mesdiadesde char(4)
+declare @mesdiahasta char(4)
+if @trimestre=1
+begin
+set @mesdiadesde='0101'
+set @mesdiahasta='0331'
+end
+if @trimestre=2
+begin
+set @mesdiadesde='0401'
+set @mesdiahasta='0630'
+end
+if @trimestre=3
+begin
+set @mesdiadesde='0701'
+set @mesdiahasta='0930'
+end
+if @trimestre=4
+begin
+set @mesdiadesde='1001'
+set @mesdiahasta='1231'
+end
+select top 5 l.Descripcion,sum(z.k) from 
+(select MovCuentas.B, sum (MovCuentas.A) k from (select Cod_cuenta_origen B,COUNT(Cod_cuenta_origen) A
+from NMI.transferencias e inner join NMI.Transacciones g
+on e.Id_transferencia=g.Id_transaccion where 
+Fecha between @anio+@mesdiadesde and @anio+@mesdiahasta
+group by Cod_cuenta_origen
+UNION ALL
+select Cod_cuenta_destino B,COUNT(cod_cuenta_destino) A
+from NMI.transferencias 
+group by Cod_cuenta_destino ) MovCuentas
+group by MovCuentas.B ) Z inner join nmi.Cuenta Y on z.b=y.num_cuenta
+inner join NMI.Pais l on y.Codigo_pais=l.Id_Pais
+group by l.Descripcion
+order by 2 desc 
+end
