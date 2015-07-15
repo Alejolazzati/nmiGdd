@@ -18,7 +18,18 @@ namespace PagoElectronico.Listados
             InitializeComponent();
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-            
+
+            comboBox1.Items.Add("Primer trimestre");
+            comboBox1.Items.Add("Segundo trimestre");
+            comboBox1.Items.Add("Tercer trimestre");
+            comboBox1.Items.Add("Cuarto trimestre");
+
+            comboBox2.Items.Add("Clientes con cuentas inhabilitadas por morosos");
+            comboBox2.Items.Add("Clientes con mayor cantidad de comisiones facturadas en sus cuentas");
+            comboBox2.Items.Add("Clientes con mayor cantidad de transacciones realizadas entre cuentras propias");
+            comboBox2.Items.Add("Paises con mayor cantidad de movimientos");
+            comboBox2.Items.Add("Total facturado para los distintos tipos de cuenta");
+
         }
 
         private void altaConsulta_Load(object sender, EventArgs e)
@@ -28,18 +39,7 @@ namespace PagoElectronico.Listados
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length==0){ //HAY QUE VALIDAR TMB CONTRA LA FECHA DEL CONFIG
-                MessageBox.Show("Ingrese un año valido");
-            }
-            else {
-                año = textBox1.Text;
-                comboBox1.Items.Add("Primer trimestre");
-                comboBox1.Items.Add("Segundo trimestre");
-                comboBox1.Items.Add("Tercer trimestre");
-                comboBox1.Items.Add("Cuarto trimestre");
-            }
-        
-
+          
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -54,12 +54,7 @@ namespace PagoElectronico.Listados
 
         private void button4_Click(object sender, EventArgs e)
         {
-            trimestre = comboBox1.SelectedIndex + 1;
-            comboBox2.Items.Add("Clientes con cuentas inhabilitadas por morosos");
-            comboBox2.Items.Add("Clientes con mayor cantidad de comisiones facturadas en sus cuentas");
-            comboBox2.Items.Add("Clientes con mayor cantidad de transacciones realizadas entre cuentras propias");
-            comboBox2.Items.Add("Paises con mayor cantidad de movimientos");
-            comboBox2.Items.Add("Total facturado para los distintos tipos de cuenta");
+           
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,30 +64,46 @@ namespace PagoElectronico.Listados
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length == 0)
+            { 
+                MessageBox.Show("Ingrese un año valido");
+            }
+            año = textBox1.Text;
+
+            if (comboBox1.SelectedIndex==-1)
+            {
+                MessageBox.Show("Seleccione un trimestre");
+            }
+            trimestre = comboBox1.SelectedIndex + 1;
+
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
            
-
-
             int opcion=comboBox2.SelectedIndex;
+
+            if (comboBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione una opción a visualizar");
+            }
+
             switch (opcion){
                 case 0:
                     comando.CommandText = "Select * from NMI.clientesInhabilitados(" + año+"," + trimestre + ")";
                     break;
 
                 case 1:
-                    comando.CommandText = "Select * from NMI.clientesClienteConMayorCantidadComisiones(" + año + "," + trimestre + ")";
+                    comando.CommandText = "exec NMI.clietesMasFacturas " + año + "," + trimestre + "";
                     break;
 
                 case 2:
-                    comando.CommandText = "Select * from NMI.clientesClienteConMayorCantidadDeTransEntreCuentasPropias(" + año + "," + trimestre + ")";
+                    comando.CommandText = "exec NMI.clientesConMasTransferenciasEntreCuentasPropias " + año + "," + trimestre + "";
                     break;
 
                 case 3:
-                    comando.CommandText = "Select * from NMI.paisesConMayorCantidadDeMovimientos(" + año + "," + trimestre + ")";
+                    comando.CommandText = "exec NMI.PaisesMasMov " + año + "," + trimestre + "";
                     break;
 
                 case 4:
-                    comando.CommandText = "Select * from NMI.totalFacturadoParaTiposCuenta(" + año + "," + trimestre + ")";
+                    comando.CommandText = "exec NMI.SaldoPorFacturas " + año + "," + trimestre + "";
                     break;
 
             }
