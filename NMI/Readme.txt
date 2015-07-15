@@ -92,7 +92,7 @@ end
 
 ---------------------------
 
-create procedure NMI.SaldoPorFacturas 
+create procedure NMI.SaldoPorCuentas
 @anio char(4), @trimestre int
 as
 begin 
