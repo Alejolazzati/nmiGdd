@@ -89,3 +89,39 @@ inner join NMI.Pais l on y.Codigo_pais=l.Id_Pais
 group by l.Descripcion
 order by sum(z.k)  desc 
 end
+
+---------------------------
+
+create procedure NMI.SaldoPorFacturas 
+@anio char(4), @trimestre int
+as
+begin 
+declare @mesdiadesde char(4)
+declare @mesdiahasta char(4)
+if @trimestre=1
+begin
+set @mesdiadesde='0101'
+set @mesdiahasta='0331'
+end
+if @trimestre=2
+begin
+set @mesdiadesde='0401'
+set @mesdiahasta='0630'
+end
+if @trimestre=3
+begin
+set @mesdiadesde='0701'
+set @mesdiahasta='0930'
+end
+if @trimestre=4
+begin
+set @mesdiadesde='1001'
+set @mesdiahasta='1231'
+end
+select Cod_cuenta_origen,SUM(importe) from
+nmi.Transferencias a inner join nmi.Transacciones b on
+a.Cod_transaccion=b.Id_transaccion where Fecha
+between @anio+@mesdiadesde and @anio+@mesdiahasta
+group by Cod_cuenta_origen
+order by SUM(importe) desc
+end
