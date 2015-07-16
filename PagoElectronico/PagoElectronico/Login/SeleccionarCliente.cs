@@ -29,8 +29,13 @@ namespace PagoElectronico.Login
             Program.cliente = Convert.ToInt32(textBox3.Text);
             if (num == 1)
             {
-                
+
                 new PagoElectronico.Facturacion.Facturacion().Show();
+                this.Close();
+            }
+            if (num == 2)
+            {
+                new ABM_Cuenta.buscarCuentaCliente().Show();
                 this.Close();
             }
         }

@@ -42,9 +42,10 @@ Create table NMI.ultimaCuenta (
 numero numeric(18)
 )
 go
-/*
-insert into NMI.ultimaCuenta values (0) 
-go*/
+
+
+insert into NMI.ultimaCuenta values(0) 
+go
 
 create table NMI.Usuario
 (Id_usuario int  identity(1,1) primary key ,
@@ -494,7 +495,7 @@ Create trigger NMI.actualizarSaldosPorTransferencia
 	
 go
 	
-	create trigger NMI.ActualizarSaldosPorDeposito
+create trigger NMI.ActualizarSaldosPorDeposito
 on Depositos 
 for insert, update, delete
 	as
@@ -596,7 +597,7 @@ for insert, update, delete
 	commit;
 go
 	
-	Create  trigger NMI.CuaandoSeIngresanLoginsIncorrectos
+Create  trigger NMI.CuaandoSeIngresanLoginsIncorrectos
 on NMI.Intentos_login
 for  insert
 as
@@ -877,11 +878,10 @@ on a.Cli_Nro_Doc=b.Numero_documento
 inner join NMI.Cuenta c 
 on b.Id_cliente=c.Codigo_cliente and c.Num_cuenta=a.Cuenta_Numero
 inner join NMI.Tarjetas_credito d on
-b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=a.Tarjeta_Numero
+b.Id_cliente=d.Cod_cliente and d.Num_tarjeta=NMI.encriptarSha1(a.Tarjeta_Numero)
 where Deposito_Codigo is not null
 
 go
-
 --Cheques
 
 insert into NMI.Cheque (Num_cheque,Importe,Fecha,Cod_moneda,Cod_cliente,Cod_banco)
@@ -1182,6 +1182,9 @@ set numero=@retorno+1
 return
 end
 go
+
+
+
 
 create function NMI.rolesUsuario(@username varchar(30))
 returns @tablaRetorno table
@@ -1683,10 +1686,11 @@ create table NMI.suscripciones
 (id int identity(1,1) primary key,
 cuenta numeric(18),
 cantidad int,
+check (cantidad>0),
 factura numeric(18) foreign key references NMI.Facturas(Num_factura),
 costo float)
-
 go
+
 create procedure NMI.pagarSuscripciones @cuenta numeric(18),@cantidad int, @numeroFactura numeric(18)
 as
 begin
@@ -1808,10 +1812,10 @@ create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe f
 
 create procedure NMI.altaCuenta @cliente int,
 @pais varchar(50), @moneda varchar(20),
-@apertura date,@tipo varchar(50)
+@tipo varchar(50)
 
 as
-begin
+begin transaction
 
 declare @idmoneda int
 declare @idpais int	
@@ -1822,10 +1826,13 @@ set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
 set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
 set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
 
+
 exec NMI.getUltimaCuenta @retorno output
-insert into NMI.Cuenta values (@retorno+1,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
+
+insert into NMI.Cuenta 
+		(Num_cuenta,Fecha_cierre,Fecha_vencimiento,Codigo_pais,Codigo_moneda,Codigo_categoria,Codigo_cliente,Codigo_estado,Saldo)
+values (@retorno+1,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
 commit
-end
 go	
 
 
@@ -1842,22 +1849,20 @@ go
 create procedure NMI.modificarCuenta
 @numero numeric(20),@pais varchar(50),@moneda varchar(50),@tipo varchar(50)
 as
-begin
+begin transaction
 declare @idmoneda int
 declare @idpais int
 declare @idecategoria int
 	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
 	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
 	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+	
 
-
-update NMI.Cuenta set Codigo_pais=@idpais,Codigo_moneda=@idmoneda,Codigo_categoria=@idecategoria
+update NMI.Cuenta set Codigo_pais=@idpais,Codigo_moneda=@idmoneda,Codigo_categoria=@idecategoria, Fecha_cierre=NMI.fechaSistema()
 					where Num_cuenta=@numero
 
 commit 
-end
-
- go
+go
 
 
 create procedure NMI.ingresarUsuario @username varchar(30),@pw varchar(255),@pregunta varchar(50), @Respuesta varchar (255), @rol int 
@@ -2204,3 +2209,29 @@ commit
 go
 
 
+create trigger activarCuenta on nmi.suscripciones
+for insert
+as
+
+	begin transaction
+	declare @numCuenta numeric(18)
+	Declare cursorCuentas cursor for 
+	select i.cuenta from inserted i join cuenta c on (i.cuenta=c.num_cuenta) where c.codigo_estado=3
+	
+	open cursorCuentas
+	
+	fetch next from cursorCuentas into @numCuenta
+	while (@@fetch_status=0)
+	begin
+		update cuenta
+		set Codigo_estado=1 
+		where num_cuenta=@numCuenta
+		fetch next from cursorCuentas into @numCuenta	
+	end
+	close cursorCuentas
+	deallocate cursorCuentas
+	commit
+go 
+
+
+select * from nmi.cuenta where num_cuenta = 1111111111111452

@@ -106,6 +106,7 @@ namespace PagoElectronico.ABM_Rol
                 comando.ExecuteNonQuery();
                 id_rol = Int32.Parse(comando.Parameters["@id_rol"].SqlValue.ToString());
 
+                comando.Parameters.Clear();
                 comando.CommandType = CommandType.Text;
                 //agregar el estado
 
@@ -134,6 +135,7 @@ namespace PagoElectronico.ABM_Rol
             }
             catch (System.Data.SqlClient.SqlException er)
             {
+                comando.Parameters.Clear();
                 comando.CommandType = CommandType.Text;
                 MessageBox.Show(er.Message);
                 new PagoElectronico.Login.Funcionalidades().Show();

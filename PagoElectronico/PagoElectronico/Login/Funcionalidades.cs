@@ -82,13 +82,14 @@ namespace PagoElectronico.Login
                         break;
 
                     case "ABM cuenta":
+                        //sos cliente
                         if (Program.rol == 1)
                         {
                             new PagoElectronico.ABM_Cuenta.buscarCuentaCliente().Show();
                         }
-                        else
+                        else //sos administrador
                         {
-                            new PagoElectronico.ABM_Cuenta.buscarCuentaAdm().Show();
+                            new SeleccionarCliente(2).Show();
                         }
                         break;
 

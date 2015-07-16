@@ -84,23 +84,11 @@
     <Compile Include="ABM Cliente\modificarCliente.Designer.cs">
       <DependentUpon>modificarCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\altaCuentaPorAdm.cs">
+    <Compile Include="ABM Cuenta\altaCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Cuenta\altaCuentaPorAdm.Designer.cs">
-      <DependentUpon>altaCuentaPorAdm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Cuenta\altaCuentaPorCliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\altaCuentaPorCliente.Designer.cs">
-      <DependentUpon>altaCuentaPorCliente.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Cuenta\buscarCuentaAdm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\buscarCuentaAdm.Designer.cs">
-      <DependentUpon>buscarCuentaAdm.cs</DependentUpon>
+    <Compile Include="ABM Cuenta\altaCuenta.Designer.cs">
+      <DependentUpon>altaCuenta.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cuenta\buscarCuentaCliente.cs">
       <SubType>Form</SubType>
@@ -108,23 +96,11 @@
     <Compile Include="ABM Cuenta\buscarCuentaCliente.Designer.cs">
       <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\Form1.cs">
+    <Compile Include="ABM Cuenta\modificarCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Cuenta\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Cuenta\Form2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaAdm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\modificarCuentaAdm.Designer.cs">
-      <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
+    <Compile Include="ABM Cuenta\modificarCuenta.Designer.cs">
+      <DependentUpon>modificarCuenta.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM de Usuario\altaUsuario.cs">
       <SubType>Form</SubType>
@@ -206,12 +182,6 @@
       <DependentUpon>altaDeposito.cs</DependentUpon>
     </Compile>
     <Compile Include="Encriptar.cs" />
-    <Compile Include="Facturacion\altaFacturacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Facturacion\altaFacturacion.Designer.cs">
-      <DependentUpon>altaFacturacion.cs</DependentUpon>
-    </Compile>
     <Compile Include="Facturacion\Facturacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -297,26 +267,14 @@
     <EmbeddedResource Include="ABM Cliente\modificarCliente.resx">
       <DependentUpon>modificarCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\altaCuentaPorAdm.resx">
-      <DependentUpon>altaCuentaPorAdm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\altaCuentaPorCliente.resx">
-      <DependentUpon>altaCuentaPorCliente.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\buscarCuentaAdm.resx">
-      <DependentUpon>buscarCuentaAdm.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cuenta\altaCuenta.resx">
+      <DependentUpon>altaCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\buscarCuentaCliente.resx">
       <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\modificarCuentaAdm.resx">
-      <DependentUpon>modificarCuentaAdm.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cuenta\modificarCuenta.resx">
+      <DependentUpon>modificarCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\altaUsuario.resx">
       <DependentUpon>altaUsuario.cs</DependentUpon>
@@ -356,9 +314,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Depositos\altaDeposito.resx">
       <DependentUpon>altaDeposito.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Facturacion\altaFacturacion.resx">
-      <DependentUpon>altaFacturacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\Facturacion.resx">
       <DependentUpon>Facturacion.cs</DependentUpon>
