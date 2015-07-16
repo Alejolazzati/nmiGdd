@@ -16,7 +16,7 @@ select @fecha=max(fecha) from NMI.fechaDeSistema
 end
 go
 
-create function NMI.encriptarSha256(@texto varchar(30))
+create function NMI.encriptarSha1(@texto varchar(30))
 returns varchar(50)
 as
 begin
@@ -25,6 +25,8 @@ select @temp=Hashbytes('sha1',@texto)
 return @temp
 end
 go
+
+
 
 create function NMI.agregarDias(@fecha date , @dias int)
 returns date
@@ -115,7 +117,7 @@ go
 
 Create table NMI.Rol(
 	Id_rol int identity(1,1) primary key,
-	Nombre_rol varchar(30) not null,
+	Nombre_rol varchar(30) unique not null,
 	Cod_estado int not null,
 	foreign key (Cod_estado) references NMI.Estado_rol(Id_estado),
 )
@@ -131,7 +133,7 @@ go
 
 Create table NMI.Funcionalidad(
 	Id_funcionalidad int identity(1,1) primary key, --Agrego identity
-	Descripcion varchar(30) not null
+	Descripcion varchar(30) unique not null
 )
 go
 
@@ -280,12 +282,13 @@ go
 
 create table NMI.Tarjetas_credito( --Cambio la pk, porque puede haber mismo numero con diferente emisor
 	Id_tarjeta int identity(1,1) primary key,
-	Num_tarjeta numeric(18) not null,
+	Num_tarjeta varchar(70) not null,
+	Ultimos4 numeric(4),
 	Cod_cliente int,
 	Cod_emisor int not null,
 	Fecha_emision date not null,
 	Fecha_vencimiento date not null,
-	Cod_seguridad int,
+	Cod_seguridad varchar(70),
 	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente),
 	foreign key (Cod_emisor) references NMI.Tarjeta_Emisor(Id_tarjeta_emisor)
 )
@@ -304,6 +307,7 @@ create table NMI.Depositos(
 	foreign key (Cod_TC) references NMI.Tarjetas_credito(Id_tarjeta)
 )
 go
+
 create table NMI.Cheque(
 	Id_cheque int identity(1,1) primary key,
 	Num_cheque int not null,
@@ -394,9 +398,42 @@ select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Id_transaccion,Cod_moneda fr
 
 
 commit
-
-
 go
+
+create trigger nmi.insertarTarjeta on nmi.tarjetas_credito
+after insert
+as
+
+begin transaction
+
+declare @codSeguridad varchar(70)
+declare @id_tarjeta int
+declare @num_tarjeta varchar(70)
+
+declare cursorTarjetas cursor for 
+select Cod_seguridad, id_tarjeta, num_tarjeta  from inserted 
+
+open cursorTarjetas
+fetch next from cursorTarjetas into @codSeguridad,@id_tarjeta,@num_tarjeta
+
+while (@@fetch_status = 0)
+Begin
+	
+	
+	update nmi.tarjetas_credito
+	set num_tarjeta = nmi.encriptarsha1(@num_tarjeta),
+	cod_seguridad = nmi.encriptarsha1(@codSeguridad),
+	ultimos4 = right(@num_tarjeta,4)
+	where id_tarjeta=@id_tarjeta
+	
+	fetch next from cursorTarjetas into @codSeguridad,@id_tarjeta,@num_tarjeta
+end
+close cursorTarjetas
+deallocate cursorTarjetas
+commit 
+go
+
+
 
 Create trigger NMI.actualizarSaldosPorTransferencia 
 	on NMI.Transferencias
@@ -1135,15 +1172,14 @@ begin
 end
 go	
 */
-create Procedure NMI.getUltimaCuenta @retorno numeric(18)
-
+create Procedure NMI.getUltimaCuenta @retorno numeric(18) output
 as
 begin
  
 select @retorno=(Select max(UltimaCuenta.numero) from NMI.UltimaCuenta)
 Update NMI.UltimaCuenta
 set numero=@retorno+1
-return @retorno
+return
 end
 go
 
@@ -1768,27 +1804,28 @@ create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe f
  go
 
 
-create procedure NMI.altaCuenta
 
-@cliente int, @numero numeric(20), @pais varchar(50), @moneda varchar(20),
 
+create procedure NMI.altaCuenta @cliente int,
+@pais varchar(50), @moneda varchar(20),
 @apertura date,@tipo varchar(50)
 
- 
- as
- begin
+as
+begin
 
 declare @idmoneda int
-
 declare @idpais int	
 declare @idecategoria int	
-	set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
-	set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
-	set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
-	update NMI.ultimaCuenta set numero=@numero
-	insert into NMI.Cuenta values (@numero,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
+declare @retorno numeric(18)
+
+set @idmoneda=(select id_moneda from NMI.Moneda where Descripcion=@moneda)
+set @idpais=(select id_pais from NMI.Pais where Descripcion=@pais)
+set @idecategoria=(select id_categoria from NMI.Categoria where Descripcion=@tipo)
+
+exec NMI.getUltimaCuenta @retorno output
+insert into NMI.Cuenta values (@retorno+1,@apertura,NULL,NULL,@idpais,@idmoneda,@idecategoria,@cliente,3,0)
 commit
- end
+end
 go	
 
 
@@ -2088,13 +2125,13 @@ commit
 go
 
 
-create procedure NMI.modificarFuncionalidadesRol @rol int
+create  procedure NMI.modificarFuncionalidadesRol @rol int
 as
 begin transaction
 delete from NMI.Rol_funcionalidad
 where Cod_rol=@rol
 insert into NMI.Rol_funcionalidad(Cod_rol,Cod_funcionalidad)
-select @rol,(select Id_funcionalidad from NMI.Funcionalidad as f where funcionalidad=Descripcion) from #tablaTemporal
+select @rol,Id_funcionalidad from  #tablaTemporal,NMI.Funcionalidad as f where funcionalidad=Descripcion
 drop table #tablaTemporal
 commit
 go
@@ -2113,14 +2150,13 @@ commit
 go
 
 
-create  trigger nmi.actualizarUltFechaMod on nmi.Usuario
+create trigger nmi.actualizarUltFechaMod on nmi.Usuario
 for update
 as
 begin transaction
 
 if ((select count (*) from nmi.usuario u,inserted i where i.id_usuario=u.id_usuario and u.ultima_modificacion<>nmi.fechaSistema() )=0)
 begin
-raiserror ('son todos putos',16,152)
 commit 
 return
 end
@@ -2131,4 +2167,40 @@ where id_usuario in (select id_usuario from inserted)
 commit 
 
 go
+
+
+create function NMI.rolesDeUsuario(@user int)
+returns @tabla table(cod_rol int,
+descripcion varchar(50))
+as
+begin 
+insert into @tabla
+select cod_rol,Nombre_rol from NMI.Rol,NMI.Usuario_rol
+where cod_rol=id_rol and cod_usuario=@user
+return
+end
+
+go
+
+create  function NMI.rolesFaltantesUsuario (@user int)
+returns @tabla table(descripcion varchar(50))
+as
+begin insert into @tabla
+select Nombre_rol from NMI.rolesDeUsuario(@user) r1 right join NMI.Rol r2 on r1.cod_rol=r2.id_rol where r1.cod_rol is null
+return end
+go
+
+
+create  procedure nmi.agregarRolesUsuario @usuario int 
+as
+begin transaction
+delete from NMI.Usuario_rol
+where Cod_usuario=@usuario
+
+insert into NMI.Usuario_rol (Cod_usuario,Cod_rol)
+select @usuario,Id_Rol from NMI.Rol,#tablaTemporal as f where rol=Nombre_rol
+drop table #tablaTemporal
+commit
+go
+
 

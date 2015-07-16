@@ -35,5 +35,31 @@ namespace PagoElectronico.ABM_de_Usuario
         {
             new cambiarContrasenia(codUser).Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new cambiarUsername(codUser).Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new Login.Funcionalidades().Show();
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            new ModPreguntayResp(codUser).Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new ModificarRol(codUser).Show();
+
+        }
     }
 }

@@ -122,6 +122,10 @@ namespace PagoElectronico.Login
                         new SeleccionarCuenta(3);
                         break;
 
+                    case "Asociar/desasociar TC":
+                        MessageBox.Show("DO ME"); 
+                        break;
+
                     case "":
                         MessageBox.Show("Seleccione una opcion");
                         break;

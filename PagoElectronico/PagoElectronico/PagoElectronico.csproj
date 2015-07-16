@@ -144,11 +144,29 @@
     <Compile Include="ABM de Usuario\cambiarContrasenia.Designer.cs">
       <DependentUpon>cambiarContrasenia.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Usuario\cambiarUsername.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarUsername.Designer.cs">
+      <DependentUpon>cambiarUsername.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModificarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModificarRol.Designer.cs">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Usuario\modificarUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ABM de Usuario\modificarUsuario.Designer.cs">
       <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModPreguntayResp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModPreguntayResp.Designer.cs">
+      <DependentUpon>ModPreguntayResp.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Rol\altaRol.cs">
       <SubType>Form</SubType>
@@ -309,8 +327,17 @@
     <EmbeddedResource Include="ABM de Usuario\cambiarContrasenia.resx">
       <DependentUpon>cambiarContrasenia.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\cambiarUsername.resx">
+      <DependentUpon>cambiarUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\ModificarRol.resx">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\modificarUsuario.resx">
       <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\ModPreguntayResp.resx">
+      <DependentUpon>ModPreguntayResp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\altaRol.resx">
       <DependentUpon>altaRol.cs</DependentUpon>

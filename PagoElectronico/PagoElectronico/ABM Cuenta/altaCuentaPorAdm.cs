@@ -63,7 +63,7 @@ namespace PagoElectronico.ABM_Cuenta
             this.Show();
             reader3.Dispose();
 
-            maskedTextBox1.Mask = "0999999999999999999999999999";
+            
 
 
         }
@@ -144,7 +144,7 @@ namespace PagoElectronico.ABM_Cuenta
             MessageBox.Show("Haceme");
             userName = listBox1.SelectedItem.ToString();
             //ver si hace falta el Id_cliente
-            numCuenta = maskedTextBox1.Text;
+            
             pais = comboBox3.SelectedItem.ToString();
             moneda = comboBox1.SelectedItem.ToString();
             categoria = comboBox2.SelectedItem.ToString();

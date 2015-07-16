@@ -33,9 +33,9 @@ namespace PagoElectronico
           System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
           comando.CommandText = "exec NMI.setFecha '" + fecha + "'";
           comando.ExecuteNonQuery();
-            new PagoElectronico.Login.login().Show();
-            Application.Run();
-            
+          new PagoElectronico.Login.login().Show();
+          Application.Run();
+           
 
         }
 

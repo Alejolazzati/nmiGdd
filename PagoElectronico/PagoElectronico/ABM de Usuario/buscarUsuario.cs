@@ -39,12 +39,15 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try { new PagoElectronico.ABM_de_Usuario.modificarUsuario(listBox1.SelectedItem.ToString()).Show(); }
+            try { new PagoElectronico.ABM_de_Usuario.modificarUsuario(listBox1.SelectedItem.ToString()).Show();
+            this.Close();
+            }
             catch (NullReferenceException ex)
             {
                 MessageBox.Show("debe seleccionar un usuario de la lista");
             
             }
+            
 
         }
 
@@ -57,17 +60,22 @@ namespace PagoElectronico.ABM_de_Usuario
         private void button5_Click(object sender, EventArgs e)
         {
             new altaUsuario().Show();
+            this.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            String usuarioABorrar;
-            usuarioABorrar = listBox1.SelectedItem.ToString();
-            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Update nmi.usuario set Estado='baja' where useranme='"+usuarioABorrar+"'";
-            comando.ExecuteNonQuery();
-            MessageBox.Show("Usuario dado de baja");
-
+            if (listBox1.SelectedItem != null)
+            {
+                String usuarioABorrar;
+                usuarioABorrar = listBox1.SelectedItem.ToString();
+                System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+                comando.CommandText = "Update nmi.usuario set Estado='baja' where useranme='" + usuarioABorrar + "'";
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Usuario dado de baja");
+                new Login.Funcionalidades().Show();
+            }
+            else { MessageBox.Show("Elija un usuario"); }
 
 
         }
