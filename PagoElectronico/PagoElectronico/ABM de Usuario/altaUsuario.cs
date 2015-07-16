@@ -91,6 +91,11 @@ namespace PagoElectronico.ABM_de_Usuario
 
         }
 
+        private void altaUsuario_Load(object sender, EventArgs e)
+        {
+
+        }
+
       
        
     }

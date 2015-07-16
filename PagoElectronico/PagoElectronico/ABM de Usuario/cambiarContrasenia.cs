@@ -33,7 +33,7 @@ namespace PagoElectronico.ABM_de_Usuario
             }
             System.Data.SqlClient.SqlCommand comando=Coneccion.getComando();
             pasword1 = Encriptar.SHA256(pasword1);
-            comando.CommandText = "execute NMI.nuevaContraseña " + user + ",'"  + pasword1 + "'";
+            comando.CommandText = "execute NMI.nuevaContrasenia " + user + ",'"  + pasword1 + "'";
             try
             {
                 

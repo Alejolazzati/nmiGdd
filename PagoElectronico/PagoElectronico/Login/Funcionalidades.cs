@@ -124,7 +124,7 @@ namespace PagoElectronico.Login
                         break;
 
                     case "Asociar/desasociar TC":
-                        MessageBox.Show("DO ME"); 
+                        new ABM_Cliente.administrarTarjetas().Show();
                         break;
 
                     case "":

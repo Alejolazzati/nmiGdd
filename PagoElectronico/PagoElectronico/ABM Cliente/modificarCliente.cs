@@ -89,6 +89,11 @@ namespace PagoElectronico.ABM_Cliente
 
         }
 
+        private void modificarCliente_Load(object sender, EventArgs e)
+        {
+
+        }
+
        
     }
 }

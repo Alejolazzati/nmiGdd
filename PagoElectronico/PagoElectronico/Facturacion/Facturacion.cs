@@ -45,6 +45,7 @@ namespace PagoElectronico.Facturacion
 
             }
             finally{
+                comando.Parameters.Clear();
                 comando.CommandType = CommandType.Text;
             }
 

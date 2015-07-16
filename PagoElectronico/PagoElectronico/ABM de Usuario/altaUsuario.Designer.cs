@@ -197,6 +197,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "altaUsuario";
             this.Text = "altaUsuario";
+            this.Load += new System.EventHandler(this.altaUsuario_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

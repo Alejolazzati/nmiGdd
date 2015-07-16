@@ -290,6 +290,7 @@ create table NMI.Tarjetas_credito( --Cambio la pk, porque puede haber mismo nume
 	Fecha_emision date not null,
 	Fecha_vencimiento date not null,
 	Cod_seguridad varchar(70),
+	estado varchar(50),
 	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente),
 	foreign key (Cod_emisor) references NMI.Tarjeta_Emisor(Id_tarjeta_emisor)
 )
@@ -1466,7 +1467,8 @@ else
 commit
 
 go
-create  procedure NMI.limpiar
+
+create procedure NMI.limpiar
 as 
 begin
 
@@ -1501,9 +1503,60 @@ drop table NMI.pais
 drop table NMI.tipo_dni
 drop table NMI.usuario
 drop table NMI.fechaDeSistema
-
+drop procedure NMI.desasociarTarjeta
+drop procedure NMI.actualizarEstado
+drop procedure NMI.actualizarFuncionalidadEstado
+drop procedure NMI.agregarRolesUsuario
+drop procedure NMI.altaCuenta
+drop procedure NMI.asentarRetiro
+drop procedure NMI.bajaCuenta
+drop procedure NMI.clietesMasFacturas
+drop procedure NMI.facturar
+drop procedure NMI.getUltimaCuenta
+drop procedure NMI.ingresarCliente
+drop procedure NMI.ingresarNuevoRol
+drop procedure NMI.ingresarUsuario
+drop procedure NMI.Loguear
+drop procedure NMI.modificarCuenta
+drop procedure NMI.modificarFuncionalidadesRol
+drop procedure NMI.nuevaContra
+drop procedure NMI.nuevaContrasenia
+drop procedure NMI.pagarSuscripciones
+drop procedure NMI.PaisesMasMov
+drop procedure NMI.SaldoPorFacturas
+drop procedure NMI.setFecha
+drop procedure NMI.transferir
+drop procedure NMI.updeteaDatosDelCliente
+drop function NMI.categoriasDisponibles
+drop function NMI.clientesConMasTransferenciasEntreCuentasPropias
+drop function NMI.clientesInhabilitados
+drop function NMI.cuentasPorCliente
+drop function NMI.cuentasPorUsuario
+drop function NMI.datosDelCliente
+drop function NMI.documentosDisponibles
+drop function NMI.funcionalidadesPorRol
+drop function NMI.funcionalidadesRol
+drop function NMI.getNacionalidades
+drop function NMI.listadoFactura
+drop function NMI.rolesDeUsuario
+drop function NMI.rolesFaltantesUsuario
+drop function NMI.rolesUsuario
+drop function NMI.tarjetasPorCliente
+drop function NMI.ultimas10Transf
+drop function NMI.ultimos5Depositos
+drop function NMI.ultimos5Retiros
+drop function NMI.usernamesParecidos
+drop function NMI.agregarDias
+drop function NMI.encriptarSha1
+drop function NMI.encriptarSha256
+drop function NMI.fechaSistema
+drop function NMI.saldoCuenta
+drop function NMI.totalFactura
+drop procedure NMI.limpiar
+drop schema NMI
 end
 go
+
 
 create function NMI.clientesInhabilitados(@anio int,@trimestre int)
 returns @tabla table(
@@ -2141,7 +2194,7 @@ drop table #tablaTemporal
 commit
 go
 
-create procedure nmi.nuevaContraseña @user int,
+create procedure nmi.nuevaContrasenia @user int,
 @pass varchar(70)
 as
 
@@ -2234,4 +2287,42 @@ as
 go 
 
 
-select * from nmi.cuenta where num_cuenta = 1111111111111452
+--ultimos cambios
+
+create function nmi.tarjetasCliente(@numCliente int)
+returns @tabla table (idTarjeta int,
+					emisor varchar(39),
+					ultimos4Digitos varchar(5)
+					)
+as
+begin
+	insert into @tabla 
+	select id_tarjeta, descripcion, ultimos4 from
+	nmi.tarjetas_credito t join nmi.tarjeta_emisor e on (t.cod_emisor=e.id_tarjeta_emisor)
+	where t.cod_cliente=@numCliente and t.estado='Activa'
+	
+	return
+end
+go
+
+
+create procedure NMI.desasociarTarjeta @idTarjeta int 
+as
+
+begin 
+
+	update NMI.Tarjetas_credito
+	set estado='Inactiva'
+	where Id_tarjeta=@idTarjeta
+
+end
+go
+
+--create procedure asociarTarjeta --- la idea es verificar que si estaba desasociada se hag una alta logica
+
+
+
+
+
+
+
