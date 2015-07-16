@@ -30,5 +30,10 @@ namespace PagoElectronico.ABM_de_Usuario
             //textBox1.Text = username;
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new cambiarContrasenia(codUser).Show();
+        }
     }
 }

@@ -64,76 +64,79 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-             String caseSwitch = comboBox1.SelectedItem.ToString();
-            switch(caseSwitch)
+            try
             {
-                case "ABM Rol":
-                    new PagoElectronico.ABM_Rol.Rol().Show();
-                    break;
+                String caseSwitch = comboBox1.SelectedItem.ToString();
+                switch (caseSwitch)
+                {
+                    case "ABM Rol":
+                        new PagoElectronico.ABM_Rol.Rol().Show();
+                        break;
 
-                case "ABM usuario":
-                    new PagoElectronico.ABM_de_Usuario.buscarUsuario().Show();
-                    break;
+                    case "ABM usuario":
+                        new PagoElectronico.ABM_de_Usuario.buscarUsuario().Show();
+                        break;
 
-                case "ABM cliente":
-                    new PagoElectronico.ABM_Cliente.buscarCliente().Show();
-                    break;
+                    case "ABM cliente":
+                        new PagoElectronico.ABM_Cliente.buscarCliente().Show();
+                        break;
 
-                case "ABM cuenta":
-                    if (Program.rol== 1)
-                    {
-                        new PagoElectronico.ABM_Cuenta.buscarCuentaCliente().Show();
-                    }
-                    else
-                    {
-                        new PagoElectronico.ABM_Cuenta.buscarCuentaAdm().Show();
-                    }
-                    break;
+                    case "ABM cuenta":
+                        if (Program.rol == 1)
+                        {
+                            new PagoElectronico.ABM_Cuenta.buscarCuentaCliente().Show();
+                        }
+                        else
+                        {
+                            new PagoElectronico.ABM_Cuenta.buscarCuentaAdm().Show();
+                        }
+                        break;
 
-                case "Facturacion":
-                    if (Program.rol == 2)
-                        new SeleccionarCliente(1).Show();
-                    else
-                        new PagoElectronico.Facturacion.Facturacion().Show(); 
-                    break;
+                    case "Facturacion":
+                        if (Program.rol == 2)
+                            new SeleccionarCliente(1).Show();
+                        else
+                            new PagoElectronico.Facturacion.Facturacion().Show();
+                        break;
 
-                case "Consultar saldo":
-                    PagoElectronico.Consulta_Saldos.consultaSaldosCliente unaConsulta = new PagoElectronico.Consulta_Saldos.consultaSaldosCliente();
-                    unaConsulta.Show();
-                    break;
+                    case "Consultar saldo":
+                        PagoElectronico.Consulta_Saldos.consultaSaldosCliente unaConsulta = new PagoElectronico.Consulta_Saldos.consultaSaldosCliente();
+                        unaConsulta.Show();
+                        break;
 
-                case "Listado estadistico":
-                    new PagoElectronico.Listados.altaConsulta().Show();
-                    break;
-
-
-                case "Transferencias":
-                    new SeleccionarCuenta(1);
-                    break;
-
-                case "Depositos":
-                    MessageBox.Show("HACERME");
-                    break;
+                    case "Listado estadistico":
+                        new PagoElectronico.Listados.altaConsulta().Show();
+                        break;
 
 
-                case "Retiro de efectivo":
-                    new SeleccionarCuenta(3);
-                    break;
+                    case "Transferencias":
+                        new SeleccionarCuenta(1);
+                        break;
 
-                case "":
-                    MessageBox.Show("Seleccione una opcion");
-                    break;
-                
+                    case "Depositos":
+                        MessageBox.Show("HACERME");
+                        break;
 
-                default:
-                    MessageBox.Show("Opcion invalida");
-                    Program.end();
-                    break;
-                
+
+                    case "Retiro de efectivo":
+                        new SeleccionarCuenta(3);
+                        break;
+
+                    case "":
+                        MessageBox.Show("Seleccione una opcion");
+                        break;
+
+
+                    default:
+                        MessageBox.Show("Opcion invalida");
+                        Program.end();
+                        break;
+
+                }
+                this.Close();
+                this.Hide();
             }
-            this.Close();
-            this.Hide();
-            
+            catch (NullReferenceException er) { MessageBox.Show("Elija una opcion"); }
         }
 
         private void button2_Click(object sender, EventArgs e)

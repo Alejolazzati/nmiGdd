@@ -35,16 +35,17 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 38);
+            this.button1.Location = new System.Drawing.Point(74, 38);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(88, 50);
             this.button1.TabIndex = 0;
             this.button1.Text = "Canmbiar Contraseña";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(226, 38);
+            this.button2.Location = new System.Drawing.Point(183, 38);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(88, 51);
             this.button2.TabIndex = 1;
@@ -53,7 +54,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 161);
+            this.button3.Location = new System.Drawing.Point(12, 108);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(302, 31);
             this.button3.TabIndex = 2;

@@ -2097,5 +2097,38 @@ insert into NMI.Rol_funcionalidad(Cod_rol,Cod_funcionalidad)
 select @rol,(select Id_funcionalidad from NMI.Funcionalidad as f where funcionalidad=Descripcion) from #tablaTemporal
 drop table #tablaTemporal
 commit
+go
 
-select * from nmi.Usuario
+create procedure nmi.nuevaContraseña @user int,
+@pass varchar(70)
+as
+
+
+begin transaction 
+update NMI.Usuario
+set Contrasenia=@pass
+where Id_usuario=@user
+
+commit
+go
+
+
+create  trigger nmi.actualizarUltFechaMod on nmi.Usuario
+for update
+as
+begin transaction
+
+if ((select count (*) from nmi.usuario u,inserted i where i.id_usuario=u.id_usuario and u.ultima_modificacion<>nmi.fechaSistema() )=0)
+begin
+raiserror ('son todos putos',16,152)
+commit 
+return
+end
+
+update nmi.usuario
+set ultima_modificacion=nmi.fechaSistema()
+where id_usuario in (select id_usuario from inserted)
+commit 
+
+go
+

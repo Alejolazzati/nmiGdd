@@ -25,16 +25,18 @@ namespace PagoElectronico.ABM_de_Usuario
            
             if (pasword2 != pasword1)
             {
-                MessageBox.Show("no coinciden nuevas contraseñas");
+                MessageBox.Show("No coinciden nuevas contraseñas");
                 new cambiarContrasenia(user).Show();
                 this.Close();
                 return;
 
             }
             System.Data.SqlClient.SqlCommand comando=Coneccion.getComando();
-           // comando.CommandText = "execute NMI.nuevaContraseña " + username + ",'"  + pasword1 + "'";
+            pasword1 = Encriptar.SHA256(pasword1);
+            comando.CommandText = "execute NMI.nuevaContraseña " + user + ",'"  + pasword1 + "'";
             try
             {
+                
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Contraseña actualizada");
             }

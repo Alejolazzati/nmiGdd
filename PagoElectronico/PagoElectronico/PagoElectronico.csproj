@@ -138,6 +138,12 @@
     <Compile Include="ABM de Usuario\buscarUsuario.Designer.cs">
       <DependentUpon>buscarUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Usuario\cambiarContrasenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarContrasenia.Designer.cs">
+      <DependentUpon>cambiarContrasenia.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Usuario\modificarUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\buscarUsuario.resx">
       <DependentUpon>buscarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\cambiarContrasenia.resx">
+      <DependentUpon>cambiarContrasenia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\modificarUsuario.resx">
       <DependentUpon>modificarUsuario.cs</DependentUpon>

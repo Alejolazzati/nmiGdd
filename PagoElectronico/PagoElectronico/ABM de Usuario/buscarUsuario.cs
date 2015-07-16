@@ -63,6 +63,11 @@ namespace PagoElectronico.ABM_de_Usuario
         {
             String usuarioABorrar;
             usuarioABorrar = listBox1.SelectedItem.ToString();
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "Update nmi.usuario set Estado='baja' where useranme='"+usuarioABorrar+"'";
+            comando.ExecuteNonQuery();
+            MessageBox.Show("Usuario dado de baja");
+
 
 
         }
