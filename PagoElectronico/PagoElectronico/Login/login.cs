@@ -36,6 +36,9 @@ namespace PagoElectronico.Login
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete el username"); return; }
+            if (textBox2.Text.Length == 0) { MessageBox.Show("Complete la password"); return; }
+
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             string contraseniaEncriptada = Encriptar.SHA256(pass);
             Console.WriteLine(contraseniaEncriptada);

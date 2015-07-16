@@ -97,8 +97,9 @@
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(181, 21);
             this.comboBox3.TabIndex = 38;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
-            // altaCuentaPorCliente
+            // altaCuenta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -110,7 +111,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Name = "altaCuentaPorCliente";
+            this.Name = "altaCuenta";
             this.Text = "altaCuentaCliente";
             this.ResumeLayout(false);
             this.PerformLayout();

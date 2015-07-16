@@ -98,6 +98,11 @@ namespace PagoElectronico.ABM_Cuenta
          
 
 
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }                        
 
     }

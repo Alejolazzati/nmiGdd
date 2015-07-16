@@ -58,27 +58,33 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-                comando.CommandText = "begin transaction Create table #tablaTemporal (rol varchar(50))";
-                comando.ExecuteNonQuery();
-                foreach (Object unRol in listBox1.Items)
+             try
                 {
-                    // System.Data.SqlTypes.SqlString funcionalidad = func.
-                    String rol = unRol.ToString();
-                    comando.CommandText = "insert into #tablaTemporal values('" + rol + "')";
+                    System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+                    comando.CommandText = "begin transaction Create table #tablaTemporal (rol varchar(50))";
                     comando.ExecuteNonQuery();
+                    foreach (Object unRol in listBox1.Items)
+                    {
+                        // System.Data.SqlTypes.SqlString funcionalidad = func.
+                        String rol = unRol.ToString();
+                        comando.CommandText = "insert into #tablaTemporal values('" + rol + "')";
+                        comando.ExecuteNonQuery();
+                    }
+
+                    comando.CommandText = "exec nmi.agregarRolesUsuario " + usuario + " commit";
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Operacion exitosa");
+                    this.Close();
+
                 }
+                catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
 
-                comando.CommandText = "exec nmi.agregarRolesUsuario " + usuario + " commit";
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Operacion exitosa");
-                this.Close();
+            
+        }
 
-            }
-            catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
-                    
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

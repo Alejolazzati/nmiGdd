@@ -31,6 +31,7 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete el username"); return; }
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "Update NMI.Usuario set useranme = '"+textBox1.Text+"' where id_usuario=" + usuario;
             try { comando.ExecuteNonQuery(); MessageBox.Show("Cambio exitoso"); this.Close(); }

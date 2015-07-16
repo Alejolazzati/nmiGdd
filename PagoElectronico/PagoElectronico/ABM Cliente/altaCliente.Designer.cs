@@ -240,6 +240,7 @@
             // 
             this.textBox13.Location = new System.Drawing.Point(114, 257);
             this.textBox13.Name = "textBox13";
+            this.textBox13.ReadOnly = true;
             this.textBox13.Size = new System.Drawing.Size(243, 20);
             this.textBox13.TabIndex = 34;
             // 

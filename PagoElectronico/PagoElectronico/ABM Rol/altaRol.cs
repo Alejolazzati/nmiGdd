@@ -93,6 +93,9 @@ namespace PagoElectronico.ABM_Rol
         private void button3_Click(object sender, EventArgs e)
         {
             //inserto nombreDenuevoRol
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete el nombre del nuevo rol"); return; }
+            if (comboBox2.SelectedIndex == -1) { MessageBox.Show("Seleccione el estado del nuevo rol"); return; }
+
             String nombreRolNuevo = textBox1.Text;
             Int32 id_rol;
             comando.CommandText = "NMI.ingresarNuevoRol";
@@ -109,7 +112,7 @@ namespace PagoElectronico.ABM_Rol
                 comando.Parameters.Clear();
                 comando.CommandType = CommandType.Text;
                 //agregar el estado
-
+               
                 String estado = comboBox2.SelectedItem.ToString();
                 comando.CommandText = "exec nmi.actualizarEstado '" + estado + "'," + id_rol;
                 comando.ExecuteNonQuery();

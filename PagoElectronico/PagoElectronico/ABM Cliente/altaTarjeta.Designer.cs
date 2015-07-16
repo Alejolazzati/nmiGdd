@@ -117,6 +117,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(142, 132);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(135, 20);
             this.textBox2.TabIndex = 8;
             // 
@@ -124,6 +125,7 @@
             // 
             this.textBox3.Location = new System.Drawing.Point(142, 159);
             this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(135, 20);
             this.textBox3.TabIndex = 9;
             // 
@@ -152,7 +154,7 @@
             this.button3.Text = "Guardar tarjeta";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // altaTarjetas
+            // altaTarjeta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -170,7 +172,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "altaTarjetas";
+            this.Name = "altaTarjeta";
             this.Text = "altaTarjetas";
             this.ResumeLayout(false);
             this.PerformLayout();

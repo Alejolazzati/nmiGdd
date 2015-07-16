@@ -48,6 +48,7 @@ namespace PagoElectronico.Login
         private void button1_Click(object sender, EventArgs e)
         {
             int rol;
+            if (comboBox1.SelectedIndex == -1) { MessageBox.Show("Seleccione un rol"); return; }
             try
             {
                 if (comboBox1.SelectedItem.ToString() == "Cliente")
@@ -67,6 +68,11 @@ namespace PagoElectronico.Login
 
 
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

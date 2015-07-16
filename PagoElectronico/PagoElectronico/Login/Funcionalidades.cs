@@ -64,6 +64,7 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedIndex == -1) { MessageBox.Show("Seleccione una funcionalidad"); return; }
             try
             {
                 String caseSwitch = comboBox1.SelectedItem.ToString();

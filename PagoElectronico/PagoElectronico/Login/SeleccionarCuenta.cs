@@ -33,6 +33,7 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedIndex == -1) { MessageBox.Show("Seleccione una cuenta de origen"); return; }
             Program.cuenta = comboBox1.SelectedItem.ToString();
             if (num==1)
             new PagoElectronico.Transferencias.nuevaTransferencia(comboBox1.SelectedItem.ToString()).Show();
@@ -50,6 +51,11 @@ namespace PagoElectronico.Login
         }
 
         private void SeleccionarCuenta_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
