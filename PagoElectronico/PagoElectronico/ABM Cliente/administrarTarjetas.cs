@@ -14,9 +14,39 @@ namespace PagoElectronico.ABM_Cliente
         public administrarTarjetas()
         {
             InitializeComponent();
+            this.refresh();
+            
+
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Desasociar una tarjeta
+            if (dataGridView1.SelectedRows.Count == 1)
+            {
+                Int32 numTarjeta;
+                DataGridViewRow row = this.dataGridView1.SelectedRows[0];
+                numTarjeta=Int32.Parse(row.Cells["idTarjeta"].Value.ToString());
+
+                System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+                comando.CommandText = "exec nmi.desasociarTarjeta " + numTarjeta;
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Operacion exitosa");
+                this.refresh();
+            }
+            else MessageBox.Show("seleccione una fila");
+            
+
+
+
+        }
+
+        private void refresh()
+        {
             //cargar tarjetas del cliente
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "select * from NMI.tarjetasCliente("+ Program.cliente+ ")";
+            comando.CommandText = "select * from NMI.tarjetasCliente(" + Program.cliente + ")";
             System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(comando);
             DataSet set = new DataSet();
             adapter.Fill(set);
@@ -26,27 +56,16 @@ namespace PagoElectronico.ABM_Cliente
 
         }
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            new altaTarjeta().Show();
+            this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count == 1)
-            {
-                Int32 numTarjeta;
-                DataGridViewRow row = this.dataGridView1.SelectedRows[0];
-                numTarjeta=Int32.Parse(row.Cells["idTarjeta"].Value.ToString());
-
-                System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-                comando.CommandText = "exce nmi.desaasociarTarjeta " + numTarjeta;
-            }
-            else MessageBox.Show("seleccione una fila");
-            
-
-
-
+            new Login.Funcionalidades().Show();
         }
+
     }
 }

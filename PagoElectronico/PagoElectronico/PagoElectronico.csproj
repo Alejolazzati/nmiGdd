@@ -78,6 +78,12 @@
     <Compile Include="ABM Cliente\Calendario.Designer.cs">
       <DependentUpon>Calendario.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\calendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\calendar.Designer.cs">
+      <DependentUpon>calendar.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\modificarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\Calendario.resx">
       <DependentUpon>Calendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\calendar.resx">
+      <DependentUpon>calendar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\modificarCliente.resx">
       <DependentUpon>modificarCliente.cs</DependentUpon>

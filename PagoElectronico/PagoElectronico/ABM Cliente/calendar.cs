@@ -9,22 +9,24 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.ABM_Cliente
 {
-    public partial class Calendario : Form
+    public partial class calendar : Form
     {
-        PagoElectronico.ABM_Cliente.altaCliente abmSuper;
-        public Calendario(PagoElectronico.ABM_Cliente.altaCliente unABM)
+        int textBox;
+        altaTarjeta abmLlamo;
+        public calendar(int textBoxLlamo,altaTarjeta abmL)
         {
             InitializeComponent();
             monthCalendar1.MaxSelectionCount = 1;
-            abmSuper = unABM;
+            abmLlamo = abmL;
+            textBox = textBoxLlamo;
         }
 
-       
+    
+
         private void button1_Click(object sender, EventArgs e)
         {
-            abmSuper.recibirFecha(monthCalendar1.SelectionRange.Start);
+            abmLlamo.recibirFecha(textBox, monthCalendar1.SelectionRange.Start);
+            this.Close();
         }
-
-        
     }
 }

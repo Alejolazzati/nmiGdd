@@ -290,11 +290,12 @@ create table NMI.Tarjetas_credito( --Cambio la pk, porque puede haber mismo nume
 	Fecha_emision date not null,
 	Fecha_vencimiento date not null,
 	Cod_seguridad varchar(70),
-	estado varchar(50),
+	estado varchar(50) default 'Activo',
 	foreign key (Cod_cliente) references NMI.Cliente(Id_cliente),
 	foreign key (Cod_emisor) references NMI.Tarjeta_Emisor(Id_tarjeta_emisor)
 )
 go
+
 
 create table NMI.Depositos(
 	Id_deposito numeric(18) primary key,
@@ -1468,95 +1469,6 @@ commit
 
 go
 
-create procedure NMI.limpiar
-as 
-begin
-
-drop table NMI.Depositos
-drop table NMI.Retiros
-drop Table NMI.modificacion_cuenta
-drop table NMI.transferencias
-drop table NMI.tipo_modificacion
-drop table NMI.intentos_fallidos
-drop table NMI.intentos_login
-drop table NMI.tarjetas_credito
-drop table NMI.tarjeta_emisor
-drop table NMI.rol_funcionalidad
-drop table NMI.transacciones
-drop table NMI.suscripciones
-drop table NMI.facturas
-drop table NMI.usuario_rol
-drop table NMI.ultimaCuenta
-drop table NMI.inhabilitacionesDeCuenta
-drop table NMI.cuenta
-drop table NMI.cheque
-drop table NMI.funcionalidad
-drop table NMI.cliente
-drop table NMI.bancos
-drop table NMI.categoria
-drop table NMI.estado_cuenta
-drop table NMI.rol
-drop table NMI.estado_rol
-drop table NMI.estado_transaccion
-drop table NMI.moneda
-drop table NMI.pais
-drop table NMI.tipo_dni
-drop table NMI.usuario
-drop table NMI.fechaDeSistema
-drop procedure NMI.desasociarTarjeta
-drop procedure NMI.actualizarEstado
-drop procedure NMI.actualizarFuncionalidadEstado
-drop procedure NMI.agregarRolesUsuario
-drop procedure NMI.altaCuenta
-drop procedure NMI.asentarRetiro
-drop procedure NMI.bajaCuenta
-drop procedure NMI.clietesMasFacturas
-drop procedure NMI.facturar
-drop procedure NMI.getUltimaCuenta
-drop procedure NMI.ingresarCliente
-drop procedure NMI.ingresarNuevoRol
-drop procedure NMI.ingresarUsuario
-drop procedure NMI.Loguear
-drop procedure NMI.modificarCuenta
-drop procedure NMI.modificarFuncionalidadesRol
-drop procedure NMI.nuevaContra
-drop procedure NMI.nuevaContrasenia
-drop procedure NMI.pagarSuscripciones
-drop procedure NMI.PaisesMasMov
-drop procedure NMI.SaldoPorFacturas
-drop procedure NMI.setFecha
-drop procedure NMI.transferir
-drop procedure NMI.updeteaDatosDelCliente
-drop function NMI.categoriasDisponibles
-drop function NMI.clientesConMasTransferenciasEntreCuentasPropias
-drop function NMI.clientesInhabilitados
-drop function NMI.cuentasPorCliente
-drop function NMI.cuentasPorUsuario
-drop function NMI.datosDelCliente
-drop function NMI.documentosDisponibles
-drop function NMI.funcionalidadesPorRol
-drop function NMI.funcionalidadesRol
-drop function NMI.getNacionalidades
-drop function NMI.listadoFactura
-drop function NMI.rolesDeUsuario
-drop function NMI.rolesFaltantesUsuario
-drop function NMI.rolesUsuario
-drop function NMI.tarjetasPorCliente
-drop function NMI.ultimas10Transf
-drop function NMI.ultimos5Depositos
-drop function NMI.ultimos5Retiros
-drop function NMI.usernamesParecidos
-drop function NMI.agregarDias
-drop function NMI.encriptarSha1
-drop function NMI.encriptarSha256
-drop function NMI.fechaSistema
-drop function NMI.saldoCuenta
-drop function NMI.totalFactura
-drop procedure NMI.limpiar
-drop schema NMI
-end
-go
-
 
 create function NMI.clientesInhabilitados(@anio int,@trimestre int)
 returns @tabla table(
@@ -2299,7 +2211,7 @@ begin
 	insert into @tabla 
 	select id_tarjeta, descripcion, ultimos4 from
 	nmi.tarjetas_credito t join nmi.tarjeta_emisor e on (t.cod_emisor=e.id_tarjeta_emisor)
-	where t.cod_cliente=@numCliente and t.estado='Activa'
+	where t.cod_cliente=@numCliente and t.estado='Activo'
 	
 	return
 end
@@ -2318,7 +2230,113 @@ begin
 end
 go
 
---create procedure asociarTarjeta --- la idea es verificar que si estaba desasociada se hag una alta logica
+create procedure asociarTarjeta @numTarjeta varchar(70), @emisor varchar(50), @fechaEmision date, @fechaVencimiento date, @codigoSeg varchar(70), @id_cliente int
+as
+
+begin transaction
+declare @codEmisor int
+set @codEmisor =(select id_tarjeta_emisor from NMI.Tarjeta_Emisor where Descripcion=@emisor)
+
+insert into NMI.Tarjetas_credito
+(Num_tarjeta,Cod_cliente,Cod_emisor,Fecha_emision,Fecha_vencimiento,Cod_seguridad)
+values (@numTarjeta,@id_cliente,@codEmisor,@fechaEmision,@fechaVencimiento,@codigoSeg)  
+
+commit
+go
+
+
+
+create procedure NMI.limpiar
+as 
+begin
+
+drop table NMI.Depositos
+drop table NMI.Retiros
+drop Table NMI.modificacion_cuenta
+drop table NMI.transferencias
+drop table NMI.tipo_modificacion
+drop table NMI.intentos_fallidos
+drop table NMI.intentos_login
+drop table NMI.tarjetas_credito
+drop table NMI.tarjeta_emisor
+drop table NMI.rol_funcionalidad
+drop table NMI.transacciones
+drop table NMI.suscripciones
+drop table NMI.facturas
+drop table NMI.usuario_rol
+drop table NMI.ultimaCuenta
+drop table NMI.inhabilitacionesDeCuenta
+drop table NMI.cuenta
+drop table NMI.cheque
+drop table NMI.funcionalidad
+drop table NMI.cliente
+drop table NMI.bancos
+drop table NMI.categoria
+drop table NMI.estado_cuenta
+drop table NMI.rol
+drop table NMI.estado_rol
+drop table NMI.estado_transaccion
+drop table NMI.moneda
+drop table NMI.pais
+drop table NMI.tipo_dni
+drop table NMI.usuario
+drop table NMI.fechaDeSistema
+drop procedure NMI.desasociarTarjeta
+drop procedure NMI.actualizarEstado
+drop procedure NMI.actualizarFuncionalidadEstado
+drop procedure NMI.agregarRolesUsuario
+drop procedure NMI.altaCuenta
+drop procedure NMI.asentarRetiro
+drop procedure NMI.bajaCuenta
+drop procedure NMI.clietesMasFacturas
+drop procedure NMI.facturar
+drop function NMI.tarjetasCliente
+drop procedure NMI.getUltimaCuenta
+drop procedure NMI.ingresarCliente
+drop procedure NMI.ingresarNuevoRol
+drop procedure NMI.ingresarUsuario
+drop procedure NMI.Loguear
+drop procedure NMI.modificarCuenta
+drop procedure NMI.modificarFuncionalidadesRol
+drop procedure NMI.nuevaContra
+drop procedure NMI.nuevaContrasenia
+drop procedure NMI.pagarSuscripciones
+drop procedure NMI.PaisesMasMov
+drop procedure NMI.SaldoPorFacturas
+drop procedure NMI.setFecha
+drop procedure NMI.transferir
+drop procedure NMI.updeteaDatosDelCliente
+drop function NMI.categoriasDisponibles
+drop function NMI.clientesConMasTransferenciasEntreCuentas
+drop procedure NMI.clientesConMasTransferenciasEntreCuentasPropias
+drop function NMI.clientesInhabilitados
+drop function NMI.cuentasPorCliente
+drop function NMI.cuentasPorUsuario
+drop function NMI.datosDelCliente
+drop function NMI.documentosDisponibles
+drop function NMI.funcionalidadesPorRol
+drop function NMI.funcionalidadesRol
+drop function NMI.getNacionalidades
+drop procedure NMI.asociarTarjeta
+drop function NMI.listadoFactura
+drop function NMI.rolesDeUsuario
+drop function NMI.rolesFaltantesUsuario
+drop function NMI.rolesUsuario
+drop function NMI.tarjetasPorCliente
+drop function NMI.ultimas10Transf
+drop function NMI.ultimos5Depositos
+drop function NMI.ultimos5Retiros
+drop function NMI.usernamesParecidos
+drop function NMI.agregarDias
+drop function NMI.encriptarSha1
+drop function NMI.encriptarSha256
+drop function NMI.fechaSistema
+drop function NMI.saldoCuenta
+drop function NMI.totalFactura
+drop procedure NMI.limpiar
+drop schema NMI
+end
+go
 
 
 
