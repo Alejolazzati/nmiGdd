@@ -17,8 +17,10 @@ namespace PagoElectronico.ABM_Rol
         public modificarRol(String unRol)
         {
             InitializeComponent();
+            
             rol = unRol;
             textBox1.Text = rol;
+            textBox1.ReadOnly = true;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             
             comando.CommandText = "select descripcion from NMI.Estado_rol ";
@@ -80,14 +82,66 @@ namespace PagoElectronico.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedItem!=null){
             listBox2.Items.Add(listBox1.SelectedItem);
             listBox1.Items.Remove(listBox1.SelectedItem);
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Add(listBox2.SelectedItem);
-            listBox2.Items.Remove(listBox2.SelectedItem);
+            if (listBox2.SelectedItem != null)
+            {
+                listBox1.Items.Add(listBox2.SelectedItem);
+                listBox2.Items.Remove(listBox2.SelectedItem);
+            }
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+
+            
+                try
+                {
+                    int idRol;
+                    comando.CommandText = "select id_rol from NMI.Rol where Nombre_rol ='"+textBox1.Text+"'";
+                    System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
+                    reader.Read();
+                    idRol = Int32.Parse(reader.GetSqlValue(0).ToString());
+                    reader.Dispose();
+                    comando.CommandText = "begin transaction Create table #tablaTemporal (funcionalidad varchar(50))";
+                    comando.ExecuteNonQuery();
+                    foreach (Object funci in listBox1.Items)
+                    {
+                        // System.Data.SqlTypes.SqlString funcionalidad = func.
+                        String func = funci.ToString();
+                        comando.CommandText ="insert into #tablaTemporal values('"+func+"')" ;
+                        comando.ExecuteNonQuery();
+                    }
+
+
+                    //actualizo el estado 
+                    String estado = comboBox2.SelectedItem.ToString();
+                    comando.CommandText = "exec nmi.actualizarEstado '" + estado + "'," + idRol;
+                    comando.ExecuteNonQuery();
+
+                    // System.Data.SqlTypes.SqlString funcionalidad = func.
+                    comando.CommandText = "exec nmi.modificarFuncionalidadesRol " + idRol+" commit";
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Operacion exitosa");
+                    this.Close();
+
+                }
+
+                catch (NullReferenceException er) { MessageBox.Show("Seleccione un estado"); }
+                catch (System.Data.SqlClient.SqlException er){
+                    MessageBox.Show(er.Message);
+                }
+                
+                
+
+
         }
     }
 }

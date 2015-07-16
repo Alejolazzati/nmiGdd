@@ -24,21 +24,21 @@ namespace PagoElectronico.Login
 
         public void llamar(string unNombre)
         {
-            
+
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "Select * from NMI.rolesUsuario('" +unNombre + "')";
+            comando.CommandText = "Select * from NMI.rolesUsuario('" + unNombre + "')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             while (reader.Read())
-                {
-                    comboBox1.Items.Add(reader.GetSqlString(0));
+            {
+                comboBox1.Items.Add(reader.GetSqlString(0));
 
-                }
-                this.Show();   
+            }
+            this.Show();
             reader.Dispose();
-            
+
         }
 
-        
+
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
@@ -48,15 +48,25 @@ namespace PagoElectronico.Login
         private void button1_Click(object sender, EventArgs e)
         {
             int rol;
-            if (comboBox1.SelectedItem.ToString() == "Cliente")
-            { rol = 1; }
-            else { rol = 2; }
-            Program.rol = rol;
-            PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades();
+            try
+            {
+                if (comboBox1.SelectedItem.ToString() == "Cliente")
+                { rol = 1; }
+                else { rol = 2; }
+
+                Program.rol = rol;
+                PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades();
                 formFuncion.Show();
                 this.Close();
                 this.Hide();
             }
-       
-      }
+
+            catch (NullReferenceException er)
+            {
+                MessageBox.Show("Elija una opcion");
+
+
+            }
+        }
+    }
 }

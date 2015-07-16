@@ -47,5 +47,24 @@ namespace PagoElectronico.ABM_de_Usuario
             }
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new Login.Funcionalidades().Show();
+            this.Close();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new altaUsuario().Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            String usuarioABorrar;
+            usuarioABorrar = listBox1.SelectedItem.ToString();
+
+
+        }
     }
 }

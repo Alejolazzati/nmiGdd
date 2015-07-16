@@ -11,10 +11,13 @@ namespace PagoElectronico.ABM_Rol
 {
     public partial class formRol : Form
     {
+        System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            
         public formRol()
         {
             InitializeComponent();
-            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            
+            //cargar posibles estados de rol
             comando.CommandText = "select NMI.Estado_rol.Descripcion from NMI.Estado_rol";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             while (reader.Read())
@@ -25,6 +28,8 @@ namespace PagoElectronico.ABM_Rol
             this.Show();
             reader.Dispose();
 
+
+            //cargar funcionalidas
             comando.CommandText = "select NMI.Funcionalidad.Descripcion from NMI.Funcionalidad";
             reader = comando.ExecuteReader();
 
@@ -68,18 +73,80 @@ namespace PagoElectronico.ABM_Rol
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   
-
-            listBox1.Items.Add(listBox2.SelectedItem);
-            listBox2.Items.Remove(listBox2.SelectedItem);
-            
+        {
+            if (listBox2.SelectedItem != null)
+            {
+                listBox1.Items.Add(listBox2.SelectedItem);
+                listBox2.Items.Remove(listBox2.SelectedItem);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {   
-            listBox2.Items.Add(listBox1.SelectedItem);
-            listBox1.Items.Remove(listBox1.SelectedItem);
-           
+        {
+            if (listBox1.SelectedItem != null)
+            {
+                listBox2.Items.Add(listBox1.SelectedItem);
+                listBox1.Items.Remove(listBox1.SelectedItem);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //inserto nombreDenuevoRol
+            String nombreRolNuevo = textBox1.Text;
+            Int32 id_rol;
+            comando.CommandText = "NMI.ingresarNuevoRol";
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.Add("@nombreRol", SqlDbType.VarChar);
+            comando.Parameters.Add("@Id_rol", SqlDbType.Int);
+            comando.Parameters["@nombreRol"].Value = nombreRolNuevo;
+            comando.Parameters["@id_rol"].Direction = ParameterDirection.Output;
+            try
+            {
+                comando.ExecuteNonQuery();
+                id_rol = Int32.Parse(comando.Parameters["@id_rol"].SqlValue.ToString());
+
+                comando.CommandType = CommandType.Text;
+                //agregar el estado
+
+                String estado = comboBox2.SelectedItem.ToString();
+                comando.CommandText = "exec nmi.actualizarEstado '" + estado + "'," + id_rol;
+                comando.ExecuteNonQuery();
+
+                //agrego las funcionalidades
+
+                foreach (Object funci in listBox1.Items)
+                {
+                    // System.Data.SqlTypes.SqlString funcionalidad = func.
+                    String func = funci.ToString();
+                    comando.CommandText = "exec nmi.actualizarFuncionalidadEstado '" + func + "'," + id_rol;
+                    comando.ExecuteNonQuery();
+                }
+
+
+                MessageBox.Show("Nuevo Rol Creado");
+                this.Close();
+
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Ingrese nombre rol y estado rol");
+            }
+            catch (System.Data.SqlClient.SqlException er)
+            {
+                comando.CommandType = CommandType.Text;
+                MessageBox.Show(er.Message);
+                new PagoElectronico.Login.Funcionalidades().Show();
+                this.Close();
+
+            }
+                   
+            
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

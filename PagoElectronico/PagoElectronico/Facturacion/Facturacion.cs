@@ -18,6 +18,8 @@ namespace PagoElectronico.Facturacion
 
         private void Facturacion_Load(object sender, EventArgs e)
         {
+
+
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "NMI.facturar";
             comando.CommandType = CommandType.StoredProcedure;
@@ -33,7 +35,7 @@ namespace PagoElectronico.Facturacion
                // reader.Read();
                 //Program.factura = reader.GetSqlDecimal(reader.GetOrdinal("@fact"));
                 Program.factura = (System.Data.SqlTypes.SqlDecimal) comando.Parameters["@fact"].SqlValue;
-                MessageBox.Show(Program.factura.ToString());
+               
             }
             catch (System.Data.SqlClient.SqlException er)
             {
@@ -62,7 +64,7 @@ namespace PagoElectronico.Facturacion
         private void button1_Click(object sender, EventArgs e)
         {
             new PagoElectronico.Facturacion.ListadoFactura().Show();
-            new PagoElectronico.Login.Funcionalidades().Show(); this.Close();
+          
         }
 
         

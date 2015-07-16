@@ -38,8 +38,12 @@ namespace PagoElectronico.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            rol = listBox1.SelectedItem.ToString();
-            new modificarRol(rol).Show();
+            if (listBox1.SelectedItem != null)
+            {
+
+                rol = listBox1.SelectedItem.ToString();
+                new modificarRol(rol).Show();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -49,8 +53,20 @@ namespace PagoElectronico.ABM_Rol
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedItem != null)
+            {
 
+                comando.CommandText = "Update nmi.rol set Cod_estado=2 where nombre_rol='" + listBox1.SelectedItem.ToString() +"'";
+                comando.ExecuteNonQuery();
+
+
+            }
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new PagoElectronico.Login.Funcionalidades().Show();
+            this.Close();
+        }
     }
 }

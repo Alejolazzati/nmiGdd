@@ -181,6 +181,7 @@
     <Compile Include="Depositos\altaDeposito.Designer.cs">
       <DependentUpon>altaDeposito.cs</DependentUpon>
     </Compile>
+    <Compile Include="Encriptar.cs" />
     <Compile Include="Facturacion\altaFacturacion.cs">
       <SubType>Form</SubType>
     </Compile>

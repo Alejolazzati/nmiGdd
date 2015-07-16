@@ -60,9 +60,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(44, 161);
+            this.listBox1.Location = new System.Drawing.Point(6, 164);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(274, 95);
+            this.listBox1.Size = new System.Drawing.Size(565, 95);
             this.listBox1.TabIndex = 9;
             // 
             // button5
@@ -73,6 +73,7 @@
             this.button5.TabIndex = 8;
             this.button5.Text = "Nuevo usuario";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label1
             // 
@@ -91,6 +92,7 @@
             this.button2.TabIndex = 6;
             this.button2.Text = "Volver atras";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -120,6 +122,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "Eliminar";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox1
             // 

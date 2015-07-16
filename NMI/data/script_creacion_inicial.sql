@@ -590,7 +590,7 @@ commit;
 go
 
 
-Create  trigger NMI.CuaandoSeIngresanLoginsCorrectos
+Create trigger NMI.CuandoSeIngresanLoginsCorrectos
 on NMI.Intentos_login
 for  insert
 as
@@ -598,7 +598,9 @@ Begin transaction
 Declare @num_login int
 Declare @Correcto bit 
 Declare @cantidad int
-select Id_login,Es_Correcto into #tablaCorrectos  from inserted
+declare @cod_usuario int
+
+select Id_login,Es_Correcto,Codigo_usuario into #tablaCorrectos  from inserted
 where Es_Correcto=1
 
 if ((select count(*) from #tablaCorrectos
@@ -607,11 +609,11 @@ begin
 Declare cursorDeIncorrectos Cursor
 for select * from #tablaCorrectos
 open cursorDeIncorrectos
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
+fetch next from cursorDeIncorrectos into @num_login,@Correcto,@cod_usuario
 while(@@FETCH_STATUS=0)
 begin
-Delete from NMI.Intentos_fallidos where Cod_login=@num_login
-fetch next from cursorDeIncorrectos into @num_login,@Correcto
+Delete from NMI.Intentos_fallidos where @cod_usuario=(select codigo_usuario from nmi.intentos_login i where i.id_login=cod_login)   
+fetch next from cursorDeIncorrectos into @num_login,@Correcto,@cod_usuario
 end
 close cursorDeIncorrectos
 deallocate cursorDeIncorrectos
@@ -622,7 +624,7 @@ commit;
 go
 
 
-Create  trigger NMI.CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
+Create trigger NMI.CuandoSeIngresaUnTercerLoginFallidoSEInhabilita
 on NMI.Intentos_fallidos
 for  insert
 as
@@ -636,7 +638,7 @@ fetch next from cursorDeFallidos into @num_fallido,@Cod_login
 while(@@FETCH_STATUS=0)
 begin
 if ((select count(*) from NMI.Intentos_fallidos,NMI.Usuario,NMI.Intentos_login
-where NMI.Intentos_fallidos.Cod_login=NMI.Intentos_login.Id_login and NMI.Intentos_login.Codigo_usuario=NMI.Usuario.Id_usuario)>2)
+where NMI.Intentos_fallidos.Cod_login=NMI.Intentos_login.Id_login and NMI.Intentos_login.Codigo_usuario=NMI.Usuario.Id_usuario and id_usuario=(Select Codigo_usuario from NMI.Intentos_login where Id_login=@Cod_login))>2)
 update NMI.Usuario
 set Estado='inhabilitado'
 where Id_usuario = (Select Codigo_usuario from NMI.Intentos_login where Id_login=@Cod_login)
@@ -659,6 +661,7 @@ where Cli_Pais_Codigo is not null and Cuenta_Dest_Pais_Codigo is not null
 )A
 
 go
+
 
 --Moneda
 insert into NMI.Moneda(Descripcion,Conversion) values ('Dolar',1);
@@ -1153,7 +1156,7 @@ begin
 insert into @tablaRetorno
 select Nombre_rol from NMI.Usuario,NMI.Usuario_rol,NMI.Rol
 where Id_rol=Cod_rol and Useranme=@username 
-and Id_usuario=Cod_usuario
+and Id_usuario=Cod_usuario and Cod_estado=1
 return
 end
 
@@ -1534,6 +1537,14 @@ rollback
 return
 end 
 if (exists (select ID_usuario from NMI.Usuario where
+Useranme=@username and Estado='baja'
+))
+begin
+raiserror ('Usuario dado de baja',16,150)
+rollback
+return
+end 
+if (exists (select ID_usuario from NMI.Usuario where
 Useranme=@username and Contrasenia=@contra
 ))
 begin
@@ -1860,9 +1871,7 @@ go
 
 exec NMI.ingresarUsuario 'perez','w22e','nombre','fede',2
 go
-
 exec NMI.ingresarUsuario 'lazzati','w22e','nombre','fede',2
-
 go
 exec NMI.ingresarUsuario 'basile','w22e','nombre','fede',2
 go
@@ -2021,3 +2030,72 @@ group by c1.Nombre,c1.Apellido
 order by COUNT(*) desc
 end
 go
+
+
+
+---NUEVOS PROCEDURES
+
+create procedure nmi.ingresarNuevoRol
+@nombreRol varchar(30),
+@id_rol int out
+
+as
+
+begin transaction
+set transaction isolation level serializable
+
+insert into NMI.Rol
+(Nombre_rol,Cod_estado)
+values (@nombreRol,1)
+
+set @id_rol= (select MAX(id_rol) from NMI.Rol)
+
+commit
+go
+
+create procedure nmi.actualizarEstado @nuevoEstado varchar(39), 
+@id_rol int
+
+as
+begin
+
+declare @codEstado int
+
+set @codEstado = (select Id_estado from NMI.Estado_rol where Descripcion=@nuevoEstado) 
+
+
+update NMI.Rol
+set Cod_estado=@codEstado where Id_rol=@id_rol
+end
+go
+
+
+create procedure nmi.actualizarFuncionalidadEstado @funcionalidad varchar(39),
+@id_rol int
+
+as
+
+begin transaction
+
+declare @id_func int
+set @id_func=(select id_funcionalidad from NMI.Funcionalidad where Descripcion=@funcionalidad)
+
+insert into NMI.Rol_funcionalidad
+(Cod_rol,Cod_funcionalidad)
+values (@id_rol,@id_func)
+
+commit 
+go
+
+
+create procedure NMI.modificarFuncionalidadesRol @rol int
+as
+begin transaction
+delete from NMI.Rol_funcionalidad
+where Cod_rol=@rol
+insert into NMI.Rol_funcionalidad(Cod_rol,Cod_funcionalidad)
+select @rol,(select Id_funcionalidad from NMI.Funcionalidad as f where funcionalidad=Descripcion) from #tablaTemporal
+drop table #tablaTemporal
+commit
+
+select * from nmi.Usuario
