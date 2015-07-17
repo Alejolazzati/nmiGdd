@@ -11,16 +11,37 @@ namespace PagoElectronico.Depositos
 {
     public partial class altaDeposito : Form
     {
+        String cuenta;
+        String moneda;
+        float importe;
+
         public altaDeposito()
         {
             InitializeComponent();
+            this.refresh();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+          
+        }
+        private void refresh()
+        {
+            listBox1.Items.Clear();
+            
+            //cargar tarjetas del cliente
+            
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "select * from NMI.tarjetasCliente(" + Program.cliente + ")";
+            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(comando);
+            DataSet set = new DataSet();
+            adapter.Fill(set);
+            dataGridView1.DataSource = set.Tables[0].DefaultView;
+            adapter.Dispose();
+            set.Dispose();
             comando.CommandText = "Select * from NMI.cuentasPorCliente(" + Program.cliente + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 
             while (reader.Read())
             {
-                listBox2.Items.Add(reader.GetSqlValue(0));
+                listBox1.Items.Add(reader.GetSqlValue(0));
                 this.Show();
 
 
@@ -37,80 +58,16 @@ namespace PagoElectronico.Depositos
             this.Show();
             reader.Dispose();
 
-            comando.CommandText = "Select * from NMI.tarjetasPorCliente(" + Program.cliente + ")";
-            reader = comando.ExecuteReader();
-
-            while (reader.Read())
-            {
-                listBox1.Items.Add(reader.GetSqlValue(0));
-                this.Show();
 
 
-            }
-            reader.Dispose();
-
-            maskedTextBox1.Mask = "0999999999999999999999999999";
   
-        }
-
-        private void altaDeposito_Load(object sender, EventArgs e)
-        {
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
+       
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String cuenta = listBox2.SelectedItem.ToString();
+            String cuenta = listBox1.SelectedItem.ToString();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "Select NMI.saldoCuenta(" + cuenta + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
@@ -119,15 +76,6 @@ namespace PagoElectronico.Depositos
             reader.Dispose();
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
         private void maskedTextBox1_Validating(object sender, CancelEventArgs e)
         {
             e.Cancel = int.Parse(maskedTextBox1.Text) > 0;
@@ -137,6 +85,60 @@ namespace PagoElectronico.Depositos
         {
             PagoElectronico.Login.Funcionalidades formFuncion = new PagoElectronico.Login.Funcionalidades();
             formFuncion.Show();
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //confirmar
+            int i = 0;
+            try
+            {
+                cuenta = listBox1.SelectedItem.ToString();
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Elija una cuenta"); i++; }
+
+            try
+            {
+                moneda = comboBox1.SelectedItem.ToString();
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Elija la moneda"); i++; }
+
+            if (maskedTextBox1.Text.Length == 0)
+            {
+                MessageBox.Show("Ingrese un importe");
+                i++;
+            }
+            if (i > 0) return;
+
+            try
+            {
+                importe=float.Parse(maskedTextBox1.Text);
+                if(maskedTextBox1.Text.Contains(",")){MessageBox.Show("debe usar el caracter . como separador de decimales");return;}
+            }
+            catch (FormatException ex) { MessageBox.Show("debe ingresar el importe en formato punto flotante"); return; }
+
+            
+
+            if (dataGridView1.SelectedRows.Count == 1)
+            {
+                Int32 numTarjeta;
+                DataGridViewRow row = this.dataGridView1.SelectedRows[0];
+                numTarjeta = Int32.Parse(row.Cells["idTarjeta"].Value.ToString());
+
+                System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+               
+                comando.CommandText = "exec NMI.asentarDeposito "+cuenta+", "+numTarjeta+","+importe+",'"+moneda+"'";
+                try
+                {
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Operacion exitosa");
+                    this.refresh();
+                }
+                catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
+            }
+            else MessageBox.Show("seleccione una fila");
+            
         }
     }
 }

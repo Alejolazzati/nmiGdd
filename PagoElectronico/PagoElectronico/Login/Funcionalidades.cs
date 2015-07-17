@@ -115,7 +115,8 @@ namespace PagoElectronico.Login
                         break;
 
                     case "Depositos":
-                        MessageBox.Show("HACERME");
+
+                        new Depositos.altaDeposito().Show();
                         break;
 
 

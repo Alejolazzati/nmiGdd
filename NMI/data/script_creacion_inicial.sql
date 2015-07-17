@@ -303,7 +303,7 @@ create table NMI.Depositos(
 	Cod_moneda int not null,
 	Importe float not null,
 	Cod_TC int not null,
-	Fecha date,
+	Fecha date default nmi.fechaSistema(),
 	check(Importe>1),
 	foreign key (Cod_cuenta) references NMI.Cuenta(Num_cuenta),
 	foreign key (Cod_moneda) references NMI.Moneda(Id_moneda),
@@ -2230,7 +2230,7 @@ begin
 end
 go
 
-create procedure asociarTarjeta @numTarjeta varchar(70), @emisor varchar(50), @fechaEmision date, @fechaVencimiento date, @codigoSeg varchar(70), @id_cliente int
+create procedure NMI.asociarTarjeta @numTarjeta varchar(70), @emisor varchar(50), @fechaEmision date, @fechaVencimiento date, @codigoSeg varchar(70), @id_cliente int
 as
 
 begin transaction
@@ -2245,6 +2245,22 @@ commit
 go
 
 
+create procedure NMI.asentarDeposito @cuenta numeric(18), @id_tarjeta int, @importe float, @moneda varchar(50)
+
+as
+begin transaction
+	
+	declare @codM int
+	set @codM = (select id_moneda from NMI.Moneda where Descripcion=@moneda)
+	declare @id_deposito numeric(18)
+	set @id_deposito = (select (MAX(id_deposito)+1) from NMI.Depositos) 
+	
+	insert into NMI.Depositos
+	(Id_deposito,Cod_cuenta, Cod_moneda, Importe,Cod_TC)
+	values (@id_deposito,@cuenta,@codM,@importe,@id_tarjeta)
+	
+commit 
+go
 
 create procedure NMI.limpiar
 as 
@@ -2289,6 +2305,7 @@ drop procedure NMI.altaCuenta
 drop procedure NMI.asentarRetiro
 drop procedure NMI.bajaCuenta
 drop procedure NMI.clietesMasFacturas
+drop procedure NMI.asentarDeposito
 drop procedure NMI.facturar
 drop function NMI.tarjetasCliente
 drop procedure NMI.getUltimaCuenta
@@ -2337,10 +2354,6 @@ drop procedure NMI.limpiar
 drop schema NMI
 end
 go
-
-
-
-
 
 
 
