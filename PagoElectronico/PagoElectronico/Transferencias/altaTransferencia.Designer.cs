@@ -102,7 +102,7 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox3);
             this.Name = "nuevaTransferencia";
-            this.Text = "Form1";
+            this.Text = "Transferncias";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

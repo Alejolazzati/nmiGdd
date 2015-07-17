@@ -140,11 +140,15 @@ go
 
 Create table NMI.Rol_funcionalidad(
 	Cod_rol int not null,
-	Cod_funcionalidad int not null
+	Cod_funcionalidad int not null, 
 	foreign key (Cod_rol) references NMI.Rol(Id_rol),
-	foreign key (Cod_funcionalidad) references NMI.Funcionalidad(Id_funcionalidad)
+	foreign key (Cod_funcionalidad) references NMI.Funcionalidad(Id_funcionalidad),
+	check (cod_rol<>2 or cod_funcionalidad <>2)	
 )
 go	
+
+
+
 
 create table NMI.Categoria(
 	Id_categoria int identity(1,1) primary key,
@@ -1354,12 +1358,17 @@ Begin
 	
 	)*/
 	
-	create  procedure NMI.transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
+	create procedure NMI.transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
 	as
 	begin
 	begin transaction set transaction isolation level serializable
-	insert into NMI.Transacciones(Cod_estado,Costo) values(1,(select @importe*Costo from NMI.Cuenta,NMI.Categoria
-		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen)) 
+	Declare @hy int
+	if((Select Codigo_cliente from NMI.Cuenta where Num_cuenta=@cta_origen)=(Select Codigo_cliente from NMI.Cuenta where Num_cuenta=@cta_destino)) 
+	select @hy=0
+	else
+	select @hy=(select @importe*Costo from NMI.Cuenta,NMI.Categoria
+		where Codigo_categoria=Id_categoria and Num_cuenta=@cta_origen)	
+	insert into NMI.Transacciones(Cod_estado,Costo) values(1,@hy) 
 	insert into NMI.Transferencias select
 	@importe,@cta_origen,@cta_destino,MAX(Id_transaccion),1 from NMI.Transacciones
 	commit 	
@@ -1833,10 +1842,20 @@ go
 create procedure NMI.ingresarUsuario @username varchar(30),@pw varchar(255),@pregunta varchar(50), @Respuesta varchar (255), @rol int 
 as
 begin transaction
+if(Exists (select Id_usuario from NMI.Usuario where Useranme=@username and Estado='baja'))
+begin
+Update NMI.Usuario
+set Estado='habilitado',Contrasenia=@pw,Pregunta_secreta=@pregunta,Respuesta=@Respuesta 
+Where Useranme=@username
+raiserror('El usuario estaba dado de baja, se habilito y se reestablecieron los valores de seguridad de la cuenta segun lo que especifico el usuario',16,121)
+end
+else
+begin
 insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(@username,@pw,@pregunta,@Respuesta,'habilitado')
 Declare @codUser int
 select @codUser=Id_usuario from NMI.Usuario
 where Useranme=@username
+end
 insert into NMI.Usuario_rol(Cod_rol,Cod_usuario) values(@rol,@codUser)
 commit
 go
