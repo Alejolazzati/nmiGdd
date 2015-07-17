@@ -67,6 +67,7 @@ namespace PagoElectronico.Login
             {
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Contraseña actualizada");
+                this.Close();
             }
             catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
         }
