@@ -20,6 +20,8 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete la contraseña"); return; }
+            if (textBox2.Text.Length == 0) { MessageBox.Show("Repita la contraseña"); return; }
             String pasword1 = textBox1.Text;
             String pasword2 = textBox2.Text;
            

@@ -57,7 +57,13 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button4_Click(object sender, EventArgs e)
         {
-            String cuenta = listBox2.SelectedItem.ToString();
+            String cuenta;
+            try
+            {
+                cuenta = listBox2.SelectedItem.ToString();
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Seleccione una cuenta de la lista"); return; }
+       
             new PagoElectronico.ABM_Cuenta.modificarCuenta(cuenta).Show();
         }
 
@@ -69,9 +75,13 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //ELIMINAR CUENTA
-            String cuenta = listBox2.SelectedItem.ToString();
+            String cuenta;
+            try
+            {
+               cuenta = listBox2.SelectedItem.ToString();   
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Seleccione una cuenta de la lista"); return; }
+        
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "exec NMI.bajaCuenta " +cuenta;
             try { comando.ExecuteNonQuery();

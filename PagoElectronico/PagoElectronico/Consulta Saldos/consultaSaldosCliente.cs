@@ -39,6 +39,7 @@ namespace PagoElectronico.Consulta_Saldos
 
         private void button7_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedIndex == -1) { MessageBox.Show("Seleccionar una cuenta"); return; }
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "Select NMI.saldoCuenta(" + comboBox1.SelectedItem + ")";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
@@ -57,6 +58,7 @@ namespace PagoElectronico.Consulta_Saldos
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedIndex == -1) { MessageBox.Show("Seleccionar una cuenta"); return; }
             PagoElectronico.Consulta_Saldos.consultaSaldos unaConsul = new PagoElectronico.Consulta_Saldos.consultaSaldos(comboBox1.SelectedItem.ToString());
             unaConsul.Show();
         }

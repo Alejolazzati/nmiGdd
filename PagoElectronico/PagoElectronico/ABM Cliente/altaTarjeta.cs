@@ -95,7 +95,7 @@ namespace PagoElectronico.ABM_Cliente
               
             
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "exec asociarTarjeta '"+ maskedTextBox1.Text +"','"+emisor+"','"+fechaEmision+"','"+fechaVto+"','"+maskedTextBox2.Text+"',"+ Program.cliente;
+            comando.CommandText = "exec nmi.asociarTarjeta '"+ maskedTextBox1.Text +"','"+emisor+"','"+fechaEmision+"','"+fechaVto+"','"+maskedTextBox2.Text+"',"+ Program.cliente;
             try
             {
                 comando.ExecuteNonQuery();

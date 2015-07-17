@@ -45,7 +45,9 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            if (textBox2.Text.Length == 0) { MessageBox.Show("Complete la respuesta secreta"); return; }
+            if (textBox3.Text.Length == 0) { MessageBox.Show("Complete la nueva contraseña"); return; }
+            if (textBox4.Text.Length == 0) { MessageBox.Show("Repita la nueva contraseña"); return; }
             string pasword1;
             string pasword2;
             string respuestaSecreta = Encriptar.SHA256(textBox2.Text);
@@ -73,6 +75,21 @@ namespace PagoElectronico.Login
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
         {
 
         }

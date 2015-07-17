@@ -362,9 +362,6 @@
     <EmbeddedResource Include="Retiros\altaRetiro.resx">
       <DependentUpon>altaRetiro.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Retiros\validarIdentidad.resx">
-      <DependentUpon>validarIdentidad.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transferencias\altaTransferencia.resx">
       <DependentUpon>altaTransferencia.cs</DependentUpon>
     </EmbeddedResource>
@@ -398,12 +395,6 @@
     </Compile>
     <Compile Include="Retiros\altaRetiro.Designer.cs">
       <DependentUpon>altaRetiro.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Retiros\validarIdentidad.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Retiros\validarIdentidad.Designer.cs">
-      <DependentUpon>validarIdentidad.cs</DependentUpon>
     </Compile>
     <Compile Include="Transferencias\altaTransferencia.cs">
       <SubType>Form</SubType>

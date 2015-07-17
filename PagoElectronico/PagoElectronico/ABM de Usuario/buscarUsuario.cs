@@ -20,6 +20,7 @@ namespace PagoElectronico.ABM_de_Usuario
         {
             listBox1.Items.Clear();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete la contraseña"); return; }
             comando.CommandText = "Select * from NMI.usernamesParecidos('"+textBox1.Text+"')";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
 

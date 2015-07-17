@@ -26,6 +26,7 @@ namespace PagoElectronico.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (textBox3.Text.Length == 0) { MessageBox.Show("Ingrese los datos del cliente"); return; }
             Program.cliente = Convert.ToInt32(textBox3.Text);
             if (num == 1)
             {
@@ -48,6 +49,11 @@ namespace PagoElectronico.Login
         private void button2_Click(object sender, EventArgs e)
         {
             new Funcionalidades().Show();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -100,7 +100,8 @@ namespace PagoElectronico.ABM_Rol
         private void button3_Click(object sender, EventArgs e)
         {
 
-
+            if (textBox1.Text.Length == 0) { MessageBox.Show("Complete el nombre del rol"); return; }
+            if (comboBox2.SelectedIndex == -1) { MessageBox.Show("Seleccione el estado del rol"); return; }
             
                 try
                 {

@@ -27,6 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
+
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -190,6 +191,7 @@
             this.Load += new System.EventHandler(this.altaTarjeta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
 
         }
 

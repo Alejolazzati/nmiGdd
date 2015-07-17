@@ -26,6 +26,9 @@ namespace PagoElectronico.Transferencias
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (textBox3.Text.Length == 0) { MessageBox.Show("Ingrese el número de la cuenta destino"); return; }
+            if (textBox2.Text.Length == 0) { MessageBox.Show("Ingrese el nimporte a transferir"); return; }
+           
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
             comando.CommandText = "execute NMI.transferir " + cuenta + "," + textBox3.Text + "," + textBox2.Text/*+",'"+Program.fecha+"'"*/;
             try { comando.ExecuteNonQuery();
@@ -46,6 +49,16 @@ namespace PagoElectronico.Transferencias
         {
             new PagoElectronico.Login.Funcionalidades().Show();
             this.Close();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
        

@@ -140,6 +140,13 @@ namespace PagoElectronico.ABM_Cliente
 
        }
 
+       private void button7_Click(object sender, EventArgs e)
+       {
+           PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades();
+           funci.Show();
+           this.Close();
+       }
+
          
     }
 }
