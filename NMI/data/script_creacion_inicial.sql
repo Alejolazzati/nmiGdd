@@ -138,14 +138,16 @@ Create table NMI.Funcionalidad(
 )
 go
 
+
 Create table NMI.Rol_funcionalidad(
 	Cod_rol int not null,
 	Cod_funcionalidad int not null, 
 	foreign key (Cod_rol) references NMI.Rol(Id_rol),
 	foreign key (Cod_funcionalidad) references NMI.Funcionalidad(Id_funcionalidad),
-	check (cod_rol<>2 or cod_funcionalidad <>2)	
+	check (cod_rol=2 or cod_funcionalidad<>2)	
 )
 go	
+
 
 
 
@@ -1754,7 +1756,7 @@ insert into @tabla
 select 'transferencia a cuenta '+convert(varchar(20),cod_cuenta_destino),costo from NMI.Transacciones t1,NMI.Transferencias t2
 where t1.id_transaccion=t2.cod_transaccion and t1.cod_factura=@fact
 union
-select 'suscripcion por dias: '+convert(varchar(3),cantidad),costo from NMI.suscripciones where factura=@fact
+select 'Suscripciones: '+convert(varchar(5),cantidad),costo from NMI.suscripciones where factura=@fact
 
 
 return
@@ -1894,6 +1896,7 @@ where NMI.Rol.Nombre_rol=@Nombre_rol
 return
 end
 go
+
 
 exec NMI.ingresarUsuario 'perez','w22e','nombre','fede',2
 go
@@ -2365,7 +2368,6 @@ drop function NMI.ultimos5Retiros
 drop function NMI.usernamesParecidos
 drop function NMI.agregarDias
 drop function NMI.encriptarSha1
-drop function NMI.encriptarSha256
 drop function NMI.fechaSistema
 drop function NMI.saldoCuenta
 drop function NMI.totalFactura
@@ -2373,6 +2375,3 @@ drop procedure NMI.limpiar
 drop schema NMI
 end
 go
-
-
-

@@ -33,7 +33,6 @@ namespace PagoElectronico.Facturacion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new Login.Funcionalidades().Show();
             this.Close();
         }
 

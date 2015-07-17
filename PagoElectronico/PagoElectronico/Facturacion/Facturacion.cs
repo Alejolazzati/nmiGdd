@@ -11,16 +11,37 @@ namespace PagoElectronico.Facturacion
 {
     public partial class Facturacion : Form
     {
+        bool cierre=true;
+
         public Facturacion()
         {
             InitializeComponent();
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            
+              if (cierre)
+                {
+                    System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+                    comando.CommandText = "Rollback transaction factu";
+                    comando.ExecuteNonQuery();
+                }
+                else cierre = true;
+                new PagoElectronico.Login.Funcionalidades().Show();
+            
+            base.OnFormClosing(e);
+        }
+
+   
         private void Facturacion_Load(object sender, EventArgs e)
         {
-
+            
 
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "begin transaction factu";
+            comando.ExecuteNonQuery();
+            
             comando.CommandText = "NMI.facturar";
             comando.CommandType = CommandType.StoredProcedure;
             comando.Parameters.Add("@numCliente", SqlDbType.Decimal);
@@ -58,13 +79,18 @@ namespace PagoElectronico.Facturacion
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new PagoElectronico.Login.Funcionalidades().Show();
             this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
+            comando.CommandText = "commit transaction factu";
+            comando.ExecuteNonQuery();
             new PagoElectronico.Facturacion.ListadoFactura().Show();
+            cierre = false;
+            this.Close();
           
         }
 
