@@ -14,6 +14,7 @@ namespace PagoElectronico.ABM_de_Usuario
         public altaUsuario()
         {
             InitializeComponent();
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
 
             //cargo los roles al comboBox
 
@@ -58,24 +59,18 @@ namespace PagoElectronico.ABM_de_Usuario
             //ingresar usuario en la base
             try
             {
-                comando.CommandText = "Begin transaction exec NMI.ingresarUsuario '" + textBox12.Text + "','" + pass + "','" + textBox8.Text + "','" + resp + "'," + 1;
+                comando.CommandText = "exec NMI.ingresarUsuario '" + textBox12.Text + "','" + pass + "','" + textBox8.Text + "','" + resp + "'," + rol;
                 comando.ExecuteNonQuery();
-
-                comando.CommandText = "select id_usuario from NMI.Usuario where useranme='" + textBox12.Text + "'";
-                reader = comando.ExecuteReader();
-                reader.Read();
-                Int32 id_user = Int32.Parse(reader.GetSqlValue(0).ToString());
-                reader.Dispose();
-
-                comando.CommandText = "update nmi.usuario_rol set cod_rol=" + rol + " where cod_usuario=" + id_user + " commit";
-                comando.ExecuteNonQuery();
-
                 MessageBox.Show("Alta correcta");
                 new Login.Funcionalidades().Show();
                 this.Close();
 
             }
-            catch (System.Data.SqlClient.SqlException er) {MessageBox.Show(er.Message);}
+            catch (System.Data.SqlClient.SqlException er) {
+                MessageBox.Show(er.Message);
+                new Login.Funcionalidades().Show();
+                this.Close();            
+            }
             
         
         }

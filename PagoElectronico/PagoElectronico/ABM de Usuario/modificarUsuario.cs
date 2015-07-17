@@ -49,6 +49,7 @@ namespace PagoElectronico.ABM_de_Usuario
         private void button5_Click(object sender, EventArgs e)
         {
             new Login.Funcionalidades().Show();
+            this.Close();
         }
 
         private void button3_Click_1(object sender, EventArgs e)

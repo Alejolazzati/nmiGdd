@@ -16,6 +16,7 @@ namespace PagoElectronico.ABM_Cliente
         public calendar(int textBoxLlamo,altaTarjeta abmL)
         {
             InitializeComponent();
+            monthCalendar1.TodayDate = Convert.ToDateTime(Program.fecha);
             monthCalendar1.MaxSelectionCount = 1;
             abmLlamo = abmL;
             textBox = textBoxLlamo;

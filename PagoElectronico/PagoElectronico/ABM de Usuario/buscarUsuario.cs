@@ -75,8 +75,11 @@ namespace PagoElectronico.ABM_de_Usuario
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Usuario dado de baja");
                 new Login.Funcionalidades().Show();
+                this.Close();
             }
             else { MessageBox.Show("Elija un usuario"); }
+
+            
 
 
         }

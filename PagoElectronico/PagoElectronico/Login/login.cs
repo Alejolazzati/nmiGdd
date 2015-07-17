@@ -19,11 +19,7 @@ namespace PagoElectronico.Login
             InitializeComponent();
         }
 
-        private void login_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             nombre = textBox1.Text;
@@ -36,6 +32,7 @@ namespace PagoElectronico.Login
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //Caso intento de login
             if (textBox1.Text.Length == 0) { MessageBox.Show("Complete el username"); return; }
             if (textBox2.Text.Length == 0) { MessageBox.Show("Complete la password"); return; }
 
@@ -50,7 +47,7 @@ namespace PagoElectronico.Login
                 elegirRol.llamar(nombre);
             }
             catch (System.Data.SqlClient.SqlException er)
-            {
+            { //recibe posibles excepciones de loggeo
                 MessageBox.Show(er.Message);
                 new PagoElectronico.Login.login().Show();
             }
@@ -61,7 +58,7 @@ namespace PagoElectronico.Login
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
+        {   //Caso recuperar contraseña
             if (textBox1.Text.Length > 0)
             {
                 nombre = textBox1.Text;

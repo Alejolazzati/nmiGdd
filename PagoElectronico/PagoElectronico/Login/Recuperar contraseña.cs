@@ -23,13 +23,14 @@ namespace PagoElectronico.Login
         }
 
         private void Recuperar_contraseña_Load(object sender, EventArgs e)
-        {
+        {   //conseguir la pregunta secreta del usuario
             comando.CommandText = "Select pregunta_secreta from NMI.usuario where useranme='" + username + "'";
             System.Data.SqlClient.SqlDataReader reader = comando.ExecuteReader();
             if (reader.Read())
                 preguntaSecreta = reader.GetString(0);
-            else
-            {
+            else 
+                //si no hay pregunta secreta para el usuario, es porque no existe
+            { 
                 MessageBox.Show("Usuario es incorrecto");
                 this.Close();
             }
@@ -37,14 +38,10 @@ namespace PagoElectronico.Login
             textBox1.Text = preguntaSecreta;
 
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
+                
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        { //intento de restablecer datos
             if (textBox2.Text.Length == 0) { MessageBox.Show("Complete la respuesta secreta"); return; }
             if (textBox3.Text.Length == 0) { MessageBox.Show("Complete la nueva contraseña"); return; }
             if (textBox4.Text.Length == 0) { MessageBox.Show("Repita la nueva contraseña"); return; }
@@ -73,26 +70,7 @@ namespace PagoElectronico.Login
             }
             catch (System.Data.SqlClient.SqlException er) { MessageBox.Show(er.Message); }
         }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+               
     }
 
 }

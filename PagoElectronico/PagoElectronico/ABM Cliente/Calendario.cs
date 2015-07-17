@@ -15,6 +15,7 @@ namespace PagoElectronico.ABM_Cliente
         public Calendario(PagoElectronico.ABM_Cliente.altaCliente unABM)
         {
             InitializeComponent();
+            monthCalendar1.TodayDate = Convert.ToDateTime(Program.fecha);
             monthCalendar1.MaxSelectionCount = 1;
             abmSuper = unABM;
         }

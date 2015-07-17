@@ -133,6 +133,7 @@ namespace PagoElectronico.ABM_Rol
                 comando.CommandText = "commit";
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Nuevo Rol Creado");
+                new Login.Funcionalidades().Show();
                 this.Close();
 
             }

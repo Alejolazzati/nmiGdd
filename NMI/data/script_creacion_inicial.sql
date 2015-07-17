@@ -239,7 +239,8 @@ create table NMI.Transferencias(
 )
 go
 
-
+create index indiceCuentaOrigen  ON NMI.Transferencias (cod_cuenta_origen)
+go
 
 create table NMI.Bancos(
 	Id_banco int identity(1,1) primary key,
@@ -824,7 +825,7 @@ fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
 while @@FETCH_STATUS=0
 begin
-Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),'f46e3b17a6b639e5efddc3d1498ad73491599c22220f7ef6e14772f4ee25b913','nombre','867591a1b127029f1ff8186740cbea1f8eca76479b6f7f59853a695061fda464','habilitado')
+Insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(Rtrim (@nombre)+left(@apellido,1),'f46e3b17a6b639e5efddc3d1498ad73491599c22220f7ef6e14772f4ee25b913','Sos Dios?','23794d91c53ae875c8e247d72561e35d9d06ee07c70c9e0dbcc977a6d161504a','habilitado')
 Insert into NMI.Cliente(Cod_usuario,Nombre,Apellido,Tipo_documento,Numero_documento,Mail,Cod_pais,Calle,Numero,Piso,Depto,Fecha_nacimiento) values((Select MAX(Id_usuario)from NMI.Usuario),@nombre,@apellido,@cod_tipoDoc,@numDoc,@mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac)
 fetch next from cursorCliente into @nombre,@apellido,@cod_tipoDoc,@numDoc,
 @mail,@cod_pais,@calle,@numero,@piso,@dpto,@fnac
@@ -1049,7 +1050,7 @@ Select cuenta,fecha from (select cuenta=t1.cod_cuenta_origen,fecha=convert(varch
 go
 
 create trigger NMI.noPermitirTransferenciasEnInhabilitadas
-on NMI.transferencias
+on NMI.Transferencias
 after insert
 
 as
@@ -1057,28 +1058,11 @@ as
 		if ((select count(*) from inserted,NMI.cuenta where inserted.cod_cuenta_origen=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
 			begin
 			raiserror ('Cuenta inhabilitada',16,150)
-			delete from NMI.Tansferencias
-			where id_tranferencia in (select id_transferencia from inserted) 
-			end
-		else 
-		--insert into transferencias(Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda) select Importe,Cod_cuenta_origen,Cod_cuenta_destino,Cod_transaccion,Cod_moneda from inserted
-		commit	
-go
-
-create trigger NMI.noPermitirModificacionesEnInhabilitadas
-on NMI.Modificacion_cuenta
-after insert
-
-as
-	begin transaction
-		if ((select count(*) from inserted,NMI.cuenta where inserted.cod_cuenta=cuenta.num_cuenta and cuenta.codigo_estado=2) > 0 )
-			begin
-			raiserror ('Cuenta inhabilitada',16,150)
 			delete from NMI.Transferencias
 			where id_transferencia in (select id_transferencia from inserted
 			)
 			end
-		else 
+		
 	--	insert into Modificacion_cuenta(Cod_tipo,Cod_cuenta,Cod_transaccion) select Cod_tipo,Cod_cuenta,Cod_transaccion from inserted
 		commit
 go	
@@ -1292,13 +1276,13 @@ create function NMI.ultimos5Depositos(@cuenta numeric(18))
 returns @tabla table(Importe float,
 	Moneda varchar(30),
 	Fecha date,
-	NumTarjeta Numeric(18)
+	Ultimos4DigitosTarjeta varchar(5)
 )
 
 as
 Begin
 	insert into @tabla
-	select top 5 d.Importe, m.Descripcion , d.Fecha, t.Num_tarjeta
+	select top 5 d.Importe, m.Descripcion , d.Fecha, t.Ultimos4
 	from NMI.Depositos d join NMI.Tarjetas_credito t on (d.Cod_TC=t.Id_tarjeta)
 						join NMI.Moneda m on (d.Cod_moneda=m.Id_moneda)
 	where d.Cod_cuenta=@cuenta
@@ -1357,13 +1341,12 @@ Begin
 	returns @tabla table(
 	
 	
-	)*/
-	
+	)*/	
 	create procedure NMI.transferir @cta_origen numeric(18), @cta_destino numeric(18),@importe float--,@fecha date
 	as
 	begin
 	begin transaction set transaction isolation level serializable
-	Declare @hy int
+	Declare @hy float
 	if((Select Codigo_cliente from NMI.Cuenta where Num_cuenta=@cta_origen)=(Select Codigo_cliente from NMI.Cuenta where Num_cuenta=@cta_destino)) 
 	select @hy=0
 	else
@@ -1483,19 +1466,18 @@ go
 create function NMI.clientesInhabilitados(@anio int,@trimestre int)
 returns @tabla table(
 num_cliente int,
-nom_cliente varchar(32)
+nom_cliente varchar(32),
+ape_cliente varchar(32)
 )
 as
 begin
 insert into @tabla
-select top 5 id_cliente,nombre from NMI.Cliente,NMI.Cuenta as c,NMI.inhabilitacionesDeCuenta as i
+select top 5 id_cliente,nombre, apellido from NMI.Cliente,NMI.Cuenta as c,NMI.inhabilitacionesDeCuenta as i
 where i.num_cuenta=c.num_cuenta and c.codigo_cliente=id_cliente 
 and (year(i.fecha)=@anio) and (month(i.fecha) between ((@trimestre-1)*3+1) and (@trimestre*3))
-order by i.fecha
+group by id_cliente,nombre, apellido
 return
 end
-
-
 go
 
 sp_settriggerorder 'NMI.inhabilitarCuentasConMasDe5','last','insert',null
@@ -1743,24 +1725,24 @@ where factura=@fact
 return @i
 end
 go
-
+ 
 create function NMI.listadoFactura(@fact numeric(18))
 returns @tabla table(
+id  int identity(1,1) primary key,
 item varchar(50),
 precio float
 )
 as
 begin
-insert into @tabla
+insert into @tabla (item,precio)
 select 'transferencia a cuenta '+convert(varchar(20),cod_cuenta_destino),costo from NMI.Transacciones t1,NMI.Transferencias t2
 where t1.id_transaccion=t2.cod_transaccion and t1.cod_factura=@fact
 union
 select 'Suscripciones: '+convert(varchar(5),cantidad),costo from NMI.suscripciones where factura=@fact
-
-
 return
 end
 go
+
 create procedure NMI.asentarRetiro @cuenta numeric(18),@numCheque int,@Importe float, @banco varchar(50),@cliente int, @moneda varchar(50)
  as
  begin transaction
@@ -1844,18 +1826,19 @@ as
 begin transaction
 if(Exists (select Id_usuario from NMI.Usuario where Useranme=@username and Estado='baja'))
 begin
+raiserror('El usuario estaba dado de baja, se habilito y se reestablecieron los valores de seguridad de la cuenta segun lo que especifico el usuario',16,150)
 Update NMI.Usuario
 set Estado='habilitado',Contrasenia=@pw,Pregunta_secreta=@pregunta,Respuesta=@Respuesta 
 Where Useranme=@username
-raiserror('El usuario estaba dado de baja, se habilito y se reestablecieron los valores de seguridad de la cuenta segun lo que especifico el usuario',16,121)
-end
+end 
 else
 begin
 insert into NMI.Usuario(Useranme,Contrasenia,Pregunta_secreta,Respuesta,Estado) values(@username,@pw,@pregunta,@Respuesta,'habilitado')
+end
 Declare @codUser int
 select @codUser=Id_usuario from NMI.Usuario
 where Useranme=@username
-end
+
 insert into NMI.Usuario_rol(Cod_rol,Cod_usuario) values(@rol,@codUser)
 commit
 go
@@ -1895,14 +1878,13 @@ return
 end
 go
 
-
-exec NMI.ingresarUsuario 'perez','w22e','nombre','fede',2
+exec NMI.ingresarUsuario 'perez','981d04c8aafc9e92ba0384a003ce99f4b27c86ea6273cb92cd5633f7dea5c5fd','Sos Dios?','23794d91c53ae875c8e247d72561e35d9d06ee07c70c9e0dbcc977a6d161504a',2
 go
-exec NMI.ingresarUsuario 'lazzati','w22e','nombre','fede',2
+exec NMI.ingresarUsuario 'lazzati','981d04c8aafc9e92ba0384a003ce99f4b27c86ea6273cb92cd5633f7dea5c5fd','Sos Dios?','23794d91c53ae875c8e247d72561e35d9d06ee07c70c9e0dbcc977a6d161504a',2
 go
-exec NMI.ingresarUsuario 'basile','w22e','nombre','fede',2
+exec NMI.ingresarUsuario 'basile','981d04c8aafc9e92ba0384a003ce99f4b27c86ea6273cb92cd5633f7dea5c5fd','Sos Dios?','23794d91c53ae875c8e247d72561e35d9d06ee07c70c9e0dbcc977a6d161504a',2
 go
-exec NMI.ingresarUsuario 'bec','w22e','nombre','fede',2
+exec NMI.ingresarUsuario 'bec','981d04c8aafc9e92ba0384a003ce99f4b27c86ea6273cb92cd5633f7dea5c5fd','Sos Dios? ','23794d91c53ae875c8e247d72561e35d9d06ee07c70c9e0dbcc977a6d161504a',2
 go
 
 create procedure NMI.clietesMasFacturas 
@@ -1940,7 +1922,7 @@ on a.Id_transaccion=b.Cod_transaccion
 inner join NMi.Cuenta c on b.Cod_cuenta_origen=c.Num_cuenta
 inner join NMI.cliente d on c.Codigo_cliente=d.Id_cliente 
 group by d.Nombre,d.Apellido
-order by sum(a.Costo) desc
+order by COUNT(*) desc
 end
 go
 
@@ -2013,12 +1995,22 @@ begin
 set @mesdiadesde='1001'
 set @mesdiahasta='1231'
 end
-select top 5 Cod_cuenta_origen from
-nmi.Transferencias a inner join nmi.Transacciones b on
-a.Cod_transaccion=b.Id_transaccion where Fecha
-between @anio+@mesdiadesde and @anio+@mesdiahasta
-group by Cod_cuenta_origen
-order by SUM(importe) desc
+
+Select top 5 descripcion, sum(Total) from (
+select descripcion, Total= SUM(t.Costo) 
+from nmi.Transacciones t join NMI.Transferencias tr on (tr.Cod_transaccion=t.Id_transaccion)
+join NMI.Cuenta cu  on (cu.Num_cuenta=tr.Cod_cuenta_origen)
+join nmi.categoria c on (cu.Codigo_categoria=c.Id_categoria)
+where t.cod_factura is not null
+group by Descripcion
+Union
+select descripcion, Total=SUM(s.costo)
+from NMI.suscripciones s join NMI.Cuenta cu  on (cu.Num_cuenta=s.cuenta)
+join nmi.categoria c on (cu.Codigo_categoria=c.Id_categoria)
+where s.factura is not null
+group by Descripcion) T
+group by Descripcion
+order by 2
 end
 go
 
@@ -2373,5 +2365,3 @@ drop procedure NMI.limpiar
 drop schema NMI
 end
 go
-
-

@@ -22,7 +22,7 @@ namespace PagoElectronico.Facturacion
         {
             label2.Text = Program.factura.ToString();
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
-            comando.CommandText = "select * from NMI.listadoFactura(" + Program.factura.ToString() + ")";
+            comando.CommandText = "select item,precio from NMI.listadoFactura(" + Program.factura.ToString() + ")";
             System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(comando);
             DataSet set = new DataSet();
             adapter.Fill(set);

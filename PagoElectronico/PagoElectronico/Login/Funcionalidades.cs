@@ -11,7 +11,6 @@ namespace PagoElectronico.Login
 {
     public partial class Funcionalidades : Form
     {
-        
         public Funcionalidades()
         {
             System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
@@ -21,12 +20,19 @@ namespace PagoElectronico.Login
             if (Program.rol == 1)
             {
                 comando.CommandText = "Select Id_cliente from NMI.Cliente,NMI.Usuario where Id_usuario=Cod_usuario and Useranme='" + Login.login.nombre + "'";
+                
                 System.Data.SqlClient.SqlDataReader reader2 = comando.ExecuteReader();
-                label2.Text = "cliente";
-                reader2.Read();
-                Program.cliente = reader2.GetInt32(0);
-                reader2.Dispose();
-            }
+                  
+                try
+                {
+                    label2.Text = "cliente";
+                    reader2.Read();
+                    Program.cliente = reader2.GetInt32(0);
+                    reader2.Dispose();
+                }
+                catch (InvalidOperationException er) { MessageBox.Show("Falta ingresar los datos del cliente"); reader2.Dispose(); Program.end(); }
+        
+              }
             else label2.Text = "administrador";
 
             comando.CommandText = "Select * from NMI.funcionalidadesRol(" + Program.rol + ")";
