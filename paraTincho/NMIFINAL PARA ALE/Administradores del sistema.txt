@@ -1,0 +1,12 @@
+Agregamos los siguientes usuarios como administradores del sistema:
+
+
+
+exec NMI.ingresarUsuario 'perez','w22e','nombre','fede',2
+go
+exec NMI.ingresarUsuario 'lazzati','w22e','nombre','fede',2
+go
+exec NMI.ingresarUsuario 'basile','w22e','nombre','fede',2
+go
+exec NMI.ingresarUsuario 'bec','w22e','nombre','fede',2
+go

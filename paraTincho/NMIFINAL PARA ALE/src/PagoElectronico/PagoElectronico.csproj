@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A425235-25E0-4A09-B3C4-84F19D9A2184}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PagoElectronico</RootNamespace>
+    <AssemblyName>PagoElectronico</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ABM Cliente\altaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\altaCliente.Designer.cs">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\altaTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\altaTarjeta.Designer.cs">
+      <DependentUpon>altaTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\buscarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\buscarCliente.Designer.cs">
+      <DependentUpon>buscarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\administrarTarjetas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\administrarTarjetas.Designer.cs">
+      <DependentUpon>administrarTarjetas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\Calendario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\Calendario.Designer.cs">
+      <DependentUpon>Calendario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\calendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\calendar.Designer.cs">
+      <DependentUpon>calendar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\modificarCliente.Designer.cs">
+      <DependentUpon>modificarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\altaCuenta.Designer.cs">
+      <DependentUpon>altaCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\buscarCuentaCliente.Designer.cs">
+      <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\modificarCuenta.Designer.cs">
+      <DependentUpon>modificarCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\altaUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\altaUsuario.Designer.cs">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\buscarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\buscarUsuario.Designer.cs">
+      <DependentUpon>buscarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarContrasenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarContrasenia.Designer.cs">
+      <DependentUpon>cambiarContrasenia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarUsername.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\cambiarUsername.Designer.cs">
+      <DependentUpon>cambiarUsername.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModificarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModificarRol.Designer.cs">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\modificarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\modificarUsuario.Designer.cs">
+      <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModPreguntayResp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\ModPreguntayResp.Designer.cs">
+      <DependentUpon>ModPreguntayResp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\altaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\altaRol.Designer.cs">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\buscarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\buscarRol.Designer.cs">
+      <DependentUpon>buscarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Rol\modificarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Rol\modificarRol.Designer.cs">
+      <DependentUpon>modificarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Coneccion.cs" />
+    <Compile Include="Consulta Saldos\consultaSaldos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldos.Designer.cs">
+      <DependentUpon>consultaSaldos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldosCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consulta Saldos\consultaSaldosCliente.Designer.cs">
+      <DependentUpon>consultaSaldosCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Depositos\altaDeposito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Depositos\altaDeposito.Designer.cs">
+      <DependentUpon>altaDeposito.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Encriptar.cs" />
+    <Compile Include="Facturacion\Facturacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\Facturacion.Designer.cs">
+      <DependentUpon>Facturacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\ListadoFactura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\ListadoFactura.designer.cs">
+      <DependentUpon>ListadoFactura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\pagarSuscripciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\pagarSuscripciones.Designer.cs">
+      <DependentUpon>pagarSuscripciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GD1C2015DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\altaConsulta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\altaConsulta.Designer.cs">
+      <DependentUpon>altaConsulta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\elegirRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\elegirRol.Designer.cs">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Funcionalidades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\Funcionalidades.Designer.cs">
+      <DependentUpon>Funcionalidades.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\login.Designer.cs">
+      <DependentUpon>login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Recuperar contraseña.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\Recuperar contraseña.Designer.cs">
+      <DependentUpon>Recuperar contraseña.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\SeleccionarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionarCliente.Designer.cs">
+      <DependentUpon>SeleccionarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\SeleccionarCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionarCuenta.Designer.cs">
+      <DependentUpon>SeleccionarCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ABM Cliente\altaCliente.resx">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\altaTarjeta.resx">
+      <DependentUpon>altaTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\buscarCliente.resx">
+      <DependentUpon>buscarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\administrarTarjetas.resx">
+      <DependentUpon>administrarTarjetas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\Calendario.resx">
+      <DependentUpon>Calendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\calendar.resx">
+      <DependentUpon>calendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\modificarCliente.resx">
+      <DependentUpon>modificarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\altaCuenta.resx">
+      <DependentUpon>altaCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\buscarCuentaCliente.resx">
+      <DependentUpon>buscarCuentaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\modificarCuenta.resx">
+      <DependentUpon>modificarCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\altaUsuario.resx">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\buscarUsuario.resx">
+      <DependentUpon>buscarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\cambiarContrasenia.resx">
+      <DependentUpon>cambiarContrasenia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\cambiarUsername.resx">
+      <DependentUpon>cambiarUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\ModificarRol.resx">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\modificarUsuario.resx">
+      <DependentUpon>modificarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\ModPreguntayResp.resx">
+      <DependentUpon>ModPreguntayResp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\altaRol.resx">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\buscarRol.resx">
+      <DependentUpon>buscarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Rol\modificarRol.resx">
+      <DependentUpon>modificarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Saldos\consultaSaldos.resx">
+      <DependentUpon>consultaSaldos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Saldos\consultaSaldosCliente.resx">
+      <DependentUpon>consultaSaldosCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Depositos\altaDeposito.resx">
+      <DependentUpon>altaDeposito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\Facturacion.resx">
+      <DependentUpon>Facturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\ListadoFactura.resx">
+      <DependentUpon>ListadoFactura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\pagarSuscripciones.resx">
+      <DependentUpon>pagarSuscripciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\altaConsulta.resx">
+      <DependentUpon>altaConsulta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\elegirRol.resx">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\Funcionalidades.resx">
+      <DependentUpon>Funcionalidades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\login.resx">
+      <DependentUpon>login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\Recuperar contraseña.resx">
+      <DependentUpon>Recuperar contraseña.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionarCliente.resx">
+      <DependentUpon>SeleccionarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionarCuenta.resx">
+      <DependentUpon>SeleccionarCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Retiros\altaRetiro.resx">
+      <DependentUpon>altaRetiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transferencias\altaTransferencia.resx">
+      <DependentUpon>altaTransferencia.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="GD1C2015DataSet.xsc">
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GD1C2015DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GD1C2015DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GD1C2015DataSet.xss">
+      <DependentUpon>GD1C2015DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Retiros\altaRetiro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Retiros\altaRetiro.Designer.cs">
+      <DependentUpon>altaRetiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Transferencias\altaTransferencia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transferencias\altaTransferencia.Designer.cs">
+      <DependentUpon>altaTransferencia.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
