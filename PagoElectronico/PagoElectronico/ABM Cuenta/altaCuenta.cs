@@ -93,6 +93,7 @@ namespace PagoElectronico.ABM_Cuenta
             catch (System.Data.SqlClient.SqlException er)
             {
                 MessageBox.Show(er.Message);
+                
             }
                     
          
@@ -103,6 +104,12 @@ namespace PagoElectronico.ABM_Cuenta
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new Login.Funcionalidades().Show();
+            this.Close();
         }                        
 
     }

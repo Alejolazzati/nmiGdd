@@ -144,10 +144,9 @@ Create table NMI.Rol_funcionalidad(
 	Cod_funcionalidad int not null, 
 	foreign key (Cod_rol) references NMI.Rol(Id_rol),
 	foreign key (Cod_funcionalidad) references NMI.Funcionalidad(Id_funcionalidad),
-	check (cod_rol=2 or cod_funcionalidad<>2)	
+	CONSTRAINT noSePuedeAsignarABMUsuarioAOtroRol check (cod_rol=2 or cod_funcionalidad<>2)	
 )
 go	
-
 
 
 
@@ -1815,10 +1814,9 @@ go
 create procedure NMI.bajaCuenta
 @numero numeric(20)
 as
-begin
+begin transaction 
 update NMI.Cuenta set Codigo_estado=4 where Num_cuenta=@numero
 commit
-end
 go
 
 
@@ -2375,3 +2373,5 @@ drop procedure NMI.limpiar
 drop schema NMI
 end
 go
+
+
