@@ -85,8 +85,17 @@ namespace PagoElectronico.ABM_Cliente
             domicilio = textBox3.Text;
             piso = textBox2.Text;
             depto = textBox4.Text;
-            tipoDocumento = comboBox2.SelectedItem.ToString();
-            Nacionalidad = comboBox1.SelectedItem.ToString();
+            try
+            {
+                tipoDocumento = comboBox2.SelectedItem.ToString();
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Elija tipo de documento"); }
+            try
+            {
+                Nacionalidad = comboBox1.SelectedItem.ToString();
+            }
+            catch (NullReferenceException er) { MessageBox.Show("Elija nacionalidad"); }
+           
             userName = textBox6.Text;
             contraseña = textBox7.Text;
             preguntaSecreta = textBox8.Text;
@@ -136,6 +145,12 @@ System.Data.SqlClient.SqlCommand comando = Coneccion.getComando();
         private void textBox12_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new Login.Funcionalidades().Show();
+            this.Close();
         }
 
         

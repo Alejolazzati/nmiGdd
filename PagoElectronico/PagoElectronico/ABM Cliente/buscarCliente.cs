@@ -20,6 +20,9 @@ namespace PagoElectronico.ABM_Cliente
         public buscarCliente()
         {
             InitializeComponent();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // creamos una tabla temporal con todos losclientes, para luego ir filtrando
             comando.CommandText = "Select ID_cliente, Nombre, Apellido, mail, numero_documento, tipoDeDocumento=(Select Descripcion from NMI.tipo_Dni where id_DNI=tipo_documento) into #tablaTemporal from NMI.Cliente";
             comando.ExecuteNonQuery();
 
@@ -42,6 +45,11 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button8_Click(object sender, EventArgs e)
         { //nuevoCliente
+
+
+            comando.CommandText = "drop table #tablaTemporal";
+            comando.ExecuteNonQuery();
+
             new PagoElectronico.ABM_Cliente.altaCliente().Show();
             this.Close();
         }
@@ -103,6 +111,7 @@ namespace PagoElectronico.ABM_Cliente
            dataGridView1.DataSource = set.Tables[0].DefaultView;
            adapter.Dispose();
            set.Dispose();
+           
 
        }
 
@@ -122,12 +131,17 @@ namespace PagoElectronico.ABM_Cliente
 
        private void button3_Click(object sender, EventArgs e)
        { //booton modificar 
-          // System.Data.DataSet.Enumerator enum = 
-         // System.Collections.IEnumerator enum =dataGridView1.SelectedRows.GetEnumerator();
+
+
            if (dataGridView1.SelectedRows.Count == 1)
            {
-               DataGridViewRow row = this.dataGridView1.SelectedRows[0];
+              DataGridViewRow row = this.dataGridView1.SelectedRows[0];
               new modificarCliente(row.Cells["id_cliente"].Value.ToString()).Show();
+              comando.CommandText = "drop table #tablaTemporal";
+              comando.ExecuteNonQuery();
+              this.Close();
+
+           
            }
            else MessageBox.Show("seleccione una fila");
            
@@ -142,6 +156,10 @@ namespace PagoElectronico.ABM_Cliente
 
        private void button7_Click(object sender, EventArgs e)
        {
+
+           comando.CommandText = "drop table #tablaTemporal";
+           comando.ExecuteNonQuery();
+
            PagoElectronico.Login.Funcionalidades funci = new PagoElectronico.Login.Funcionalidades();
            funci.Show();
            this.Close();

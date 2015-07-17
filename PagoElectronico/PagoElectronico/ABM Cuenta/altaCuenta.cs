@@ -88,6 +88,7 @@ namespace PagoElectronico.ABM_Cuenta
             {
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Operacion exitosa");
+                new Login.Funcionalidades().Show();
                 this.Close();
             }
             catch (System.Data.SqlClient.SqlException er)

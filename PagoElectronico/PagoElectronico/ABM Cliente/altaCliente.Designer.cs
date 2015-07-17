@@ -61,11 +61,13 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.textBox12);
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.label9);
@@ -135,6 +137,7 @@
             // 
             this.textBox11.Location = new System.Drawing.Point(114, 72);
             this.textBox11.Name = "textBox11";
+            this.textBox11.PasswordChar = '*';
             this.textBox11.Size = new System.Drawing.Size(362, 20);
             this.textBox11.TabIndex = 50;
             // 
@@ -158,6 +161,7 @@
             // 
             this.textBox7.Location = new System.Drawing.Point(299, 20);
             this.textBox7.Name = "textBox7";
+            this.textBox7.PasswordChar = '*';
             this.textBox7.Size = new System.Drawing.Size(177, 20);
             this.textBox7.TabIndex = 47;
             this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
@@ -370,6 +374,16 @@
             this.label13.TabIndex = 1;
             this.label13.Text = "Nombre";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(5, 308);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(142, 31);
+            this.button1.TabIndex = 56;
+            this.button1.Text = "Volver";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // altaCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,5 +434,6 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button1;
     }
 }
