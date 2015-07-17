@@ -49,6 +49,7 @@ namespace PagoElectronico.ABM_Rol
         private void button1_Click(object sender, EventArgs e)
         {
             new PagoElectronico.ABM_Rol.formRol().Show();
+            this.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -58,8 +59,7 @@ namespace PagoElectronico.ABM_Rol
 
                 comando.CommandText = "Update nmi.rol set Cod_estado=2 where nombre_rol='" + listBox1.SelectedItem.ToString() +"'";
                 comando.ExecuteNonQuery();
-
-
+                MessageBox.Show("Operacion exitosa");
             }
         }
 

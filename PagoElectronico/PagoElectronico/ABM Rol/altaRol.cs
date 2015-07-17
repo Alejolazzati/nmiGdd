@@ -98,6 +98,9 @@ namespace PagoElectronico.ABM_Rol
 
             String nombreRolNuevo = textBox1.Text;
             Int32 id_rol;
+            comando.CommandText = "begin transaction";
+            comando.ExecuteNonQuery();
+
             comando.CommandText = "NMI.ingresarNuevoRol";
             comando.CommandType = CommandType.StoredProcedure;
             comando.Parameters.Add("@nombreRol", SqlDbType.VarChar);
@@ -127,7 +130,8 @@ namespace PagoElectronico.ABM_Rol
                     comando.ExecuteNonQuery();
                 }
 
-
+                comando.CommandText = "commit";
+                comando.ExecuteNonQuery();
                 MessageBox.Show("Nuevo Rol Creado");
                 this.Close();
 
@@ -141,6 +145,8 @@ namespace PagoElectronico.ABM_Rol
                 comando.Parameters.Clear();
                 comando.CommandType = CommandType.Text;
                 MessageBox.Show(er.Message);
+                comando.CommandText = "rollback";
+                comando.ExecuteNonQuery();                
                 new PagoElectronico.Login.Funcionalidades().Show();
                 this.Close();
 
@@ -152,6 +158,11 @@ namespace PagoElectronico.ABM_Rol
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new Login.Funcionalidades().Show();
         }
     }
 }
